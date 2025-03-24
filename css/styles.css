@@ -7,6 +7,14 @@ body {
     margin: 0;
 }
 
+.logo {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    border-radius: 6px;
+}
+
+
 .card-container {
     display: flex;
     flex-direction: row;
@@ -161,6 +169,12 @@ body {
 .sidebar.collapsed .sidebar-middle {
     display: none;
 }
+
+.sidebar.collapsed .logo {
+    width: 28px;
+    height: 28px;
+}
+
 
 .menu-item {
     margin: 12px 0;
