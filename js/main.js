@@ -1,4 +1,3 @@
-
 // Dummy data - will later come from API
 
 const firstRow = document.getElementById('first-row');
@@ -52,7 +51,7 @@ function createCard(data, row) {
     card.innerHTML = innerHtml;
 
     // Add click handler to manage selection
-    card.addEventListener('click', () => {
+    card.addEventListener('click', async () => {
         // Remove 'selected' from any other cards
         document.querySelectorAll(`#${row} .card.selected`).forEach(el => {
             el.classList.remove('selected');
@@ -72,16 +71,20 @@ function createCard(data, row) {
             thirdRow.innerHTML = '';
             fourthRow.innerHTML = '';
             fifthRow.innerHTML = '';
-            renderSecondRow(getFirstLevelNodes(topLevelAttribute) || []);
+            const data = await getFirstLevelNodes(topLevelAttribute);
+            renderSecondRow(data || []);
         } else if (row === 'second-row') {
             fourthRow.innerHTML = '';
             fifthRow.innerHTML = '';
-            renderThirdRow(getSecondLevelNodes(topLevelAttribute, firstLevelAttribute) || []);
+            const data = await getSecondLevelNodes(topLevelAttribute, firstLevelAttribute);
+            renderThirdRow(data || []);
         } else if (row === 'third-row') {
             fifthRow.innerHTML = '';
-            renderFourthRow(getThirdLevelNodes(topLevelAttribute, firstLevelAttribute, secondLevelAttribute) || []);
+            const data = await getThirdLevelNodes(topLevelAttribute, firstLevelAttribute, secondLevelAttribute);
+            renderFourthRow(data || []);
         } else if (row === 'fourth-row') {
-            renderFifthRow(getFourthLevelNodes(topLevelAttribute, firstLevelAttribute, secondLevelAttribute, thirdLevelAttribute) || []);
+            const data = await getFourthLevelNodes(topLevelAttribute, firstLevelAttribute, secondLevelAttribute, thirdLevelAttribute);
+            renderFifthRow(data || []);
         }
     });
 
@@ -132,7 +135,7 @@ function renderFifthRow(childData) {
     });
 }
 
-loadClassificationData().then(() => {
-    const topLevelNodes = getTopLevelNodes();
+getTopLevelNodes().then(topLevelNodes => {
+    console.log(topLevelNodes);
     renderFirstRow(topLevelNodes);
 });

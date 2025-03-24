@@ -46,6 +46,8 @@ body {
     /* fluid width with limits */
     height: 90px;
     border-radius: 8px;
+    border: 1px solid #333;
+    /* Dark gray border */
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     text-align: center;
