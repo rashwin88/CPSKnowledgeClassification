@@ -15,7 +15,6 @@ const hierarchyCache = {
 
 async function getTopLevelNodes() {
     if (hierarchyCache.top) return hierarchyCache.top;
-
     const { data, error } = await supabase
         .from('hierarchy_details')
         .select('*')
@@ -23,7 +22,7 @@ async function getTopLevelNodes() {
         .is('second_level_node', null)
         .is('third_level_node', null)
         .is('fourth_level_node', null)
-        .order('CAST(code AS INTEGER)', { ascending: true });
+        .order('code', { ascending: true });
 
 
     if (error) {
