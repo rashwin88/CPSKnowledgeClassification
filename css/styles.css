@@ -1,0 +1,186 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f7f7f7;
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+    margin: 0;
+}
+
+.card-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    white-space: nowrap;
+    gap: 8px;
+    padding: 16px;
+    scrollbar-width: thin;
+    justify-content: flex-start;
+    scroll-behavior: smooth;
+    width: max-content;
+
+
+}
+
+.card-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.card-container::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}
+
+.card {
+    flex: 0 0 auto;
+    width: clamp(75px, 10vw, 375px);
+    /* fluid width with limits */
+    height: 145px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+    position: relative;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-wrap: wrap;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    cursor: pointer;
+}
+
+.card:hover {
+    background-color: #000000 !important;
+    color: #ffffff;
+}
+
+.card:hover.selected {
+    background-color: #000000 !important;
+    color: #ffffff;
+}
+
+.card.selected {
+    background-color: #000000 !important;
+    color: #ffffff;
+}
+
+.card .top {
+    background-color: #3b2b2b;
+    color: white;
+    font-weight: bold;
+    padding: 2px 0;
+}
+
+.card .category {
+    padding: 6px;
+    font-weight: bold;
+}
+
+.card .count {
+    color: #444;
+    font-size: 11px;
+    margin-bottom: 4px;
+}
+
+.card .info-icon {
+    width: 18px;
+    height: 18px;
+    margin: 0 auto 4px;
+}
+
+.card:hover .info-icon {
+    filter: invert(1);
+}
+
+.card.selected .info-icon {
+    filter: invert(1);
+}
+
+.card:hover .count {
+    color: #ffffff;
+}
+
+.card.selected .count {
+    color: #ffffff;
+}
+
+.page-layout {
+    display: flex;
+    width: 100%;
+}
+
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    /* space between rows */
+    padding: 5px;
+    /* center rows horizontally */
+    align-items: flex-start;
+    width: 100%;
+}
+
+.scroll-row {
+    width: 100%;
+    overflow-x: auto;
+    /* This is the scrollable layer */
+}
+
+
+.sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    height: 90vh;
+    background-color: #474b54;
+    border-radius: 20px;
+    margin: 16px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    color: white;
+    transition: width 0.3s ease;
+    position: relative;
+}
+
+
+.sidebar.collapsed {
+    width: 60px;
+}
+
+.sidebar-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar.collapsed .title,
+.sidebar.collapsed .sidebar-middle {
+    display: none;
+}
+
+.menu-item {
+    margin: 12px 0;
+    cursor: pointer;
+}
+
+.toggle-btn {
+    background: none;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+
+.main-content {
+    flex-grow: 1;
+    overflow-x: auto;
+    padding: 20px;
+    max-width: calc(100vw - 260px);
+    /* subtract sidebar width + padding */
+
+}
