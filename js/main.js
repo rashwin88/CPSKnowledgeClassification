@@ -1,157 +1,55 @@
+
 // Dummy data - will later come from API
-const TopLevelList = [{
-    number: 0,
-    category: "Computer science, information & general works",
-    count: "242,235",
-    icon: "https://cdn-icons-png.flaticon.com/512/471/471664.png",
-    color: "#e6e1e1",
-    children: [
-        { number: '0.1', category: "AI", count: "120,000", icon: "🤖", color: "#dcdcdc" },
-        { number: '0.2', category: "Cybersecurity", count: "60,000", icon: "🛡️", color: "#f2f2f2" },
-    ]
-},
-{
-    number: 1,
-    category: "Philosophy & psychology",
-    count: "255,350",
-    icon: "https://cdn-icons-png.flaticon.com/512/117/117471.png",
-    color: "#e6e1e1",
-    children: [
-        { number: '1.1', category: "Ethics", count: "100,000", icon: "🤖", color: "#dcdcdc" },
-        { number: '1.2', category: "Psychology", count: "60,000", icon: "🛡️", color: "#f2f2f2" },
-    ]
-},
-{
-    number: 2,
-    category: "Religion",
-    count: "648,457",
-    icon: "https://cdn-icons-png.flaticon.com/512/3176/3176366.png",
-    color: "#e6e1e1",
-    children: [
-        { number: '2.1', category: "Ethics", count: "100,000", icon: "🤖", color: "#dcdcdc" },
-        { number: '2.2', category: "Psychology", count: "60,000", icon: "🛡️", color: "#f2f2f2" },
-    ]
-},
-{
-    number: 3,
-    category: "Philosophy & psychology",
-    count: "255,350",
-    icon: "https://cdn-icons-png.flaticon.com/512/117/117471.png",
-    color: "#e6e1e1",
-    children: [
-        { number: '3.1', category: "Ethics", count: "100,000", icon: "🤖", color: "#dcdcdc" },
-        { number: '3.2', category: "Psychology", count: "60,000", icon: "🛡️", color: "#f2f2f2" },
-    ]
-},
-{
-    number: 4,
-    category: "Religion",
-    count: "648,457",
-    icon: "https://cdn-icons-png.flaticon.com/512/3176/3176366.png",
-    color: "#e6e1e1",
-    children: [
-        { number: '4.1', category: "Ethics", count: "100,000", icon: "🤖", color: "#dcdcdc" },
-        { id: '4.2', category: "Psychology", count: "60,000", icon: "🛡️", color: "#f2f2f2" },
-    ]
-},
-{
-    number: 4,
-    category: "Religion",
-    count: "648,457",
-    icon: "https://cdn-icons-png.flaticon.com/512/3176/3176366.png",
-    color: "#e6e1e1",
-    children: [
-        { number: '4.1', category: "Ethics", count: "100,000", icon: "🤖", color: "#dcdcdc" },
-        { id: '4.2', category: "Psychology", count: "60,000", icon: "🛡️", color: "#f2f2f2" },
-    ]
-},
-{
-    number: 4,
-    category: "Religion",
-    count: "648,457",
-    icon: "https://cdn-icons-png.flaticon.com/512/3176/3176366.png",
-    color: "#e6e1e1",
-    children: [
-        { number: '4.1', category: "Ethics", count: "100,000", icon: "🤖", color: "#dcdcdc" },
-        { id: '4.2', category: "Psychology", count: "60,000", icon: "🛡️", color: "#f2f2f2" },
-    ]
-},
-{
-    number: 4,
-    category: "Religion",
-    count: "648,457",
-    icon: "https://cdn-icons-png.flaticon.com/512/3176/3176366.png",
-    color: "#e6e1e1",
-    children: [
-        { number: '4.1', category: "Ethics", count: "100,000", icon: "🤖", color: "#dcdcdc" },
-        { id: '4.2', category: "Psychology", count: "60,000", icon: "🛡️", color: "#f2f2f2" },
-    ]
-},
-{
-    number: 4,
-    category: "Religion",
-    count: "648,457",
-    icon: "https://cdn-icons-png.flaticon.com/512/3176/3176366.png",
-    color: "#e6e1e1",
-    children: [
-        { number: '4.1', category: "Ethics", count: "100,000", icon: "🤖", color: "#dcdcdc" },
-        { id: '4.2', category: "Psychology", count: "60,000", icon: "🛡️", color: "#f2f2f2" },
-    ]
-},
-{
-    number: 4,
-    category: "Religion",
-    count: "648,457",
-    icon: "https://cdn-icons-png.flaticon.com/512/3176/3176366.png",
-    color: "#e6e1e1",
-    children: [
-        { number: '4.1', category: "Ethics", count: "100,000", icon: "🤖", color: "#dcdcdc" },
-        { id: '4.2', category: "Psychology", count: "60,000", icon: "🛡️", color: "#f2f2f2" },
-    ]
-},
-{
-    number: 4,
-    category: "Religion",
-    count: "648,457",
-    icon: "https://cdn-icons-png.flaticon.com/512/3176/3176366.png",
-    color: "#e6e1e1",
-    children: [
-        { number: '4.1', category: "Ethics", count: "100,000", icon: "🤖", color: "#dcdcdc" },
-        { id: '4.2', category: "Psychology", count: "60,000", icon: "🛡️", color: "#f2f2f2" },
-        { number: '4.1', category: "Ethics", count: "100,000", icon: "🤖", color: "#dcdcdc" },
-        { id: '4.2', category: "Psychology", count: "60,000", icon: "🛡️", color: "#f2f2f2" },
-        { number: '4.1', category: "Ethics", count: "100,000", icon: "🤖", color: "#dcdcdc" },
-        { id: '4.2', category: "Psychology", count: "60,000", icon: "🛡️", color: "#f2f2f2" },
-        { number: '4.1', category: "Ethics", count: "100,000", icon: "🤖", color: "#dcdcdc" },
-        { id: '4.2', category: "Psychology", count: "60,000", icon: "🛡️", color: "#f2f2f2" },
-        { number: '4.1', category: "Ethics", count: "100,000", icon: "🤖", color: "#dcdcdc" },
-        { id: '4.2', category: "Psychology", count: "60,000", icon: "🛡️", color: "#f2f2f2" },
-        { number: '4.1', category: "Ethics", count: "100,000", icon: "🤖", color: "#dcdcdc" },
-        { id: '4.2', category: "Psychology", count: "60,000", icon: "🛡️", color: "#f2f2f2" },
-        { number: '4.1', category: "Ethics", count: "100,000", icon: "🤖", color: "#dcdcdc" },
-        { id: '4.2', category: "Psychology", count: "60,000", icon: "🛡️", color: "#f2f2f2" },
-        { number: '4.1', category: "Ethics", count: "100,000", icon: "🤖", color: "#dcdcdc" },
-        { id: '4.2', category: "Psychology", count: "60,000", icon: "🛡️", color: "#f2f2f2" },
-        { number: '4.1', category: "Ethics", count: "100,000", icon: "🤖", color: "#dcdcdc" },
-        { id: '4.2', category: "Psychology", count: "60,000", icon: "🛡️", color: "#f2f2f2" },
-        { number: '4.1', category: "Ethics", count: "100,000", icon: "🤖", color: "#dcdcdc" },
-        { id: '4.2', category: "Psychology", count: "60,000", icon: "🛡️", color: "#f2f2f2" }
-    ]
-}];
 
 const firstRow = document.getElementById('first-row');
 const secondRow = document.getElementById('second-row');
-
+const thirdRow = document.getElementById('third-row');
+const fourthRow = document.getElementById('fourth-row');
+const fifthRow = document.getElementById('fifth-row');
 function createCard(data, row) {
     const card = document.createElement('div');
     card.className = 'card';
+    // Set card attributes
+    card.setAttribute('data-top-level-node', data.top_level_node);
+    card.setAttribute('data-first-level-node', data.first_level_node);
+    card.setAttribute('data-second-level-node', data.second_level_node);
+    card.setAttribute('data-third-level-node', data.third_level_node);
+    card.setAttribute('data-fourth-level-node', data.fourth_level_node);
     card.style.backgroundColor = data.color;
-    card.innerHTML = `
-      <div class="top">${data.number}</div>
-      <div class="category">${data.category}</div>
-      <div class="count">${data.count}</div>
-      <img class="info-icon" src="${data.icon}" alt="Info Icon" />
+    let innerHtml = '';
+    if (row === 'first-row') {
+        innerHtml = `
+      <div class="top">${data.code}</div>
+      <div class="category">${data.entry_name}</div>
+      <div class="count">--</div>
     `;
+    } else if (row === 'second-row') {
+        innerHtml = `
+      <div class="top">${data.code}</div>
+      <div class="category">${data.entry_name}</div>
+      <div class="count">--</div>
+    `;
+    } else if (row === 'third-row') {
+        innerHtml = `
+      <div class="top">${data.code}</div>
+      <div class="category">${data.entry_name}</div>
+      <div class="count">--</div>
+    `;
+    } else if (row === 'fourth-row') {
+        innerHtml = `
+      <div class="top">${data.code}</div>
+      <div class="category">${data.entry_name}</div>
+      <div class="count">--</div>
+    `;
+    } else if (row === 'fifth-row') {
+        innerHtml = `
+      <div class="top">${data.code}</div>
+      <div class="category">${data.entry_name}</div>
+      <div class="count">--</div>
+    `;
+    }
+
+    card.innerHTML = innerHtml;
 
     // Add click handler to manage selection
     card.addEventListener('click', () => {
@@ -164,8 +62,26 @@ function createCard(data, row) {
         card.classList.add('selected');
 
         // Render the second row when the first row is clicked
+        const topLevelAttribute = card.getAttribute('data-top-level-node');
+        const firstLevelAttribute = card.getAttribute('data-first-level-node');
+        const secondLevelAttribute = card.getAttribute('data-second-level-node');
+        const thirdLevelAttribute = card.getAttribute('data-third-level-node');
+        const fourthLevelAttribute = card.getAttribute('data-fourth-level-node');
+        console.log(topLevelAttribute, firstLevelAttribute, secondLevelAttribute, thirdLevelAttribute, fourthLevelAttribute);
         if (row === 'first-row') {
-            renderSecondRow(data.children || []);
+            thirdRow.innerHTML = '';
+            fourthRow.innerHTML = '';
+            fifthRow.innerHTML = '';
+            renderSecondRow(getFirstLevelNodes(topLevelAttribute) || []);
+        } else if (row === 'second-row') {
+            fourthRow.innerHTML = '';
+            fifthRow.innerHTML = '';
+            renderThirdRow(getSecondLevelNodes(topLevelAttribute, firstLevelAttribute) || []);
+        } else if (row === 'third-row') {
+            fifthRow.innerHTML = '';
+            renderFourthRow(getThirdLevelNodes(topLevelAttribute, firstLevelAttribute, secondLevelAttribute) || []);
+        } else if (row === 'fourth-row') {
+            renderFifthRow(getFourthLevelNodes(topLevelAttribute, firstLevelAttribute, secondLevelAttribute, thirdLevelAttribute) || []);
         }
     });
 
@@ -189,7 +105,34 @@ function renderSecondRow(childData) {
     });
 }
 
+function renderThirdRow(childData) {
+    // Clear previous
+    thirdRow.innerHTML = '';
+    childData.forEach(data => {
+        const card = createCard(data, 'third-row');
+        thirdRow.appendChild(card);
+    });
+}
 
+function renderFourthRow(childData) {
+    // Clear previous
+    fourthRow.innerHTML = '';
+    childData.forEach(data => {
+        const card = createCard(data, 'fourth-row');
+        fourthRow.appendChild(card);
+    });
+}
 
+function renderFifthRow(childData) {
+    // Clear previous
+    fifthRow.innerHTML = '';
+    childData.forEach(data => {
+        const card = createCard(data, 'fifth-row');
+        fifthRow.appendChild(card);
+    });
+}
 
-renderFirstRow(TopLevelList);
+loadClassificationData().then(() => {
+    const topLevelNodes = getTopLevelNodes();
+    renderFirstRow(topLevelNodes);
+});
