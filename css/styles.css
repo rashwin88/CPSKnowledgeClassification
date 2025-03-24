@@ -60,17 +60,17 @@ body {
 }
 
 .card:hover {
-    background-color: #000000 !important;
+    background-color: #e97f0dec !important;
     color: #ffffff;
 }
 
 .card:hover.selected {
-    background-color: #000000 !important;
+    background-color: #e47a0f !important;
     color: #ffffff;
 }
 
 .card.selected {
-    background-color: #000000 !important;
+    background-color: #e46c10 !important;
     color: #ffffff;
 }
 
