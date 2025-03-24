@@ -42,7 +42,7 @@ body {
 
 .card {
     flex: 0 0 auto;
-    width: clamp(70px, 6.5vw, 100px);
+    width: clamp(80px, 7.5vw, 100px);
     /* fluid width with limits */
     height: 130px;
     border-radius: 4px;
@@ -52,7 +52,7 @@ body {
     overflow: hidden;
     text-align: center;
     position: relative;
-    font-size: 12px;
+    font-size: 11.5px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -112,6 +112,9 @@ body {
 .card .category {
     padding: 6px;
     font-weight: bold;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 .card .count {

@@ -6,6 +6,11 @@ const thirdRow = document.getElementById('third-row');
 const fourthRow = document.getElementById('fourth-row');
 const fifthRow = document.getElementById('fifth-row');
 
+function insertSoftHyphens(text) {
+    // Add soft hyphens after logical break points (like capital letters or compound parts)
+    return text.replace(/([a-zāīūṛṅñṭḍṇśṣ]+)/gi, '$1&shy;');
+}
+
 function updateBookDisplayBox(categoryCode) {
     const displayBox = document.getElementById("books-display");
     displayBox.innerHTML = `📚 Books in selected category (${categoryCode}</strong>)`;
@@ -26,31 +31,31 @@ function createCard(data, row) {
     if (row === 'first-row') {
         innerHtml = `
       <div class="top">${data.code}</div>
-      <div class="category">${data.entry_name}</div>
+      <div class="category" lang="en">${insertSoftHyphens(data.entry_name)}</div>
       <div class="count">--</div>
     `;
     } else if (row === 'second-row') {
         innerHtml = `
       <div class="top">${data.code}</div>
-      <div class="category">${data.entry_name}</div>
+      <div class="category" lang="en">${insertSoftHyphens(data.entry_name)}</div>
       <div class="count">--</div>
     `;
     } else if (row === 'third-row') {
         innerHtml = `
       <div class="top">${data.code}</div>
-      <div class="category">${data.entry_name}</div>
+      <div class="category" lang="en">${insertSoftHyphens(data.entry_name)}</div>
       <div class="count">--</div>
     `;
     } else if (row === 'fourth-row') {
         innerHtml = `
       <div class="top">${data.code}</div>
-      <div class="category">${data.entry_name}</div>
+      <div class="category" lang="en">${insertSoftHyphens(data.entry_name)}</div>
       <div class="count">--</div>
     `;
     } else if (row === 'fifth-row') {
         innerHtml = `
       <div class="top">${data.code}</div>
-      <div class="category">${data.entry_name}</div>
+      <div class="category" lang="en">${insertSoftHyphens(data.entry_name)}</div>
       <div class="count">--</div>
     `;
     }
