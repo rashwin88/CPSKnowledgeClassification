@@ -1,5 +1,5 @@
 body {
-    font-family: 'et-book', Arial, Helvetica, sans-serif;
+    font-family: "Literata", Arial, Helvetica, sans-serif;
     background-color: #f7f7f7;
     display: flex;
     justify-content: center;
@@ -65,16 +65,41 @@ body {
 .card:hover {
     background-color: #e97f0dec !important;
     color: #ffffff;
+    font-size: 13px;
+    transition: font-size 0.3s ease;
 }
+
 
 .card:hover.selected {
     background-color: #e47a0f !important;
     color: #ffffff;
 }
 
-.card.selected {
+#first-row .card.selected {
     background-color: #e46c10 !important;
-    color: #ffffff;
+    /* darkest orange */
+    color: rgb(255, 255, 255);
+}
+
+#second-row .card.selected {
+    background-color: #ec812d !important;
+    color: rgb(255, 255, 255);
+}
+
+#third-row .card.selected {
+    background-color: #f29b54 !important;
+    color: rgb(255, 255, 255);
+}
+
+#fourth-row .card.selected {
+    background-color: #f7b47a !important;
+    color: rgb(14, 13, 13);
+}
+
+#fifth-row .card.selected {
+    background-color: #fbdcc2 !important;
+    /* lightest orange */
+    color: rgb(20, 18, 18);
 }
 
 .card .top {
@@ -200,4 +225,85 @@ body {
     max-width: calc(100vw - 260px);
     /* subtract sidebar width + padding */
 
+}
+
+#first-row .card .top {
+    background-color: #8b0000;
+    /* darkest red */
+    color: white;
+}
+
+#second-row .card .top {
+    background-color: #b22222;
+    color: white;
+}
+
+#third-row .card .top {
+    background-color: #cd5c5c;
+    color: white;
+}
+
+#fourth-row .card .top {
+    background-color: #f08080;
+    color: black;
+}
+
+#fifth-row .card .top {
+    background-color: #f8d7da;
+    /* lightest */
+    color: black;
+}
+
+.sidebar-footer {
+    display: flex;
+    flex-direction: column;
+    /* 🔥 stack children vertically */
+    align-items: center;
+    /* center horizontally */
+    gap: 10px;
+    /* space between items */
+    margin-top: auto;
+    padding-bottom: 16px;
+}
+
+.github-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #ccc;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.github-link:hover {
+    color: white;
+}
+
+.github-icon {
+    width: 18px;
+    height: 18px;
+    filter: invert(1);
+    /* makes the SVG white */
+}
+
+.whatsapp-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: #ccc;
+    text-decoration: none;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.whatsapp-link:hover {
+    color: #25D366;
+}
+
+.whatsapp-icon {
+    width: 18px;
+    height: 18px;
+    filter: invert(1);
+    /* makes the icon white for dark sidebars */
 }
