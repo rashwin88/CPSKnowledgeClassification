@@ -45,7 +45,7 @@ body {
     width: clamp(60px, 10vw, 100px);
     /* fluid width with limits */
     height: 130px;
-    border-radius: 8px;
+    border-radius: 4px;
     border: 1px solid #333;
     /* Dark gray border */
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
@@ -306,4 +306,19 @@ body {
     height: 18px;
     filter: invert(1);
     /* makes the icon white for dark sidebars */
+}
+
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 16px;
+    /* space between logo and first row */
+}
+
+.logo-container img {
+    max-width: 100%;
+    height: auto;
+    max-height: 100px;
+    /* optional: control logo height */
 }
