@@ -348,3 +348,39 @@ body {
     font-weight: 500;
     color: #444;
 }
+
+.hierarchy-tree {
+    font-family: 'Literata', Georgia, serif;
+    color: #24568c;
+    font-size: 16px;
+    line-height: 1.6;
+    padding: 16px 24px;
+    border-left: 4px solid #ccc;
+    margin-top: 20px;
+    background-color: #fdfdfd;
+    border-radius: 6px;
+}
+
+.level {
+    margin: 4px 0;
+}
+
+.indent-0 {
+    padding-left: 0em;
+}
+
+.indent-1 {
+    padding-left: 1em;
+}
+
+.indent-2 {
+    padding-left: 2em;
+}
+
+.indent-3 {
+    padding-left: 3em;
+}
+
+.indent-4 {
+    padding-left: 4em;
+}

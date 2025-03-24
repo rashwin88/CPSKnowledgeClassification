@@ -16,6 +16,70 @@ function updateBookDisplayBox(categoryCode) {
     displayBox.innerHTML = `📚 Books in selected category (${categoryCode}</strong>)`;
 }
 
+async function renderHierarchy(entry) {
+    const container = document.getElementById('hierarchy-display');
+    container.innerHTML = ''; // Clear previous
+
+    const levels = [];
+
+    if (entry.getAttribute('data-top-level-node') !== 'null') {
+        const topLevelNode = await getTopLevelNodes().
+            then(nodes => nodes.find(node => node.top_level_node === entry.getAttribute('data-top-level-node')));
+        levels.push({
+            label: entry.getAttribute('data-top-level-node'),
+            level: 0,
+            entry_name: topLevelNode?.entry_name || '[Unclaimed]'
+        });
+    }
+    if (entry.getAttribute('data-first-level-node') !== 'null') {
+        const firstLevelNode = await getFirstLevelNodes(entry.getAttribute('data-top-level-node')).
+            then(nodes => nodes.find(node => node.first_level_node === entry.getAttribute('data-first-level-node')));
+        levels.push({
+            label: `${entry.getAttribute('data-top-level-node')}.${entry.getAttribute('data-first-level-node')}`,
+            level: 1,
+            entry_name: firstLevelNode?.entry_name || '[Unclaimed]'
+        });
+    }
+    if (entry.getAttribute('data-second-level-node') !== 'null') {
+        const secondLevelNode = await getSecondLevelNodes(entry.getAttribute('data-top-level-node'), entry.getAttribute('data-first-level-node')).
+            then(nodes => nodes.find(node => node.second_level_node === entry.getAttribute('data-second-level-node')));
+        levels.push({
+            label: `${entry.getAttribute('data-top-level-node')}.${entry.getAttribute('data-first-level-node')}${entry.getAttribute('data-second-level-node')}`,
+            level: 2,
+            entry_name: secondLevelNode?.entry_name || '[Unclaimed]'
+        });
+    }
+    if (entry.getAttribute('data-third-level-node') !== 'null') {
+        const thirdLevelNode = await getThirdLevelNodes(entry.getAttribute('data-top-level-node'), entry.getAttribute('data-first-level-node'), entry.getAttribute('data-second-level-node')).
+            then(nodes => nodes.find(node => node.third_level_node === entry.getAttribute('data-third-level-node')));
+        levels.push({
+            label: `${entry.getAttribute('data-top-level-node')}.${entry.getAttribute('data-first-level-node')}${entry.getAttribute('data-second-level-node')}${entry.getAttribute('data-third-level-node')}`,
+            level: 3,
+            entry_name: thirdLevelNode?.entry_name || '[Unclaimed]'
+        });
+    }
+    if (entry.getAttribute('data-fourth-level-node') !== 'null') {
+        const fourthLevelNode = await getFourthLevelNodes(entry.getAttribute('data-top-level-node'), entry.getAttribute('data-first-level-node'), entry.getAttribute('data-second-level-node'), entry.getAttribute('data-third-level-node')).
+            then(nodes => nodes.find(node => node.fourth_level_node === entry.getAttribute('data-fourth-level-node')));
+        levels.push({
+            label: `${entry.getAttribute('data-top-level-node')}.${entry.getAttribute('data-first-level-node')}${entry.getAttribute('data-second-level-node')}${entry.getAttribute('data-third-level-node')}${entry.getAttribute('data-fourth-level-node')}`,
+            level: 4,
+            entry_name: fourthLevelNode?.entry_name || '[Unclaimed]'
+        });
+    }
+
+    levels.forEach((item, index) => {
+        if (item.label !== null) {
+            const label = index === levels.length - 1 ? entry.entry_name : '[Unclaimed]';
+            const div = document.createElement('div');
+            div.className = `level indent-${item.level}`;
+            div.innerHTML = `↳ <strong>${item.label}</strong> ${item.entry_name}`;
+            container.appendChild(div);
+        }
+    });
+    console.log(levels);
+}
+
 function createCard(data, row) {
     const card = document.createElement('div');
     card.className = 'card';
@@ -26,6 +90,7 @@ function createCard(data, row) {
     card.setAttribute('data-third-level-node', data.third_level_node);
     card.setAttribute('data-fourth-level-node', data.fourth_level_node);
     card.setAttribute('data-category-code', data.code);
+    card.setAttribute('data-entry-name', data.entry_name);
     card.style.backgroundColor = data.color;
     let innerHtml = '';
     if (row === 'first-row') {
@@ -65,6 +130,7 @@ function createCard(data, row) {
     // Add click handler to manage selection
     card.addEventListener('click', async () => {
         updateBookDisplayBox(card.getAttribute('data-category-code'));
+        renderHierarchy(card);
         // Remove 'selected' from any other cards
         document.querySelectorAll(`#${row} .card.selected`).forEach(el => {
             el.classList.remove('selected');
