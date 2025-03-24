@@ -27,6 +27,7 @@ body {
     justify-content: flex-start;
     scroll-behavior: smooth;
     width: max-content;
+    align-items: stretch;
 
 
 }
@@ -44,7 +45,7 @@ body {
     flex: 0 0 auto;
     width: clamp(80px, 7.5vw, 95px);
     /* fluid width with limits */
-    height: 130px;
+    /* height: 130px; */
     border-radius: 4px;
     border: 1px solid #333;
     /* Dark gray border */
