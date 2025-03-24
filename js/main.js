@@ -5,6 +5,12 @@ const secondRow = document.getElementById('second-row');
 const thirdRow = document.getElementById('third-row');
 const fourthRow = document.getElementById('fourth-row');
 const fifthRow = document.getElementById('fifth-row');
+
+function updateBookDisplayBox(categoryCode) {
+    const displayBox = document.getElementById("books-display");
+    displayBox.innerHTML = `📚 Books in selected category (${categoryCode}</strong>)`;
+}
+
 function createCard(data, row) {
     const card = document.createElement('div');
     card.className = 'card';
@@ -14,6 +20,7 @@ function createCard(data, row) {
     card.setAttribute('data-second-level-node', data.second_level_node);
     card.setAttribute('data-third-level-node', data.third_level_node);
     card.setAttribute('data-fourth-level-node', data.fourth_level_node);
+    card.setAttribute('data-category-code', data.code);
     card.style.backgroundColor = data.color;
     let innerHtml = '';
     if (row === 'first-row') {
@@ -52,6 +59,7 @@ function createCard(data, row) {
 
     // Add click handler to manage selection
     card.addEventListener('click', async () => {
+        updateBookDisplayBox(card.getAttribute('data-category-code'));
         // Remove 'selected' from any other cards
         document.querySelectorAll(`#${row} .card.selected`).forEach(el => {
             el.classList.remove('selected');
