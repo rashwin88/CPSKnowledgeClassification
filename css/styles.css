@@ -42,7 +42,7 @@ body {
 
 .card {
     flex: 0 0 auto;
-    width: clamp(60px, 10vw, 375px);
+    width: clamp(60px, 10vw, 90px);
     /* fluid width with limits */
     height: 90px;
     border-radius: 8px;
