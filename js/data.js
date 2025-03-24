@@ -22,12 +22,15 @@ async function getTopLevelNodes() {
         .is('first_level_node', null)
         .is('second_level_node', null)
         .is('third_level_node', null)
-        .is('fourth_level_node', null);
+        .is('fourth_level_node', null)
+        .order('CAST(code AS INTEGER)', { ascending: true });
+
 
     if (error) {
         console.error('Supabase error (top):', error.message);
         return [];
     }
+
 
     hierarchyCache.top = data;
     return data;
