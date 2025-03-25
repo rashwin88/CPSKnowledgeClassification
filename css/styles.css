@@ -385,3 +385,7 @@ body {
 .indent-4 {
     padding-left: 4em;
 }
+
+.book-count {
+    color: red;
+}

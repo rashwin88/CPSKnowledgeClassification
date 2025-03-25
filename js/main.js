@@ -11,9 +11,10 @@ function insertSoftHyphens(text) {
     return text.replace(/([a-zāīūṛṅñṭḍṇśṣ]+)/gi, '$1&shy;');
 }
 
-function updateBookDisplayBox(categoryCode) {
+async function updateBookDisplayBox(categoryCode) {
     const displayBox = document.getElementById("books-display");
-    displayBox.innerHTML = `📚 Books in selected category (${categoryCode}</strong>)`;
+    const codeSpecificData = await getCodeSpecificData(categoryCode);
+    displayBox.innerHTML = `📚 Books in selected category (<strong>${categoryCode}</strong>) : <span class="book-count">[${codeSpecificData.total_books}]</span>`;
 }
 
 async function renderHierarchy(entry) {
@@ -93,37 +94,12 @@ function createCard(data, row) {
     card.setAttribute('data-entry-name', data.entry_name);
     card.style.backgroundColor = data.color;
     let innerHtml = '';
-    if (row === 'first-row') {
-        innerHtml = `
+    // Update inner html for each card to show the category code, category name, and total books
+    innerHtml = `
       <div class="top">${data.code}</div>
       <div class="category" lang="en">${insertSoftHyphens(data.entry_name)}</div>
-      <div class="count">--</div>
+      <div class="count">${data.total_books}</div>
     `;
-    } else if (row === 'second-row') {
-        innerHtml = `
-      <div class="top">${data.code}</div>
-      <div class="category" lang="en">${insertSoftHyphens(data.entry_name)}</div>
-      <div class="count">--</div>
-    `;
-    } else if (row === 'third-row') {
-        innerHtml = `
-      <div class="top">${data.code}</div>
-      <div class="category" lang="en">${insertSoftHyphens(data.entry_name)}</div>
-      <div class="count">--</div>
-    `;
-    } else if (row === 'fourth-row') {
-        innerHtml = `
-      <div class="top">${data.code}</div>
-      <div class="category" lang="en">${insertSoftHyphens(data.entry_name)}</div>
-      <div class="count">--</div>
-    `;
-    } else if (row === 'fifth-row') {
-        innerHtml = `
-      <div class="top">${data.code}</div>
-      <div class="category" lang="en">${insertSoftHyphens(data.entry_name)}</div>
-      <div class="count">--</div>
-    `;
-    }
 
     card.innerHTML = innerHtml;
 

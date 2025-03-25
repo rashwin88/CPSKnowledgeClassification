@@ -10,8 +10,41 @@ const hierarchyCache = {
     first: {},     // key: top
     second: {},    // key: top_first
     third: {},     // key: top_first_second
-    fourth: {}     // key: top_first_second_third
+    fourth: {}
 };
+
+const codeSpecificCache = {
+    cache: [],
+    addToCache: function (code, data) {
+        if (this.cache.length >= 20) {
+            this.cache.pop();
+        }
+        this.cache.unshift({ code, data });
+    },
+    getFromCache: function (code) {
+        return this.cache.find(item => item.code === code);
+    }
+}
+
+// Get code specific data from supabase
+// Looks at the cache first, if not found, gets from supabase and adds to cache
+async function getCodeSpecificData(code) {
+    const cachedData = codeSpecificCache.getFromCache(code);
+    if (cachedData) return cachedData;
+
+    const { data, error } = await supabase
+        .from('hierarchy_details')
+        .select('*')
+        .eq('code', code);
+
+    if (error) {
+        console.error(`Supabase error (code specific - ${code}):`, error.message);
+        return [];
+    }
+
+    codeSpecificCache.addToCache(code, data);
+    return data;
+}
 
 async function getTopLevelNodes() {
     if (hierarchyCache.top) return hierarchyCache.top;
