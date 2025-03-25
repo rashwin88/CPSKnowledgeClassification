@@ -11,10 +11,9 @@ function insertSoftHyphens(text) {
     return text.replace(/([a-zāīūṛṅñṭḍṇśṣ]+)/gi, '$1&shy;');
 }
 
-async function updateBookDisplayBox(categoryCode) {
+function updateBookDisplayBox(card) {
     const displayBox = document.getElementById("books-display");
-    const codeSpecificData = await getCodeSpecificData(categoryCode);
-    displayBox.innerHTML = `📚 Books in selected category (<strong>${categoryCode}</strong>) : <span class="book-count">[${codeSpecificData.total_books}]</span>`;
+    displayBox.innerHTML = `📚 Books in selected category (<strong>${card.getAttribute('data-category-code')}</strong>) : <span class="book-count">[${card.getAttribute('data-total-books')}]</span>`;
 }
 
 async function renderHierarchy(entry) {
@@ -92,6 +91,7 @@ function createCard(data, row) {
     card.setAttribute('data-fourth-level-node', data.fourth_level_node);
     card.setAttribute('data-category-code', data.code);
     card.setAttribute('data-entry-name', data.entry_name);
+    card.setAttribute('data-total-books', data.total_books);
     card.style.backgroundColor = data.color;
     let innerHtml = '';
     // Update inner html for each card to show the category code, category name, and total books
@@ -105,7 +105,7 @@ function createCard(data, row) {
 
     // Add click handler to manage selection
     card.addEventListener('click', async () => {
-        await updateBookDisplayBox(card.getAttribute('data-category-code'));
+        updateBookDisplayBox(card);
         renderHierarchy(card);
         // Remove 'selected' from any other cards
         document.querySelectorAll(`#${row} .card.selected`).forEach(el => {

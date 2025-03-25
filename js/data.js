@@ -13,42 +13,6 @@ const hierarchyCache = {
     fourth: {}
 };
 
-const codeSpecificCache = {
-    cache: [],
-    addToCache: function (code, data) {
-        if (this.cache.length >= 20) {
-            this.cache.pop();
-        }
-        this.cache.unshift({ code, data });
-    },
-    getFromCache: function (code) {
-        return this.cache.find(item => item.code === code);
-    }
-};
-
-// Get code specific data from supabase
-// Looks at the cache first, if not found, gets from supabase and adds to cache
-async function getCodeSpecificData(code) {
-    console.log(codeSpecificCache.cache);
-    const cachedData = codeSpecificCache.getFromCache(code);
-    if (cachedData) return cachedData;
-
-    const { data, error } = await supabase
-        .from('hierarchy_details')
-        .select('*')
-        .eq('code', code);
-
-    if (error) {
-        console.error(`Supabase error (code specific - ${code}):`, error.message);
-        return [];
-    }
-
-    let selectedData = data[0];
-
-    codeSpecificCache.addToCache(code, selectedData);
-    return selectedData;
-};
-
 async function getTopLevelNodes() {
     if (hierarchyCache.top) return hierarchyCache.top;
     const { data, error } = await supabase

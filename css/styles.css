@@ -387,5 +387,7 @@ body {
 }
 
 .book-count {
-    color: red;
+    color: rgb(0, 72, 255);
+    font-weight: bold;
+    font-size: 15px;
 }
