@@ -42,8 +42,10 @@ async function getCodeSpecificData(code) {
         return [];
     }
 
-    codeSpecificCache.addToCache(code, data);
-    return data;
+    let selectedData = data[0];
+
+    codeSpecificCache.addToCache(code, selectedData);
+    return selectedData;
 };
 
 async function getTopLevelNodes() {
