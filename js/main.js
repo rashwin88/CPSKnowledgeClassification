@@ -105,7 +105,7 @@ function createCard(data, row) {
 
     // Add click handler to manage selection
     card.addEventListener('click', async () => {
-        updateBookDisplayBox(card.getAttribute('data-category-code'));
+        await updateBookDisplayBox(card.getAttribute('data-category-code'));
         renderHierarchy(card);
         // Remove 'selected' from any other cards
         document.querySelectorAll(`#${row} .card.selected`).forEach(el => {

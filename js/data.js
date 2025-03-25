@@ -24,7 +24,7 @@ const codeSpecificCache = {
     getFromCache: function (code) {
         return this.cache.find(item => item.code === code);
     }
-}
+};
 
 // Get code specific data from supabase
 // Looks at the cache first, if not found, gets from supabase and adds to cache
@@ -44,7 +44,7 @@ async function getCodeSpecificData(code) {
 
     codeSpecificCache.addToCache(code, data);
     return data;
-}
+};
 
 async function getTopLevelNodes() {
     if (hierarchyCache.top) return hierarchyCache.top;
