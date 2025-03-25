@@ -29,6 +29,7 @@ const codeSpecificCache = {
 // Get code specific data from supabase
 // Looks at the cache first, if not found, gets from supabase and adds to cache
 async function getCodeSpecificData(code) {
+    console.log(codeSpecificCache.cache);
     const cachedData = codeSpecificCache.getFromCache(code);
     if (cachedData) return cachedData;
 
