@@ -13,7 +13,8 @@ function insertSoftHyphens(text) {
 
 function updateBookDisplayBox(card) {
     const displayBox = document.getElementById("books-display");
-    displayBox.innerHTML = `📚 Books in selected category (<strong>${card.getAttribute('data-category-code')}</strong>) : <span class="book-count">[${card.getAttribute('data-total-books')}]</span>`;
+    const totalBooks = parseInt(card.getAttribute('data-total-books'), 10).toLocaleString('en-IN');
+    displayBox.innerHTML = `📚 Books in selected category (<strong>${card.getAttribute('data-category-code')}</strong>) : <span class="book-count">${totalBooks}</span>`;
 }
 
 async function renderHierarchy(entry) {
