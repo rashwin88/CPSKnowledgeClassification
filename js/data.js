@@ -7,6 +7,14 @@ const supabase = window.supabase.createClient(
 const TopLevelEndPoint = 'https://indian-knowledge-systems-api-production.up.railway.app/get-all-top-level-nodes';
 const ChildrenEndPoint = 'https://indian-knowledge-systems-api-production.up.railway.app/get-all-children';
 
+function showLoader() {
+    document.getElementById('loader').classList.remove('hidden');
+}
+
+function hideLoader() {
+    document.getElementById('loader').classList.add('hidden');
+}
+
 const hierarchyCache = {
     top: null,
     levels: {}
@@ -14,6 +22,7 @@ const hierarchyCache = {
 
 
 async function getTopLevelNodes() {
+    showLoader();
     if (hierarchyCache.top) return hierarchyCache.top;
     const response = await fetch(TopLevelEndPoint);
     if (!response.ok) {
@@ -24,10 +33,12 @@ async function getTopLevelNodes() {
 
     hierarchyCache.top = data;
     console.log(data);
+    hideLoader();
     return data;
 }
 
 async function getAllChildren(id) {
+    showLoader();
     // Check if id is a key in the hierarchyCache 
     if (hierarchyCache.levels[id]) return hierarchyCache.levels[id];
     const response = await fetch(`${ChildrenEndPoint}?id=${id}`);
@@ -37,5 +48,6 @@ async function getAllChildren(id) {
     }
     const data = await response.json();
     hierarchyCache.levels[id] = data;
+    hideLoader();
     return data;
 }
