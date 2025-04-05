@@ -23,7 +23,10 @@ const hierarchyCache = {
 
 async function getTopLevelNodes() {
     showLoader();
-    if (hierarchyCache.top) return hierarchyCache.top;
+    if (hierarchyCache.top) {
+        hideLoader();
+        return hierarchyCache.top;
+    }
     const response = await fetch(TopLevelEndPoint);
     if (!response.ok) {
         console.error('Failed to fetch top level nodes:', response.statusText);
@@ -40,7 +43,10 @@ async function getTopLevelNodes() {
 async function getAllChildren(id) {
     showLoader();
     // Check if id is a key in the hierarchyCache 
-    if (hierarchyCache.levels[id]) return hierarchyCache.levels[id];
+    if (hierarchyCache.levels[id]) {
+        hideLoader();
+        return hierarchyCache.levels[id]
+    }
     const response = await fetch(`${ChildrenEndPoint}?id=${id}`);
     if (!response.ok) {
         console.error('Failed to fetch children:', response.statusText);
