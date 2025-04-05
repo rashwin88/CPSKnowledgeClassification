@@ -103,6 +103,18 @@ body {
     color: rgb(20, 18, 18);
 }
 
+#sixth-row .card.selected {
+    background-color: #fee8d6 !important;
+    /* lightest orange */
+    color: rgb(20, 18, 18);
+}
+
+#seventh-row .card.selected {
+    background-color: #fce9d9 !important;
+    /* lightest orange */
+    color: rgb(20, 18, 18);
+}
+
 .card .top {
     background-color: #de1717ef;
     color: white;
@@ -257,6 +269,18 @@ body {
 
 #fifth-row .card .top {
     background-color: #f8d7da;
+    /* lightest */
+    color: black;
+}
+
+#sixth-row .card .top {
+    background-color: #fee8d6;
+    /* lightest */
+    color: black;
+}
+
+#seventh-row .card .top {
+    background-color: #fce9d9;
     /* lightest */
     color: black;
 }

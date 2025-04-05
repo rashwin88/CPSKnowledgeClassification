@@ -5,6 +5,9 @@ const secondRow = document.getElementById('second-row');
 const thirdRow = document.getElementById('third-row');
 const fourthRow = document.getElementById('fourth-row');
 const fifthRow = document.getElementById('fifth-row');
+const sixthRow = document.getElementById('sixth-row');
+const seventhRow = document.getElementById('seventh-row');
+
 
 function insertSoftHyphens(text) {
     // Add soft hyphens after logical break points (like capital letters or compound parts)
@@ -14,7 +17,7 @@ function insertSoftHyphens(text) {
 function updateBookDisplayBox(card) {
     const displayBox = document.getElementById("books-display");
     const totalBooks = parseInt(card.getAttribute('data-total-books'), 10).toLocaleString('en-IN');
-    displayBox.innerHTML = `📚 Books in selected category (<strong>${card.getAttribute('data-category-code')}</strong>) : <span class="book-count">${totalBooks}</span>`;
+    displayBox.innerHTML = `📚 Books in selected category (<strong>${card.getAttribute('data-id')}</strong>) : <span class="book-count">${totalBooks}</span>`;
 }
 
 async function renderHierarchy(entry) {
@@ -85,21 +88,18 @@ function createCard(data, row) {
     const card = document.createElement('div');
     card.className = 'card';
     // Set card attributes
-    card.setAttribute('data-top-level-node', data.top_level_node);
-    card.setAttribute('data-first-level-node', data.first_level_node);
-    card.setAttribute('data-second-level-node', data.second_level_node);
-    card.setAttribute('data-third-level-node', data.third_level_node);
-    card.setAttribute('data-fourth-level-node', data.fourth_level_node);
-    card.setAttribute('data-category-code', data.code);
-    card.setAttribute('data-entry-name', data.entry_name);
-    card.setAttribute('data-total-books', data.total_books);
+    card.setAttribute('data-node-level', data.node_level);
+    card.setAttribute('data-node-label', data.node_label);
+    card.setAttribute('data-id', data.id);
+    card.setAttribute('data-node-type', data.type);
+    card.setAttribute('data-total-books', 0);
     card.style.backgroundColor = data.color;
     let innerHtml = '';
     // Update inner html for each card to show the category code, category name, and total books
     innerHtml = `
-      <div class="top">${data.code}</div>
-      <div class="category" lang="en">${insertSoftHyphens(data.entry_name)}</div>
-      <div class="count">${data.total_books}</div>
+      <div class="top">${data.id}</div>
+      <div class="category" lang="en">${insertSoftHyphens(data.node_label)}</div>
+      <div class="count">${card.getAttribute('data-total-books')}</div>
     `;
 
     card.innerHTML = innerHtml;
@@ -107,7 +107,7 @@ function createCard(data, row) {
     // Add click handler to manage selection
     card.addEventListener('click', async () => {
         updateBookDisplayBox(card);
-        renderHierarchy(card);
+        //renderHierarchy(card);
         // Remove 'selected' from any other cards
         document.querySelectorAll(`#${row} .card.selected`).forEach(el => {
             el.classList.remove('selected');
@@ -117,30 +117,39 @@ function createCard(data, row) {
         card.classList.add('selected');
 
         // Render the second row when the first row is clicked
-        const topLevelAttribute = card.getAttribute('data-top-level-node');
-        const firstLevelAttribute = card.getAttribute('data-first-level-node');
-        const secondLevelAttribute = card.getAttribute('data-second-level-node');
-        const thirdLevelAttribute = card.getAttribute('data-third-level-node');
-        const fourthLevelAttribute = card.getAttribute('data-fourth-level-node');
-        console.log(topLevelAttribute, firstLevelAttribute, secondLevelAttribute, thirdLevelAttribute, fourthLevelAttribute);
         if (row === 'first-row') {
             thirdRow.innerHTML = '';
             fourthRow.innerHTML = '';
             fifthRow.innerHTML = '';
-            const data = await getFirstLevelNodes(topLevelAttribute);
+            sixthRow.innerHTML = '';
+            seventhRow.innerHTML = '';
+            const data = await getAllChildren(card.getAttribute('data-id'));
             renderSecondRow(data || []);
         } else if (row === 'second-row') {
             fourthRow.innerHTML = '';
             fifthRow.innerHTML = '';
-            const data = await getSecondLevelNodes(topLevelAttribute, firstLevelAttribute);
+            sixthRow.innerHTML = '';
+            seventhRow.innerHTML = '';
+            const data = await getAllChildren(card.getAttribute('data-id'));
             renderThirdRow(data || []);
         } else if (row === 'third-row') {
             fifthRow.innerHTML = '';
-            const data = await getThirdLevelNodes(topLevelAttribute, firstLevelAttribute, secondLevelAttribute);
+            sixthRow.innerHTML = '';
+            seventhRow.innerHTML = '';
+            const data = await getAllChildren(card.getAttribute('data-id'));
             renderFourthRow(data || []);
         } else if (row === 'fourth-row') {
-            const data = await getFourthLevelNodes(topLevelAttribute, firstLevelAttribute, secondLevelAttribute, thirdLevelAttribute);
+            sixthRow.innerHTML = '';
+            seventhRow.innerHTML = '';
+            const data = await getAllChildren(card.getAttribute('data-id'));
             renderFifthRow(data || []);
+        } else if (row === 'fifth-row') {
+            seventhRow.innerHTML = '';
+            const data = await getAllChildren(card.getAttribute('data-id'));
+            renderSixthRow(data || []);
+        } else if (row === 'sixth-row') {
+            const data = await getAllChildren(card.getAttribute('data-id'));
+            renderSeventhRow(data || []);
         }
     });
 
@@ -191,6 +200,23 @@ function renderFifthRow(childData) {
     });
 }
 
+function renderSixthRow(childData) {
+    // Clear previous
+    sixthRow.innerHTML = '';
+    childData.forEach(data => {
+        const card = createCard(data, 'sixth-row');
+        sixthRow.appendChild(card);
+    });
+}
+
+function renderSeventhRow(childData) {
+    // Clear previous
+    seventhRow.innerHTML = '';
+    childData.forEach(data => {
+        const card = createCard(data, 'seventh-row');
+        seventhRow.appendChild(card);
+    });
+}
 getTopLevelNodes().then(topLevelNodes => {
     console.log(topLevelNodes);
     renderFirstRow(topLevelNodes);

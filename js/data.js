@@ -4,120 +4,38 @@ const supabase = window.supabase.createClient(
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBicWxoYWZ6cWtkbXRrdGttdWlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI4MjE1OTIsImV4cCI6MjA1ODM5NzU5Mn0.T7z_dGQh2TimIEzLpxjf5hgEseefNQ7lYbcTtxJDHE4'
 );
 
+const TopLevelEndPoint = 'https://indian-knowledge-systems-api-production.up.railway.app/get-all-top-level-nodes';
+const ChildrenEndPoint = 'https://indian-knowledge-systems-api-production.up.railway.app/get-all-children';
 
 const hierarchyCache = {
     top: null,
-    first: {},     // key: top
-    second: {},    // key: top_first
-    third: {},     // key: top_first_second
-    fourth: {}
+    levels: {}
 };
+
 
 async function getTopLevelNodes() {
     if (hierarchyCache.top) return hierarchyCache.top;
-    const { data, error } = await supabase
-        .from('hierarchy_details')
-        .select('*')
-        .is('first_level_node', null)
-        .is('second_level_node', null)
-        .is('third_level_node', null)
-        .is('fourth_level_node', null)
-        .order('code', { ascending: true });
-
-
-    if (error) {
-        console.error('Supabase error (top):', error.message);
+    const response = await fetch(TopLevelEndPoint);
+    if (!response.ok) {
+        console.error('Failed to fetch top level nodes:', response.statusText);
         return [];
     }
-
+    const data = await response.json();
 
     hierarchyCache.top = data;
+    console.log(data);
     return data;
 }
 
-async function getFirstLevelNodes(top) {
-    if (hierarchyCache.first[top]) return hierarchyCache.first[top];
-
-    const { data, error } = await supabase
-        .from('hierarchy_details')
-        .select('*')
-        .eq('top_level_node', top)
-        .not('first_level_node', 'is', null)
-        .is('second_level_node', null)
-        .is('third_level_node', null)
-        .is('fourth_level_node', null);
-
-    if (error) {
-        console.error(`Supabase error (first - ${top}):`, error.message);
+async function getAllChildren(id) {
+    // Check if id is a key in the hierarchyCache 
+    if (hierarchyCache.levels[id]) return hierarchyCache.levels[id];
+    const response = await fetch(`${ChildrenEndPoint}/?id=${id}`);
+    if (!response.ok) {
+        console.error('Failed to fetch children:', response.statusText);
         return [];
     }
-
-    hierarchyCache.first[top] = data;
-    return data;
-}
-
-async function getSecondLevelNodes(top, first) {
-    const key = `${top}_${first}`;
-    if (hierarchyCache.second[key]) return hierarchyCache.second[key];
-
-    const { data, error } = await supabase
-        .from('hierarchy_details')
-        .select('*')
-        .eq('top_level_node', top)
-        .eq('first_level_node', first)
-        .not('second_level_node', 'is', null)
-        .is('third_level_node', null)
-        .is('fourth_level_node', null);
-
-    if (error) {
-        console.error(`Supabase error (second - ${key}):`, error.message);
-        return [];
-    }
-
-    hierarchyCache.second[key] = data;
-    return data;
-}
-
-async function getThirdLevelNodes(top, first, second) {
-    const key = `${top}_${first}_${second}`;
-    if (hierarchyCache.third[key]) return hierarchyCache.third[key];
-
-    const { data, error } = await supabase
-        .from('hierarchy_details')
-        .select('*')
-        .eq('top_level_node', top)
-        .eq('first_level_node', first)
-        .eq('second_level_node', second)
-        .not('third_level_node', 'is', null)
-        .is('fourth_level_node', null);
-
-    if (error) {
-        console.error(`Supabase error (third - ${key}):`, error.message);
-        return [];
-    }
-
-    hierarchyCache.third[key] = data;
-    return data;
-}
-
-async function getFourthLevelNodes(top, first, second, third) {
-    const key = `${top}_${first}_${second}_${third}`;
-    if (hierarchyCache.fourth[key]) return hierarchyCache.fourth[key];
-
-    const { data, error } = await supabase
-        .from('hierarchy_details')
-        .select('*')
-        .eq('top_level_node', top)
-        .eq('first_level_node', first)
-        .eq('second_level_node', second)
-        .eq('third_level_node', third)
-        .not('fourth_level_node', 'is', null);
-
-    if (error) {
-        console.error(`Supabase error (fourth - ${key}):`, error.message);
-        return [];
-    }
-
-    hierarchyCache.fourth[key] = data;
+    const data = await response.json();
+    hierarchyCache.levels[id] = data;
     return data;
 }

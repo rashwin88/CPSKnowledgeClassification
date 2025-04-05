@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>GoJS Flow Diagram</title>
+    <script src="https://unpkg.com/gojs/release/go-debug.js"></script>
+    <style>
+        #myDiagramDiv {
+            width: 800px;
+            height: 500px;
+            border: 1px solid #ccc;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="myDiagramDiv"></div>
+
+    <script>
+        function init() {
+            const $ = go.GraphObject.make;
+
+            const myDiagram = $(go.Diagram, "myDiagramDiv", {
+                "undoManager.isEnabled": true
+            });
+
+            // Define node template
+            myDiagram.nodeTemplate =
+                $(go.Node, "Auto",
+                    $(go.Shape, "RoundedRectangle",
+                        {
+                            fill: "white", stroke: "#003B5C", strokeWidth: 2,
+                            parameter1: 20  // corner radius
+                        }),
+                    $(go.TextBlock,
+                        { margin: 10, font: "bold 14px sans-serif" },
+                        new go.Binding("text", "label"))
+                );
+
+            // Define link template
+            myDiagram.linkTemplate =
+                $(go.Link,
+                    { curve: go.Link.Bezier, toShortLength: 6 },
+                    $(go.Shape, { stroke: "#003B5C", strokeWidth: 2 }),
+                    $(go.Shape, { toArrow: "Standard", fill: "#003B5C", stroke: null })
+                );
+
+            // Create the model
+            myDiagram.model = new go.GraphLinksModel(
+                [
+                    { key: "Box1", label: "Long Process Box" },
+                    { key: "Box2", label: "Box 2" },
+                    { key: "Box3", label: "Box 3" },
+                    { key: "Label1", label: "Label A" },
+                    { key: "Label2", label: "Label B" },
+                    { key: "Label3", label: "Label C" }
+                ],
+                [
+                    { from: "Box1", to: "Label1" },
+                    { from: "Box2", to: "Label2" },
+                    { from: "Box3", to: "Label3" }
+                ]
+            );
+
+            // Manually set node positions for layout similar to the image
+            myDiagram.addDiagramListener("InitialLayoutCompleted", () => {
+                myDiagram.findNodeForKey("Box1").location = new go.Point(50, 50);
+                myDiagram.findNodeForKey("Box2").location = new go.Point(300, 50);
+                myDiagram.findNodeForKey("Box3").location = new go.Point(500, 50);
+                myDiagram.findNodeForKey("Label1").location = new go.Point(70, 250);
+                myDiagram.findNodeForKey("Label2").location = new go.Point(320, 250);
+                myDiagram.findNodeForKey("Label3").location = new go.Point(520, 250);
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>
