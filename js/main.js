@@ -7,6 +7,7 @@ const fourthRow = document.getElementById('fourth-row');
 const fifthRow = document.getElementById('fifth-row');
 const sixthRow = document.getElementById('sixth-row');
 const seventhRow = document.getElementById('seventh-row');
+const leafRow = document.getElementById('leaf-row');
 
 
 function insertSoftHyphens(text) {
@@ -116,13 +117,47 @@ function createCard(data, row) {
         // Add 'selected' to this card
         card.classList.add('selected');
 
+        if (card.getAttribute('data-node-type') === 'barren') {
+            if (row == "first-row") {
+                secondRow.innerHTML = '';
+                thirdRow.innerHTML = '';
+                fourthRow.innerHTML = '';
+                fifthRow.innerHTML = '';
+                sixthRow.innerHTML = '';
+                seventhRow.innerHTML = '';
+                leafRow.innerHTML = '';
+            } else if (row == "second-row") {
+                thirdRow.innerHTML = '';
+                fourthRow.innerHTML = '';
+                fifthRow.innerHTML = '';
+                sixthRow.innerHTML = '';
+                seventhRow.innerHTML = '';
+            } else if (row == "third-row") {
+                fourthRow.innerHTML = '';
+                fifthRow.innerHTML = '';
+                sixthRow.innerHTML = '';
+                seventhRow.innerHTML = '';
+            } else if (row == "fourth-row") {
+                fifthRow.innerHTML = '';
+                sixthRow.innerHTML = '';
+                seventhRow.innerHTML = '';
+            } else if (row == "fifth-row") {
+                sixthRow.innerHTML = '';
+                seventhRow.innerHTML = '';
+            } else if (row == "sixth-row") {
+                seventhRow.innerHTML = '';
+            }
+            const data = await getAllChildren(card.getAttribute('data-id'));
+            renderLeafRow(data || []);
+        }
         // Render the second row when the first row is clicked
-        if (row === 'first-row') {
+        else if (row === 'first-row') {
             thirdRow.innerHTML = '';
             fourthRow.innerHTML = '';
             fifthRow.innerHTML = '';
             sixthRow.innerHTML = '';
             seventhRow.innerHTML = '';
+            leafRow.innerHTML = '';
             const data = await getAllChildren(card.getAttribute('data-id'));
             renderSecondRow(data || []);
         } else if (row === 'second-row') {
@@ -130,24 +165,29 @@ function createCard(data, row) {
             fifthRow.innerHTML = '';
             sixthRow.innerHTML = '';
             seventhRow.innerHTML = '';
+            leafRow.innerHTML = '';
             const data = await getAllChildren(card.getAttribute('data-id'));
             renderThirdRow(data || []);
         } else if (row === 'third-row') {
             fifthRow.innerHTML = '';
             sixthRow.innerHTML = '';
             seventhRow.innerHTML = '';
+            leafRow.innerHTML = '';
             const data = await getAllChildren(card.getAttribute('data-id'));
             renderFourthRow(data || []);
         } else if (row === 'fourth-row') {
             sixthRow.innerHTML = '';
             seventhRow.innerHTML = '';
+            leafRow.innerHTML = '';
             const data = await getAllChildren(card.getAttribute('data-id'));
             renderFifthRow(data || []);
         } else if (row === 'fifth-row') {
             seventhRow.innerHTML = '';
+            leafRow.innerHTML = '';
             const data = await getAllChildren(card.getAttribute('data-id'));
             renderSixthRow(data || []);
         } else if (row === 'sixth-row') {
+            leafRow.innerHTML = '';
             const data = await getAllChildren(card.getAttribute('data-id'));
             renderSeventhRow(data || []);
         }
@@ -156,6 +196,49 @@ function createCard(data, row) {
     return card;
 
 }
+
+
+function createLeafCard(data, row) {
+    const card = document.createElement('div');
+    card.className = 'horizontal-card';
+    // Set card attributes
+    card.setAttribute('data-node-level', data.node_level);
+    card.setAttribute('data-node-label', data.node_label);
+    card.setAttribute('data-id', data.id);
+    card.setAttribute('data-node-type', data.type);
+    card.setAttribute('data-total-books', 0);
+    card.style.backgroundColor = data.color;
+    let innerHtml = '';
+    // Update inner html for each card to show the category code, category name, and total books
+    innerHtml = `
+    <div class="card-left">
+      <div class="card-title">${data.id}</div>
+      <div class="card-subtitle" lang="en">${insertSoftHyphens(data.node_label)}</div>
+    </div>
+    <div class="card-right">
+      <div class="card-meta">${card.getAttribute('data-total-books')}</div>
+    </div>
+    `;
+
+    card.innerHTML = innerHtml;
+
+    // Add click handler to manage selection
+    card.addEventListener('click', async () => {
+        updateBookDisplayBox(card);
+        //renderHierarchy(card);
+        // Remove 'selected' from any other cards
+        document.querySelectorAll(`#${row} .horizontal-card.selected`).forEach(el => {
+            el.classList.remove('selected');
+        });
+
+        // Add 'selected' to this card
+        card.classList.add('selected');
+    });
+
+    return card;
+
+}
+
 
 function renderFirstRow(dataList) {
     dataList.forEach(data => {
@@ -215,6 +298,15 @@ function renderSeventhRow(childData) {
     childData.forEach(data => {
         const card = createCard(data, 'seventh-row');
         seventhRow.appendChild(card);
+    });
+}
+
+
+function renderLeafRow(childData) {
+    leafRow.innerHTML = '';
+    childData.forEach(data => {
+        const card = createLeafCard(data, 'leaf-row');
+        leafRow.appendChild(card);
     });
 }
 getTopLevelNodes().then(topLevelNodes => {

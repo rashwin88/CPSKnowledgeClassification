@@ -183,6 +183,12 @@ body {
     /* This is the scrollable layer */
 }
 
+.scroll-column {
+    width: 100%;
+    overflow-y: auto;
+    /* This is the scrollable layer */
+}
+
 
 .sidebar {
     width: 200px;
@@ -414,4 +420,66 @@ body {
     color: rgb(0, 72, 255);
     font-weight: bold;
     font-size: 20px;
+}
+
+.horizontal-card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    align-items: stretch;
+}
+
+.horizontal-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #333;
+    border-radius: 8px;
+    background-color: #fff;
+    padding: 12px 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    font-family: 'et-book', serif;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.horizontal-card:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+.horizontal-card.selected {
+    background-color: #000;
+    color: #ffffff !important;
+}
+
+/* Force each part to turn white */
+.horizontal-card.selected .card-left,
+.horizontal-card.selected .card-right,
+.horizontal-card.selected .card-title,
+.horizontal-card.selected .card-subtitle,
+.horizontal-card.selected .card-meta {
+    color: #ffffff;
+}
+
+.card-left {
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    gap: 10px;
+}
+
+.card-title {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.card-subtitle {
+    font-size: 14px;
+    color: #555;
+}
+
+.card-right {
+    font-size: 13px;
+    color: #777;
 }
