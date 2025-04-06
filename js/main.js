@@ -213,6 +213,8 @@ function createLeafCard(data, row) {
     innerHtml = `
     <div class="card-left">
       <div class="card-title">${data.id}</div>
+    </div>
+    <div class="card-center">
       <div class="card-subtitle" lang="en">${insertSoftHyphens(data.node_label)}</div>
     </div>
     <div class="card-right">
