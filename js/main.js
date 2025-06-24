@@ -14,6 +14,35 @@ let currentBooks = [];
 let currentPage = 1;
 let currentCardId = '';
 
+const formModal = document.getElementById('formModal');
+const cardNumberInput = document.getElementById('cardNumber');
+const cardForm = document.getElementById('cardForm');
+const modalCloseBtn = document.getElementById('modalClose');
+
+function openFormModal(id) {
+    cardNumberInput.value = id;
+    formModal.classList.add('active');
+    formModal.classList.remove('hidden');
+}
+
+function closeFormModal() {
+    formModal.classList.remove('active');
+    formModal.classList.add('hidden');
+}
+
+cardForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    closeFormModal();
+    alert('Dummy form submitted');
+});
+
+modalCloseBtn.addEventListener('click', closeFormModal);
+formModal.addEventListener('click', (e) => {
+    if (e.target === formModal) {
+        closeFormModal();
+    }
+});
+
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -179,9 +208,15 @@ function createCard(data, row) {
       <div class="top">${data.id}</div>
       <div class="category" lang="en">${insertSoftHyphens(data.node_label)}</div>
       <div class="count">${bookCount}</div>
+      <div class="add-icon">+</div>
     `;
 
     card.innerHTML = innerHtml;
+    const addIcon = card.querySelector('.add-icon');
+    addIcon.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openFormModal(data.id);
+    });
 
     // Add click handler to manage selection
     card.addEventListener('click', async () => {
@@ -299,9 +334,15 @@ function createLeafCard(data, row) {
     <div class="card-right">
       <div class="card-meta">${bookCount}</div>
     </div>
+    <div class="add-icon">+</div>
     `;
 
     card.innerHTML = innerHtml;
+    const addIcon = card.querySelector('.add-icon');
+    addIcon.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openFormModal(data.id);
+    });
 
     // Add click handler to manage selection
     card.addEventListener('click', async () => {
