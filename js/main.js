@@ -22,13 +22,15 @@ const modalCloseBtn = document.getElementById('modalClose');
 
 function openFormModal(id) {
     cardNumberInput.value = id;
-    formModal.classList.add('active');
     formModal.classList.remove('hidden');
+    requestAnimationFrame(() => {
+        formModal.classList.add('active');
+    });
 }
 
 function closeFormModal() {
     formModal.classList.remove('active');
-    formModal.classList.add('hidden');
+    setTimeout(() => formModal.classList.add('hidden'), 300);
 }
 
 cardForm.addEventListener('submit', (e) => {
@@ -89,13 +91,15 @@ function openBookModal(book) {
         .join('');
 
     bookModalBody.innerHTML = `<div class="book-details-grid">${html}</div>`;
-    bookModal.classList.add('active');
     bookModal.classList.remove('hidden');
+    requestAnimationFrame(() => {
+        bookModal.classList.add('active');
+    });
 }
 
 function closeBookModal() {
     bookModal.classList.remove('active');
-    bookModal.classList.add('hidden');
+    setTimeout(() => bookModal.classList.add('hidden'), 300);
 }
 
 bookModalClose.addEventListener('click', closeBookModal);
