@@ -114,10 +114,11 @@ function renderBooks() {
     const totalPages = Math.max(1, Math.ceil(currentTotalBooks / booksPerPage));
     const listHtml = currentBooks.map((b, i) => `
         <li class="book-card" data-index="${i}">
-            <div class="book-card-header">${b.title || b.book_title || b.name || 'Untitled'}</div>
-            <div class="book-card-content">
-                ${b.author || b.authors || b.primary_author ? `<div class="book-author">Author: ${b.author || b.authors || b.primary_author}</div>` : ''}
-                ${b.classification_number ? `<div class="book-classification">Classification: ${b.classification_number}</div>` : ''}
+            <div class="book-card-left">${b.classification_number || ''}</div>
+            <div class="book-card-right">
+                <div class="book-card-header">${b.title || b.book_title || b.name || 'Untitled'}</div>
+                ${b.author || b.authors || b.primary_author ? `<div class="book-author">Main author: ${b.author || b.authors || b.primary_author}</div>` : ''}
+                ${b.pages || b.page_count ? `<div class="book-pages">Pages: ${b.pages || b.page_count}</div>` : ''}
                 ${b.year || b.publication_year ? `<div class="book-year">Year: ${b.year || b.publication_year}</div>` : ''}
             </div>
         </li>`).join('');
