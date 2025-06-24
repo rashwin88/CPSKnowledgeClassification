@@ -628,3 +628,26 @@ body {
     border-radius: 8px;
     width: 300px;
 }
+
+/* Book modal specific styling */
+#bookModal .modal-content {
+    max-width: 600px;
+    width: 90%;
+}
+
+.book-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 8px 12px;
+    font-size: 14px;
+}
+
+.book-details-grid .field-name {
+    font-weight: bold;
+    text-align: right;
+}
+
+.book-details-grid .field-value {
+    text-align: left;
+    word-break: break-word;
+}
