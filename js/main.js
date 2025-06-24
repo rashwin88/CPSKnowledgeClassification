@@ -9,17 +9,94 @@ const sixthRow = document.getElementById('sixth-row');
 const seventhRow = document.getElementById('seventh-row');
 const leafRow = document.getElementById('leaf-row');
 
+const booksPerPage = 10;
+let currentBooks = [];
+let currentPage = 1;
+let currentCardId = '';
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function generateRandomBooks(count) {
+    const titles = [
+        'Legends of Bharat',
+        'Tales of the Mauryas',
+        'Journey through Vedic Lands',
+        'Mysteries of Mohenjo-daro',
+        'Sages of the Upanishads',
+        'Chronicles of Ashoka',
+        'Ramayana Retold',
+        'Saga of the Gupta Dynasty',
+        'Wisdom of Chanakya',
+        'Secrets of Nalanda',
+        'Echoes of Harappa',
+        'Bhagavata Lore',
+        'Indus Scripts Revealed',
+        'Epic of Kurukshetra',
+        'Sanskrit Poetics Unveiled',
+        'Rise of Magadha',
+        'Legends of Vijayanagara',
+        'Classics of Tamil Sangam',
+        'Ancient Astronomy of India',
+        'Myths of the Himalayas'
+    ];
+    const books = [];
+    for (let i = 0; i < count; i++) {
+        const title = `${titles[i % titles.length]} ${Math.floor(i / titles.length) + 1}`;
+        books.push(title);
+    }
+    return books;
+}
+
+function renderBooks() {
+    const displayBox = document.getElementById('books-display');
+    const totalBooks = currentBooks.length;
+    const totalPages = Math.max(1, Math.ceil(totalBooks / booksPerPage));
+    const start = (currentPage - 1) * booksPerPage;
+    const visible = currentBooks.slice(start, start + booksPerPage);
+    const listHtml = visible.map(b => `<li class="book-card">${b}</li>`).join('');
+
+    displayBox.innerHTML = `📚 Books in selected category (<strong>${currentCardId}</strong>) : <span class="book-count">${totalBooks}</span>` +
+        `<ul class="book-list">${listHtml}</ul>` +
+        `<div class="pagination"><button id="prev-page" ${currentPage === 1 ? 'disabled' : ''}>Prev</button>` +
+        `<span>${currentPage} / ${totalPages}</span>` +
+        `<button id="next-page" ${currentPage === totalPages ? 'disabled' : ''}>Next</button></div>`;
+
+    const prevBtn = document.getElementById('prev-page');
+    const nextBtn = document.getElementById('next-page');
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderBooks();
+            }
+        });
+    }
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderBooks();
+            }
+        });
+    }
+}
+
+function displayBooksForCard(card) {
+    currentCardId = card.getAttribute('data-id');
+    const count = parseInt(card.getAttribute('data-total-books'), 10);
+    currentBooks = generateRandomBooks(count);
+    currentPage = 1;
+    renderBooks();
+}
+
 
 function insertSoftHyphens(text) {
     // Add soft hyphens after logical break points (like capital letters or compound parts)
     return text.replace(/([a-zāīūṛṅñṭḍṇśṣ]+)/gi, '$1&shy;');
 }
 
-function updateBookDisplayBox(card) {
-    const displayBox = document.getElementById("books-display");
-    const totalBooks = parseInt(card.getAttribute('data-total-books'), 10).toLocaleString('en-IN');
-    displayBox.innerHTML = `📚 Books in selected category (<strong>${card.getAttribute('data-id')}</strong>) : <span class="book-count">${totalBooks}</span>`;
-}
 
 async function renderHierarchy(entry) {
     const container = document.getElementById('hierarchy-display');
@@ -93,21 +170,22 @@ function createCard(data, row) {
     card.setAttribute('data-node-label', data.node_label);
     card.setAttribute('data-id', data.id);
     card.setAttribute('data-node-type', data.type);
-    card.setAttribute('data-total-books', 0);
+    const bookCount = getRandomInt(5, 50);
+    card.setAttribute('data-total-books', bookCount);
     card.style.backgroundColor = data.color;
     let innerHtml = '';
     // Update inner html for each card to show the category code, category name, and total books
     innerHtml = `
       <div class="top">${data.id}</div>
       <div class="category" lang="en">${insertSoftHyphens(data.node_label)}</div>
-      <div class="count">${card.getAttribute('data-total-books')}</div>
+      <div class="count">${bookCount}</div>
     `;
 
     card.innerHTML = innerHtml;
 
     // Add click handler to manage selection
     card.addEventListener('click', async () => {
-        updateBookDisplayBox(card);
+        displayBooksForCard(card);
         //renderHierarchy(card);
         // Remove 'selected' from any other cards
         document.querySelectorAll(`#${row} .card.selected`).forEach(el => {
@@ -206,7 +284,8 @@ function createLeafCard(data, row) {
     card.setAttribute('data-node-label', data.node_label);
     card.setAttribute('data-id', data.id);
     card.setAttribute('data-node-type', data.type);
-    card.setAttribute('data-total-books', 0);
+    const bookCount = getRandomInt(5, 50);
+    card.setAttribute('data-total-books', bookCount);
     card.style.backgroundColor = data.color;
     let innerHtml = '';
     // Update inner html for each card to show the category code, category name, and total books
@@ -218,7 +297,7 @@ function createLeafCard(data, row) {
       <div class="card-subtitle" lang="en">${insertSoftHyphens(data.node_label)}</div>
     </div>
     <div class="card-right">
-      <div class="card-meta">${card.getAttribute('data-total-books')}</div>
+      <div class="card-meta">${bookCount}</div>
     </div>
     `;
 
@@ -226,7 +305,7 @@ function createLeafCard(data, row) {
 
     // Add click handler to manage selection
     card.addEventListener('click', async () => {
-        updateBookDisplayBox(card);
+        displayBooksForCard(card);
         //renderHierarchy(card);
         // Remove 'selected' from any other cards
         document.querySelectorAll(`#${row} .horizontal-card.selected`).forEach(el => {
