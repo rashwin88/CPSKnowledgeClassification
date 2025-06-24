@@ -20,15 +20,30 @@ function getRandomInt(min, max) {
 
 function generateRandomBooks(count) {
     const titles = [
-        'Wisdom of the Ages',
-        'Mystic Tales',
-        'Ancient Paths',
-        'Sacred Verses',
-        'Chronicles of Dharma'
+        'Legends of Bharat',
+        'Tales of the Mauryas',
+        'Journey through Vedic Lands',
+        'Mysteries of Mohenjo-daro',
+        'Sages of the Upanishads',
+        'Chronicles of Ashoka',
+        'Ramayana Retold',
+        'Saga of the Gupta Dynasty',
+        'Wisdom of Chanakya',
+        'Secrets of Nalanda',
+        'Echoes of Harappa',
+        'Bhagavata Lore',
+        'Indus Scripts Revealed',
+        'Epic of Kurukshetra',
+        'Sanskrit Poetics Unveiled',
+        'Rise of Magadha',
+        'Legends of Vijayanagara',
+        'Classics of Tamil Sangam',
+        'Ancient Astronomy of India',
+        'Myths of the Himalayas'
     ];
     const books = [];
     for (let i = 0; i < count; i++) {
-        const title = `${titles[i % titles.length]} ${i + 1}`;
+        const title = `${titles[i % titles.length]} ${Math.floor(i / titles.length) + 1}`;
         books.push(title);
     }
     return books;
@@ -40,7 +55,7 @@ function renderBooks() {
     const totalPages = Math.max(1, Math.ceil(totalBooks / booksPerPage));
     const start = (currentPage - 1) * booksPerPage;
     const visible = currentBooks.slice(start, start + booksPerPage);
-    const listHtml = visible.map(b => `<li>${b}</li>`).join('');
+    const listHtml = visible.map(b => `<li class="book-card">${b}</li>`).join('');
 
     displayBox.innerHTML = `📚 Books in selected category (<strong>${currentCardId}</strong>) : <span class="book-count">${totalBooks}</span>` +
         `<ul class="book-list">${listHtml}</ul>` +
