@@ -99,10 +99,12 @@ function renderBooks() {
     const visible = currentBooks.slice(start, start + booksPerPage);
     const listHtml = visible.map(b => `
         <li class="book-card">
-            <div class="book-title">${b.title}</div>
-            <div class="book-author">Author: ${b.author}</div>
-            <div class="book-classification">Classification: ${b.classification}</div>
-            <div class="book-year">Year: ${b.year}</div>
+            <div class="book-card-header">${b.title}</div>
+            <div class="book-card-content">
+                <div class="book-author">Author: ${b.author}</div>
+                <div class="book-classification">Classification: ${b.classification}</div>
+                <div class="book-year">Year: ${b.year}</div>
+            </div>
         </li>`).join('');
 
     displayBox.innerHTML = `📚 Books in selected category (<strong>${currentCardId}</strong>) : <span class="book-count">${totalBooks}</span>` +

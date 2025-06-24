@@ -537,13 +537,25 @@ body {
 .book-card {
     border: 1px solid #333;
     border-radius: 6px;
-    padding: 8px 12px;
+    overflow: hidden;
     background-color: #fff;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     font-family: "Literata", Arial, Helvetica, sans-serif;
     display: flex;
     flex-direction: column;
     gap: 2px;
+}
+
+.book-card-header {
+    background-color: #8b0000;
+    color: #fff;
+    font-weight: bold;
+    padding: 4px 8px;
+    font-size: 16px;
+}
+
+.book-card-content {
+    padding: 8px 12px;
 }
 
 .book-card:hover {
