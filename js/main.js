@@ -220,7 +220,7 @@ function createCard(data, row) {
     card.setAttribute('data-node-label', data.node_label);
     card.setAttribute('data-id', data.id);
     card.setAttribute('data-node-type', data.type);
-    const bookCount = getRandomInt(5, 50);
+    const bookCount = 0;
     card.setAttribute('data-total-books', bookCount);
     card.style.backgroundColor = data.color;
     let innerHtml = '';
@@ -233,6 +233,14 @@ function createCard(data, row) {
     `;
 
     card.innerHTML = innerHtml;
+    // Fetch actual count asynchronously and update when received
+    getBookCount(data.id).then(count => {
+        card.setAttribute('data-total-books', count);
+        const countEl = card.querySelector('.count');
+        if (countEl) {
+            countEl.textContent = count;
+        }
+    });
     const addIcon = card.querySelector('.add-icon');
     addIcon.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -340,7 +348,7 @@ function createLeafCard(data, row) {
     card.setAttribute('data-node-label', data.node_label);
     card.setAttribute('data-id', data.id);
     card.setAttribute('data-node-type', data.type);
-    const bookCount = getRandomInt(5, 50);
+    const bookCount = 0;
     card.setAttribute('data-total-books', bookCount);
     card.style.backgroundColor = data.color;
     let innerHtml = '';
@@ -359,6 +367,14 @@ function createLeafCard(data, row) {
     `;
 
     card.innerHTML = innerHtml;
+    // Fetch count asynchronously
+    getBookCount(data.id).then(count => {
+        card.setAttribute('data-total-books', count);
+        const countEl = card.querySelector('.card-meta');
+        if (countEl) {
+            countEl.textContent = count;
+        }
+    });
     const addIcon = card.querySelector('.add-icon');
     addIcon.addEventListener('click', (e) => {
         e.stopPropagation();
