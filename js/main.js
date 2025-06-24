@@ -81,6 +81,7 @@ function openBookModal(book) {
             .replace(/\w\S*/g, (w) => w.charAt(0).toUpperCase() + w.slice(1));
 
     const html = Object.entries(book)
+        .filter(([, value]) => value !== null && value !== undefined && value !== 'null' && value !== '')
         .map(
             ([key, value]) =>
                 `<div class="field-name">${formatField(key)}</div><div class="field-value">${value}</div>`
