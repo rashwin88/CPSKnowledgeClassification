@@ -541,11 +541,27 @@ body {
     background-color: #fff;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     font-family: "Literata", Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 }
 
 .book-card:hover {
     background-color: #f0f0f0;
     padding-left: 20px;
+}
+
+.book-title {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.book-author,
+.book-classification,
+.book-year {
+    font-size: 14px;
+    color: #555;
 }
 
 .pagination {

@@ -70,10 +70,23 @@ function generateRandomBooks(count) {
         'Ancient Astronomy of India',
         'Myths of the Himalayas'
     ];
+    const authors = [
+        'A. Sharma',
+        'B. Gupta',
+        'C. Iyer',
+        'D. Singh',
+        'E. Banerjee',
+        'F. Reddy',
+        'G. Pillai',
+        'H. Varma'
+    ];
     const books = [];
     for (let i = 0; i < count; i++) {
         const title = `${titles[i % titles.length]} ${Math.floor(i / titles.length) + 1}`;
-        books.push(title);
+        const author = authors[i % authors.length];
+        const classification = `CLS-${getRandomInt(100, 999)}.${getRandomInt(0, 9)}`;
+        const year = 1950 + (i % 70);
+        books.push({ title, author, classification, year });
     }
     return books;
 }
@@ -84,7 +97,13 @@ function renderBooks() {
     const totalPages = Math.max(1, Math.ceil(totalBooks / booksPerPage));
     const start = (currentPage - 1) * booksPerPage;
     const visible = currentBooks.slice(start, start + booksPerPage);
-    const listHtml = visible.map(b => `<li class="book-card">${b}</li>`).join('');
+    const listHtml = visible.map(b => `
+        <li class="book-card">
+            <div class="book-title">${b.title}</div>
+            <div class="book-author">Author: ${b.author}</div>
+            <div class="book-classification">Classification: ${b.classification}</div>
+            <div class="book-year">Year: ${b.year}</div>
+        </li>`).join('');
 
     displayBox.innerHTML = `📚 Books in selected category (<strong>${currentCardId}</strong>) : <span class="book-count">${totalBooks}</span>` +
         `<ul class="book-list">${listHtml}</ul>` +
