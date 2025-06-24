@@ -13,6 +13,7 @@ const booksPerPage = 10;
 let currentBooks = [];
 let currentPage = 1;
 let currentCardId = '';
+let currentTotalBooks = 0;
 
 const formModal = document.getElementById('formModal');
 const cardNumberInput = document.getElementById('cardNumber');
@@ -43,71 +44,68 @@ formModal.addEventListener('click', (e) => {
     }
 });
 
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+async function fetchBooks(prefix, page = 1) {
+    const from = (page - 1) * booksPerPage;
+    const to = from + booksPerPage - 1;
+    try {
+        const { data, error } = await supabase
+            .from('committed_records')
+            .select('*')
+            .like('classification_number', `${prefix}%`)
+            .range(from, to);
+        if (error) {
+            console.error('Error fetching books:', error);
+            return [];
+        }
+        return data || [];
+    } catch (err) {
+        console.error('Unexpected error fetching books:', err);
+        return [];
+    }
 }
 
-function generateRandomBooks(count) {
-    const titles = [
-        'Legends of Bharat',
-        'Tales of the Mauryas',
-        'Journey through Vedic Lands',
-        'Mysteries of Mohenjo-daro',
-        'Sages of the Upanishads',
-        'Chronicles of Ashoka',
-        'Ramayana Retold',
-        'Saga of the Gupta Dynasty',
-        'Wisdom of Chanakya',
-        'Secrets of Nalanda',
-        'Echoes of Harappa',
-        'Bhagavata Lore',
-        'Indus Scripts Revealed',
-        'Epic of Kurukshetra',
-        'Sanskrit Poetics Unveiled',
-        'Rise of Magadha',
-        'Legends of Vijayanagara',
-        'Classics of Tamil Sangam',
-        'Ancient Astronomy of India',
-        'Myths of the Himalayas'
-    ];
-    const authors = [
-        'A. Sharma',
-        'B. Gupta',
-        'C. Iyer',
-        'D. Singh',
-        'E. Banerjee',
-        'F. Reddy',
-        'G. Pillai',
-        'H. Varma'
-    ];
-    const books = [];
-    for (let i = 0; i < count; i++) {
-        const title = `${titles[i % titles.length]} ${Math.floor(i / titles.length) + 1}`;
-        const author = authors[i % authors.length];
-        const classification = `CLS-${getRandomInt(100, 999)}.${getRandomInt(0, 9)}`;
-        const year = 1950 + (i % 70);
-        books.push({ title, author, classification, year });
-    }
-    return books;
+async function loadBooks(page = 1) {
+    currentPage = page;
+    currentBooks = await fetchBooks(currentCardId, currentPage);
+    renderBooks();
 }
+
+const bookModal = document.getElementById('bookModal');
+const bookModalBody = document.getElementById('bookModalBody');
+const bookModalClose = document.getElementById('bookModalClose');
+
+function openBookModal(book) {
+    bookModalBody.innerHTML = Object.keys(book).map(k => `<div><strong>${k}:</strong> ${book[k]}</div>`).join('');
+    bookModal.classList.add('active');
+    bookModal.classList.remove('hidden');
+}
+
+function closeBookModal() {
+    bookModal.classList.remove('active');
+    bookModal.classList.add('hidden');
+}
+
+bookModalClose.addEventListener('click', closeBookModal);
+bookModal.addEventListener('click', (e) => {
+    if (e.target === bookModal) {
+        closeBookModal();
+    }
+});
 
 function renderBooks() {
     const displayBox = document.getElementById('books-display');
-    const totalBooks = currentBooks.length;
-    const totalPages = Math.max(1, Math.ceil(totalBooks / booksPerPage));
-    const start = (currentPage - 1) * booksPerPage;
-    const visible = currentBooks.slice(start, start + booksPerPage);
-    const listHtml = visible.map(b => `
-        <li class="book-card">
-            <div class="book-card-header">${b.title}</div>
+    const totalPages = Math.max(1, Math.ceil(currentTotalBooks / booksPerPage));
+    const listHtml = currentBooks.map((b, i) => `
+        <li class="book-card" data-index="${i}">
+            <div class="book-card-header">${b.title || b.book_title || b.name || 'Untitled'}</div>
             <div class="book-card-content">
-                <div class="book-author">Author: ${b.author}</div>
-                <div class="book-classification">Classification: ${b.classification}</div>
-                <div class="book-year">Year: ${b.year}</div>
+                ${b.author || b.authors || b.primary_author ? `<div class="book-author">Author: ${b.author || b.authors || b.primary_author}</div>` : ''}
+                ${b.classification_number ? `<div class="book-classification">Classification: ${b.classification_number}</div>` : ''}
+                ${b.year || b.publication_year ? `<div class="book-year">Year: ${b.year || b.publication_year}</div>` : ''}
             </div>
         </li>`).join('');
 
-    displayBox.innerHTML = `📚 Books in selected category (<strong>${currentCardId}</strong>) : <span class="book-count">${totalBooks}</span>` +
+    displayBox.innerHTML = `📚 Books in selected category (<strong>${currentCardId}</strong>) : <span class="book-count">${currentTotalBooks}</span>` +
         `<ul class="book-list">${listHtml}</ul>` +
         `<div class="pagination"><button id="prev-page" ${currentPage === 1 ? 'disabled' : ''}>Prev</button>` +
         `<span>${currentPage} / ${totalPages}</span>` +
@@ -119,7 +117,7 @@ function renderBooks() {
         prevBtn.addEventListener('click', () => {
             if (currentPage > 1) {
                 currentPage--;
-                renderBooks();
+                loadBooks(currentPage);
             }
         });
     }
@@ -127,18 +125,27 @@ function renderBooks() {
         nextBtn.addEventListener('click', () => {
             if (currentPage < totalPages) {
                 currentPage++;
-                renderBooks();
+                loadBooks(currentPage);
             }
         });
     }
+
+    document.querySelectorAll('.book-card').forEach(el => {
+        el.addEventListener('click', () => {
+            const idx = parseInt(el.getAttribute('data-index'), 10);
+            if (!isNaN(idx) && currentBooks[idx]) {
+                openBookModal(currentBooks[idx]);
+            }
+        });
+    });
 }
 
 function displayBooksForCard(card) {
     currentCardId = card.getAttribute('data-id');
     const count = parseInt(card.getAttribute('data-total-books'), 10);
-    currentBooks = generateRandomBooks(count);
+    currentTotalBooks = isNaN(count) ? 0 : count;
     currentPage = 1;
-    renderBooks();
+    loadBooks(currentPage);
 }
 
 
