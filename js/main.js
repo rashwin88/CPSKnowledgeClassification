@@ -75,7 +75,19 @@ const bookModalBody = document.getElementById('bookModalBody');
 const bookModalClose = document.getElementById('bookModalClose');
 
 function openBookModal(book) {
-    bookModalBody.innerHTML = Object.keys(book).map(k => `<div><strong>${k}:</strong> ${book[k]}</div>`).join('');
+    const formatField = (name) =>
+        name
+            .replace(/_/g, ' ')
+            .replace(/\w\S*/g, (w) => w.charAt(0).toUpperCase() + w.slice(1));
+
+    const html = Object.entries(book)
+        .map(
+            ([key, value]) =>
+                `<div class="field-name">${formatField(key)}</div><div class="field-value">${value}</div>`
+        )
+        .join('');
+
+    bookModalBody.innerHTML = `<div class="book-details-grid">${html}</div>`;
     bookModal.classList.add('active');
     bookModal.classList.remove('hidden');
 }
