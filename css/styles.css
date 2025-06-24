@@ -523,3 +523,19 @@ body {
         transform: rotate(360deg);
     }
 }
+
+.book-list {
+    margin-top: 10px;
+    padding-left: 20px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.pagination button {
+    padding: 4px 8px;
+}
