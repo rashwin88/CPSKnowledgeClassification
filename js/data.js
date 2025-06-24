@@ -20,6 +20,36 @@ const hierarchyCache = {
     levels: {}
 };
 
+// Cache for book counts by classification prefix
+const bookCountCache = {};
+
+// Fetch number of committed_records with classification_number starting with
+// the given prefix. Uses caching to avoid duplicate requests.
+async function getBookCount(prefix) {
+    if (bookCountCache[prefix] !== undefined) {
+        return bookCountCache[prefix];
+    }
+    try {
+        const { count, error } = await supabase
+            .from('committed_records')
+            .select('*', { count: 'exact', head: true })
+            .like('classification_number', `${prefix}%`);
+        if (error) {
+            console.error('Error fetching book count:', error);
+            bookCountCache[prefix] = 0;
+        } else {
+            bookCountCache[prefix] = count || 0;
+        }
+    } catch (err) {
+        console.error('Unexpected error fetching book count:', err);
+        bookCountCache[prefix] = 0;
+    }
+    return bookCountCache[prefix];
+}
+
+// expose helper for other scripts
+window.getBookCount = getBookCount;
+
 
 async function getTopLevelNodes() {
     showLoader();
