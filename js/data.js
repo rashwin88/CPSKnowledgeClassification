@@ -31,14 +31,11 @@ async function getBookCount(prefix) {
     }
     // Replace spaces with dashes as classification numbers are stored using '-'
     const sanitizedPrefix = prefix.replace(/\s+/g, '-');
-    const likePattern = /[A-Za-z\s]/.test(prefix)
-        ? `${sanitizedPrefix}%`
-        : sanitizedPrefix;
     try {
         const { count, error } = await supabase
             .from('committed_records')
             .select('*', { count: 'exact', head: true })
-            .like('classification_number', likePattern);
+            .like('classification_number', `${sanitizedPrefix}%`);
         if (error) {
             console.error('Error fetching book count:', error);
             bookCountCache[prefix] = 0;

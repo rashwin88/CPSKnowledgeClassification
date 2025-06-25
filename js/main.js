@@ -51,14 +51,11 @@ async function fetchBooks(prefix, page = 1) {
     const to = from + booksPerPage - 1;
     // Classification numbers store spaces as '-' so normalise before querying
     const sanitizedPrefix = prefix.replace(/\s+/g, '-');
-    const likePattern = /[A-Za-z\s]/.test(prefix)
-        ? `${sanitizedPrefix}%`
-        : sanitizedPrefix;
     try {
         const { data, error } = await supabase
             .from('committed_records')
             .select('*')
-            .like('classification_number', likePattern)
+            .like('classification_number', `${sanitizedPrefix}%`)
             .range(from, to);
         if (error) {
             console.error('Error fetching books:', error);
