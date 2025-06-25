@@ -389,8 +389,8 @@ function createLeafCard(data, row) {
     </div>
     <div class="card-right">
       <div class="card-meta">${bookCount}</div>
+      <div class="add-icon">+</div>
     </div>
-    <div class="add-icon">+</div>
     `;
 
     card.innerHTML = innerHtml;
