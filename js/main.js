@@ -49,11 +49,13 @@ formModal.addEventListener('click', (e) => {
 async function fetchBooks(prefix, page = 1) {
     const from = (page - 1) * booksPerPage;
     const to = from + booksPerPage - 1;
+    // Classification numbers store spaces as '-' so normalise before querying
+    const sanitizedPrefix = prefix.replace(/\s+/g, '-');
     try {
         const { data, error } = await supabase
             .from('committed_records')
             .select('*')
-            .like('classification_number', `${prefix}%`)
+            .like('classification_number', `${sanitizedPrefix}%`)
             .range(from, to);
         if (error) {
             console.error('Error fetching books:', error);
