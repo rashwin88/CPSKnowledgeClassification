@@ -591,7 +591,8 @@ body {
 
 .book-author,
 .book-pages,
-.book-year {
+.book-year,
+.book-language {
     font-size: 14px;
     color: #555;
 }
