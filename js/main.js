@@ -119,10 +119,15 @@ function renderBooks() {
             <div class="book-card-left">${b.classification_number || ''}</div>
             <div class="book-card-right">
                 <div class="book-card-header">${b.title || b.book_title || b.name || 'Untitled'}</div>
-                ${b.author || b.authors || b.primary_author ? `<div class="book-author">Main author: ${b.author || b.authors || b.primary_author}</div>` : ''}
+                ${b.main_author && b.main_author !== 'null'
+                    ? `<div class="book-author">Main author: ${b.main_author}</div>`
+                    : (b.author || b.authors || b.primary_author
+                        ? `<div class="book-author">Main author: ${b.author || b.authors || b.primary_author}</div>`
+                        : '')}
                 ${b.first_author && b.first_author !== 'null' ? `<div class="book-author">First author: ${b.first_author}</div>` : ''}
                 ${b.second_author && b.second_author !== 'null' ? `<div class="book-author">Second author: ${b.second_author}</div>` : ''}
                 ${b.language && b.language !== 'null' ? `<div class="book-language">Language: ${b.language}</div>` : ''}
+                ${b.language_note && b.language_note !== 'null' ? `<div class="book-language-note">Language note: ${b.language_note}</div>` : ''}
                 ${b.pages || b.page_count ? `<div class="book-pages">Pages: ${b.pages || b.page_count}</div>` : ''}
                 ${b.year || b.publication_year ? `<div class="book-year">Year: ${b.year || b.publication_year}</div>` : ''}
             </div>
