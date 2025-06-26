@@ -8,11 +8,14 @@ const fifthRow = document.getElementById('fifth-row');
 const sixthRow = document.getElementById('sixth-row');
 const seventhRow = document.getElementById('seventh-row');
 const leafRow = document.getElementById('leaf-row');
+const barrenRow = document.getElementById('barren-row');
 
 const booksPerPage = 10;
 let currentBooks = [];
 let currentPage = 1;
 let currentCardId = '';
+let currentQueryId = '';
+let currentDisplayId = '';
 let currentTotalBooks = 0;
 
 const formModal = document.getElementById('formModal');
@@ -51,6 +54,11 @@ function isBarrenType(type) {
     return String(type).toLowerCase().trim().includes('barren');
 }
 
+function formatDisplayId(id) {
+    if (!id) return '';
+    return id.replace(/#.*?#/, '').replace(/-/g, ' ');
+}
+
 async function fetchBooks(prefix, page = 1) {
     const from = (page - 1) * booksPerPage;
     const to = from + booksPerPage - 1;
@@ -75,7 +83,7 @@ async function fetchBooks(prefix, page = 1) {
 
 async function loadBooks(page = 1) {
     currentPage = page;
-    currentBooks = await fetchBooks(currentCardId, currentPage);
+    currentBooks = await fetchBooks(currentQueryId || currentCardId, currentPage);
     renderBooks();
 }
 
@@ -121,7 +129,7 @@ function renderBooks() {
     const totalPages = Math.max(1, Math.ceil(currentTotalBooks / booksPerPage));
     const listHtml = currentBooks.map((b, i) => `
         <li class="book-card" data-index="${i}">
-            <div class="book-card-left">${b.classification_number || ''}</div>
+            <div class="book-card-left">${formatDisplayId(b.classification_number || '')}</div>
             <div class="book-card-right">
                 <div class="book-card-header">${b.title || b.book_title || b.name || 'Untitled'}</div>
                 ${b.main_author && b.main_author !== 'null'
@@ -138,7 +146,7 @@ function renderBooks() {
             </div>
         </li>`).join('');
 
-    displayBox.innerHTML = `📚 Books in selected category (<strong>${currentCardId}</strong>) : <span class="book-count">${currentTotalBooks}</span>` +
+    displayBox.innerHTML = `📚 Books in selected category (<strong>${currentDisplayId}</strong>) : <span class="book-count">${currentTotalBooks}</span>` +
         `<ul class="book-list">${listHtml}</ul>` +
         `<div class="pagination"><button id="prev-page" ${currentPage === 1 ? 'disabled' : ''}>Prev</button>` +
         `<span>${currentPage} / ${totalPages}</span>` +
@@ -175,6 +183,8 @@ function renderBooks() {
 
 function displayBooksForCard(card) {
     currentCardId = card.getAttribute('data-id');
+    currentDisplayId = formatDisplayId(currentCardId);
+    currentQueryId = currentCardId.replace(/#.*?#/, '');
     const count = parseInt(card.getAttribute('data-total-books'), 10);
     currentTotalBooks = isNaN(count) ? 0 : count;
     currentPage = 1;
@@ -267,7 +277,7 @@ function createCard(data, row) {
     let innerHtml = '';
     // Update inner html for each card to show the category code, category name, and total books
     innerHtml = `
-      <div class="top">${data.id}</div>
+      <div class="top">${formatDisplayId(data.id)}</div>
       <div class="category" lang="en">${insertSoftHyphens(data.node_label)}</div>
       <div class="count">${bookCount}</div>
       <div class="add-icon">+</div>
@@ -310,29 +320,35 @@ function createCard(data, row) {
                 sixthRow.innerHTML = '';
                 seventhRow.innerHTML = '';
                 leafRow.innerHTML = '';
+                barrenRow.innerHTML = '';
             } else if (row == "second-row") {
                 thirdRow.innerHTML = '';
                 fourthRow.innerHTML = '';
                 fifthRow.innerHTML = '';
                 sixthRow.innerHTML = '';
                 seventhRow.innerHTML = '';
+                barrenRow.innerHTML = '';
             } else if (row == "third-row") {
                 fourthRow.innerHTML = '';
                 fifthRow.innerHTML = '';
                 sixthRow.innerHTML = '';
                 seventhRow.innerHTML = '';
+                barrenRow.innerHTML = '';
             } else if (row == "fourth-row") {
                 fifthRow.innerHTML = '';
                 sixthRow.innerHTML = '';
                 seventhRow.innerHTML = '';
+                barrenRow.innerHTML = '';
             } else if (row == "fifth-row") {
                 sixthRow.innerHTML = '';
                 seventhRow.innerHTML = '';
+                barrenRow.innerHTML = '';
             } else if (row == "sixth-row") {
                 seventhRow.innerHTML = '';
+                barrenRow.innerHTML = '';
             }
             const data = await getAllChildren(card.getAttribute('data-id'));
-            renderLeafRow(data || []);
+            renderBarrenRow(data || []);
         }
         else if (isLeafType(nodeType)) {
             if (row == "first-row") {
@@ -343,26 +359,32 @@ function createCard(data, row) {
                 sixthRow.innerHTML = '';
                 seventhRow.innerHTML = '';
                 leafRow.innerHTML = '';
+                barrenRow.innerHTML = '';
             } else if (row == "second-row") {
                 thirdRow.innerHTML = '';
                 fourthRow.innerHTML = '';
                 fifthRow.innerHTML = '';
                 sixthRow.innerHTML = '';
                 seventhRow.innerHTML = '';
+                barrenRow.innerHTML = '';
             } else if (row == "third-row") {
                 fourthRow.innerHTML = '';
                 fifthRow.innerHTML = '';
                 sixthRow.innerHTML = '';
                 seventhRow.innerHTML = '';
+                barrenRow.innerHTML = '';
             } else if (row == "fourth-row") {
                 fifthRow.innerHTML = '';
                 sixthRow.innerHTML = '';
                 seventhRow.innerHTML = '';
+                barrenRow.innerHTML = '';
             } else if (row == "fifth-row") {
                 sixthRow.innerHTML = '';
                 seventhRow.innerHTML = '';
+                barrenRow.innerHTML = '';
             } else if (row == "sixth-row") {
                 seventhRow.innerHTML = '';
+                barrenRow.innerHTML = '';
             }
             const data = await getAllChildren(card.getAttribute('data-id'));
             renderLeafRow(data || []);
@@ -375,6 +397,7 @@ function createCard(data, row) {
             sixthRow.innerHTML = '';
             seventhRow.innerHTML = '';
             leafRow.innerHTML = '';
+            barrenRow.innerHTML = '';
             const data = await getAllChildren(card.getAttribute('data-id'));
             renderSecondRow(data || []);
         } else if (row === 'second-row') {
@@ -383,6 +406,7 @@ function createCard(data, row) {
             sixthRow.innerHTML = '';
             seventhRow.innerHTML = '';
             leafRow.innerHTML = '';
+            barrenRow.innerHTML = '';
             const data = await getAllChildren(card.getAttribute('data-id'));
             renderThirdRow(data || []);
         } else if (row === 'third-row') {
@@ -390,21 +414,25 @@ function createCard(data, row) {
             sixthRow.innerHTML = '';
             seventhRow.innerHTML = '';
             leafRow.innerHTML = '';
+            barrenRow.innerHTML = '';
             const data = await getAllChildren(card.getAttribute('data-id'));
             renderFourthRow(data || []);
         } else if (row === 'fourth-row') {
             sixthRow.innerHTML = '';
             seventhRow.innerHTML = '';
             leafRow.innerHTML = '';
+            barrenRow.innerHTML = '';
             const data = await getAllChildren(card.getAttribute('data-id'));
             renderFifthRow(data || []);
         } else if (row === 'fifth-row') {
             seventhRow.innerHTML = '';
             leafRow.innerHTML = '';
+            barrenRow.innerHTML = '';
             const data = await getAllChildren(card.getAttribute('data-id'));
             renderSixthRow(data || []);
         } else if (row === 'sixth-row') {
             leafRow.innerHTML = '';
+            barrenRow.innerHTML = '';
             const data = await getAllChildren(card.getAttribute('data-id'));
             renderSeventhRow(data || []);
         }
@@ -431,7 +459,7 @@ function createLeafCard(data, row) {
     // Update inner html for each card to show the category code, category name, and total books
     innerHtml = `
     <div class="card-left">
-      <div class="card-title">${data.id}</div>
+      <div class="card-title">${formatDisplayId(data.id)}</div>
     </div>
     <div class="card-center">
       <div class="card-subtitle" lang="en">${insertSoftHyphens(data.node_label)}</div>
@@ -533,6 +561,14 @@ function renderSeventhRow(childData) {
     childData.forEach(data => {
         const card = createCard(data, 'seventh-row');
         seventhRow.appendChild(card);
+    });
+}
+
+function renderBarrenRow(childData) {
+    barrenRow.innerHTML = '';
+    childData.forEach(data => {
+        const card = createCard(data, 'barren-row');
+        barrenRow.appendChild(card);
     });
 }
 
