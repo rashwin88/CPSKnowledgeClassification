@@ -733,6 +733,8 @@ body {
     flex-direction: column;
     flex: 1;
     font-family: "Literata", Arial, Helvetica, sans-serif;
+    height: 100%;
+    min-height: 0;
 }
 
 .react-form .form-fields {
@@ -741,6 +743,7 @@ body {
     grid-template-columns: 1fr 1fr;
     gap: 8px 12px;
     overflow-y: auto;
+    min-height: 0;
     padding-right: 4px;
 }
 
@@ -783,4 +786,11 @@ body {
 
 .react-form button:disabled {
     background-color: #777;
+}
+
+#reactFormRoot {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
 }
