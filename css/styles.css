@@ -662,9 +662,15 @@ body {
     background: #ffffff;
     padding: 20px 20px 16px 20px;
     border-radius: 8px;
-    width: 300px;
+    width: 600px;
+    height: 600px;
+    max-width: 90vw;
+    max-height: 90vh;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     font-family: "Literata", Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .modal-close {
@@ -723,10 +729,19 @@ body {
     background-color: #a00;
 }
 .react-form {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    font-family: "Literata", Arial, Helvetica, sans-serif;
+}
+
+.react-form .form-fields {
+    flex: 1;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px 12px;
-    font-family: "Literata", Arial, Helvetica, sans-serif;
+    overflow-y: auto;
+    padding-right: 4px;
 }
 
 .react-form .form-group {
@@ -752,9 +767,9 @@ body {
 }
 
 .react-form .form-actions {
-    grid-column: 1 / -1;
     text-align: right;
     margin-top: 8px;
+    flex-shrink: 0;
 }
 
 .react-form button {
