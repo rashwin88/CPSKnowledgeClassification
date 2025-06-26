@@ -7,6 +7,50 @@ const supabase = window.supabase.createClient(
 const TopLevelEndPoint = 'https://indian-knowledge-systems-api-production.up.railway.app/get-all-top-level-nodes';
 const ChildrenEndPoint = 'https://indian-knowledge-systems-api-production.up.railway.app/get-all-children';
 
+// Load the full hierarchy data for building classification paths
+window.hierarchyMap = {};
+fetch('assets/hierarchy.json')
+    .then(res => res.json())
+    .then(data => {
+        data.forEach(item => {
+            window.hierarchyMap[item.code] = item;
+        });
+    })
+    .catch(() => { /* ignore fetch errors */ });
+
+window.getClassificationPath = function (code) {
+    const map = window.hierarchyMap;
+    const entry = map[code];
+    if (!entry) return code;
+    const segments = [];
+    if (entry.top_level_node) {
+        const top = map[entry.top_level_node];
+        if (top) segments.push(`${entry.top_level_node} ${top.entry_name}`);
+    }
+    let prefix = entry.top_level_node;
+    if (entry.first_level_node != null) {
+        prefix += `.${entry.first_level_node}`;
+        const first = map[prefix];
+        segments.push(`${entry.first_level_node} ${first ? first.entry_name : ''}`);
+    }
+    if (entry.second_level_node != null) {
+        prefix += entry.second_level_node;
+        const second = map[prefix];
+        segments.push(`${entry.second_level_node} ${second ? second.entry_name : ''}`);
+    }
+    if (entry.third_level_node != null) {
+        prefix += entry.third_level_node;
+        const third = map[prefix];
+        segments.push(`${entry.third_level_node} ${third ? third.entry_name : ''}`);
+    }
+    if (entry.fourth_level_node != null) {
+        prefix += entry.fourth_level_node;
+        const fourth = map[prefix];
+        segments.push(`${entry.fourth_level_node} ${fourth ? fourth.entry_name : ''}`);
+    }
+    return segments.join(' / ');
+};
+
 function showLoader() {
     document.getElementById('loader').classList.remove('hidden');
 }
