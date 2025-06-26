@@ -7,52 +7,63 @@ const supabase = window.supabase.createClient(
 const TopLevelEndPoint = 'https://indian-knowledge-systems-api-production.up.railway.app/get-all-top-level-nodes';
 const ChildrenEndPoint = 'https://indian-knowledge-systems-api-production.up.railway.app/get-all-children';
 
-// Load the full hierarchy data for building classification paths
+// Map of classification code to hierarchy entry.
+// Populated on demand using the API endpoints.
 window.hierarchyMap = {};
-fetch('assets/hierarchy.json')
-    .then(res => res.json())
-    .then(data => {
-        data.forEach(item => {
-            window.hierarchyMap[item.code] = item;
-        });
-    })
-    .catch(() => { /* ignore fetch errors */ });
 
-window.getClassificationPath = function (code) {
-    const map = window.hierarchyMap;
-    const entry = map[code];
-    if (!entry) return code;
+// Determine the parent code for a given classification number
+function getParentCode(code) {
+    const [top, rest] = code.split('.');
+    if (!rest) return null;
+    return rest.length === 1 ? top : `${top}.${rest.slice(0, -1)}`;
+}
+
+// Fetch a hierarchy entry for the given code using the API
+// Results are cached in window.hierarchyMap
+async function fetchHierarchyEntry(code) {
+    if (window.hierarchyMap[code]) return window.hierarchyMap[code];
+
+    let entry = null;
+    if (!code.includes('.')) {
+        const nodes = await getTopLevelNodes();
+        entry = nodes.find(n => n.id === code || n.code === code || n.top_level_node === code);
+    } else {
+        const parent = getParentCode(code);
+        if (parent) {
+            const children = await getAllChildren(parent);
+            entry = children.find(c => c.id === code || c.code === code);
+        }
+    }
+
+    if (entry) {
+        window.hierarchyMap[code] = entry;
+    }
+    return entry || null;
+}
+
+// Build a classification path string for a given code.
+// Handles any depth by iteratively fetching each prefix from the API.
+// Missing prefixes are still included so subjects show the full code path.
+window.getClassificationPath = async function (code) {
+    if (!code) return '';
+
     const segments = [];
-    // Top level
-    if (entry.top_level_node) {
-        const top = map[entry.top_level_node];
-        segments.push(`${entry.top_level_node} ${top ? top.entry_name : ''}`);
+    const [topLevel, rest = ''] = code.split('.');
+
+    const topEntry = await fetchHierarchyEntry(topLevel);
+    const topLabel = topEntry ? (topEntry.node_label || topEntry.entry_name || '') : '';
+    segments.push(`${topLevel}${topLabel ? ' ' + topLabel : ''}`.trim());
+
+    let prefix = topLevel;
+    for (let i = 0; i < rest.length; i++) {
+        const digit = rest[i];
+        prefix = i === 0 ? `${prefix}.${digit}` : `${prefix}${digit}`;
+        const entry = await fetchHierarchyEntry(prefix);
+        const name = entry ? (entry.node_label || entry.entry_name || '') : '';
+        const label = name ? `${prefix} ${name}` : prefix;
+        segments.push(label.trim());
     }
-    let prefix = entry.top_level_node;
-    // First level
-    if (entry.first_level_node != null) {
-        prefix = `${prefix}.${entry.first_level_node}`;
-        const first = map[prefix];
-        segments.push(`${prefix} ${first ? first.entry_name : ''}`);
-    }
-    // Second level
-    if (entry.second_level_node != null) {
-        prefix = `${prefix}${entry.second_level_node}`;
-        const second = map[prefix];
-        segments.push(`${prefix} ${second ? second.entry_name : ''}`);
-    }
-    // Third level
-    if (entry.third_level_node != null) {
-        prefix = `${prefix}${entry.third_level_node}`;
-        const third = map[prefix];
-        segments.push(`${prefix} ${third ? third.entry_name : ''}`);
-    }
-    // Fourth level
-    if (entry.fourth_level_node != null) {
-        prefix = `${prefix}${entry.fourth_level_node}`;
-        const fourth = map[prefix];
-        segments.push(`${prefix} ${fourth ? fourth.entry_name : ''}`);
-    }
+
     return segments.join(' / ');
 };
 

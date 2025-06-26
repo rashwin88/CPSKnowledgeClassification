@@ -12,13 +12,8 @@
     }
 
     function CardForm({ classificationNumber, onClose }) {
-        const getSubject = () =>
-            window.getClassificationPath
-                ? window.getClassificationPath(classificationNumber)
-                : classificationNumber;
-
         const [formData, setFormData] = useState({
-            subject: getSubject(),
+            subject: '',
             item_number: '',
             title: '',
             subtitle: '',
@@ -47,7 +42,17 @@
 
         // Update subject when the classification changes
         useEffect(() => {
-            setFormData(prev => ({ ...prev, subject: getSubject() }));
+            let cancelled = false;
+            async function updateSubject() {
+                const subject = window.getClassificationPath
+                    ? await window.getClassificationPath(classificationNumber)
+                    : classificationNumber;
+                if (!cancelled) {
+                    setFormData(prev => ({ ...prev, subject }));
+                }
+            }
+            updateSubject();
+            return () => { cancelled = true; };
         }, [classificationNumber]);
 
         const handleChange = (e) => {
