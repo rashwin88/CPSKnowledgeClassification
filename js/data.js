@@ -23,30 +23,35 @@ window.getClassificationPath = function (code) {
     const entry = map[code];
     if (!entry) return code;
     const segments = [];
+    // Top level
     if (entry.top_level_node) {
         const top = map[entry.top_level_node];
-        if (top) segments.push(`${entry.top_level_node} ${top.entry_name}`);
+        segments.push(`${entry.top_level_node} ${top ? top.entry_name : ''}`);
     }
     let prefix = entry.top_level_node;
+    // First level
     if (entry.first_level_node != null) {
-        prefix += `.${entry.first_level_node}`;
+        prefix = `${prefix}.${entry.first_level_node}`;
         const first = map[prefix];
-        segments.push(`${entry.first_level_node} ${first ? first.entry_name : ''}`);
+        segments.push(`${prefix} ${first ? first.entry_name : ''}`);
     }
+    // Second level
     if (entry.second_level_node != null) {
-        prefix += entry.second_level_node;
+        prefix = `${prefix}${entry.second_level_node}`;
         const second = map[prefix];
-        segments.push(`${entry.second_level_node} ${second ? second.entry_name : ''}`);
+        segments.push(`${prefix} ${second ? second.entry_name : ''}`);
     }
+    // Third level
     if (entry.third_level_node != null) {
-        prefix += entry.third_level_node;
+        prefix = `${prefix}${entry.third_level_node}`;
         const third = map[prefix];
-        segments.push(`${entry.third_level_node} ${third ? third.entry_name : ''}`);
+        segments.push(`${prefix} ${third ? third.entry_name : ''}`);
     }
+    // Fourth level
     if (entry.fourth_level_node != null) {
-        prefix += entry.fourth_level_node;
+        prefix = `${prefix}${entry.fourth_level_node}`;
         const fourth = map[prefix];
-        segments.push(`${entry.fourth_level_node} ${fourth ? fourth.entry_name : ''}`);
+        segments.push(`${prefix} ${fourth ? fourth.entry_name : ''}`);
     }
     return segments.join(' / ');
 };
