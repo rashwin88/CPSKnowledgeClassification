@@ -193,8 +193,9 @@ function displayBooksForCard(card) {
 
 
 function insertSoftHyphens(text) {
-    // Add soft hyphens after logical break points (like capital letters or compound parts)
-    return text.replace(/([a-zāīūṛṅñṭḍṇśṣ]+)/gi, '$1&shy;');
+    // Insert a soft hyphen after every character so that
+    // a hyphen is displayed if the word wraps to the next line.
+    return text.replace(/([^\s])/g, '$1&shy;');
 }
 
 
