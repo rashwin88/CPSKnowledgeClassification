@@ -43,12 +43,12 @@ formModal.addEventListener('click', (e) => {
 
 function isLeafType(type) {
     if (!type) return false;
-    return String(type).toLowerCase() === 'leaf';
+    return String(type).toLowerCase().trim().includes('leaf');
 }
 
 function isBarrenType(type) {
     if (!type) return false;
-    return String(type).toLowerCase() === 'barren';
+    return String(type).toLowerCase().trim().includes('barren');
 }
 
 async function fetchBooks(prefix, page = 1) {
