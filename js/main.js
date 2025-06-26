@@ -43,7 +43,12 @@ formModal.addEventListener('click', (e) => {
 
 function isLeafType(type) {
     if (!type) return false;
-    return /barren|leaf/.test(String(type).toLowerCase());
+    return String(type).toLowerCase() === 'leaf';
+}
+
+function isBarrenType(type) {
+    if (!type) return false;
+    return String(type).toLowerCase() === 'barren';
 }
 
 async function fetchBooks(prefix, page = 1) {
@@ -295,7 +300,41 @@ function createCard(data, row) {
         // Add 'selected' to this card
         card.classList.add('selected');
 
-        if (isLeafType(card.getAttribute('data-node-type'))) {
+        const nodeType = card.getAttribute('data-node-type');
+        if (isBarrenType(nodeType)) {
+            if (row == "first-row") {
+                secondRow.innerHTML = '';
+                thirdRow.innerHTML = '';
+                fourthRow.innerHTML = '';
+                fifthRow.innerHTML = '';
+                sixthRow.innerHTML = '';
+                seventhRow.innerHTML = '';
+                leafRow.innerHTML = '';
+            } else if (row == "second-row") {
+                thirdRow.innerHTML = '';
+                fourthRow.innerHTML = '';
+                fifthRow.innerHTML = '';
+                sixthRow.innerHTML = '';
+                seventhRow.innerHTML = '';
+            } else if (row == "third-row") {
+                fourthRow.innerHTML = '';
+                fifthRow.innerHTML = '';
+                sixthRow.innerHTML = '';
+                seventhRow.innerHTML = '';
+            } else if (row == "fourth-row") {
+                fifthRow.innerHTML = '';
+                sixthRow.innerHTML = '';
+                seventhRow.innerHTML = '';
+            } else if (row == "fifth-row") {
+                sixthRow.innerHTML = '';
+                seventhRow.innerHTML = '';
+            } else if (row == "sixth-row") {
+                seventhRow.innerHTML = '';
+            }
+            const data = await getAllChildren(card.getAttribute('data-id'));
+            renderLeafRow(data || []);
+        }
+        else if (isLeafType(nodeType)) {
             if (row == "first-row") {
                 secondRow.innerHTML = '';
                 thirdRow.innerHTML = '';
