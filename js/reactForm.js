@@ -44,9 +44,11 @@
         useEffect(() => {
             let cancelled = false;
             async function updateSubject() {
-                const subject = window.getClassificationPath
-                    ? await window.getClassificationPath(classificationNumber)
-                    : classificationNumber;
+                const cleaned = classificationNumber.replace(/#.*?#/, '');
+                const raw = window.getClassificationPath
+                    ? await window.getClassificationPath(cleaned)
+                    : cleaned;
+                const subject = raw.replace(/-/g, ' ');
                 if (!cancelled) {
                     setFormData(prev => ({ ...prev, subject }));
                 }
