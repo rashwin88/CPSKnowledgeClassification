@@ -432,14 +432,13 @@ body {
 .horizontal-card {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    position: relative;
+    align-items: left;
     border: 1px solid #333;
     border-radius: 8px;
     background-color: #fff;
     padding: 12px 16px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    font-family: "Literata", Arial, Helvetica, sans-serif;
+    font-family: 'et-book', serif;
     transition: background-color 0.3s ease;
     cursor: pointer;
 }
@@ -457,10 +456,8 @@ body {
 .card-left {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: left;
     gap: 3px;
-    flex-shrink: 0;
-    margin-right: 6px;
 }
 
 .card-center {
@@ -468,8 +465,6 @@ body {
     flex-direction: row;
     align-items: center;
     gap: 3px;
-    flex: 1;
-    overflow: hidden;
 }
 
 .card-title {
@@ -483,18 +478,16 @@ body {
     color: #555;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    word-break: break-word;
     hyphens: auto;
 }
 
 .card-right {
     display: flex;
     flex-direction: row;
-    align-items: center;
-    gap: 4px;
+    align-items: right;
+    gap: 3px;
     font-size: 14px;
     color: #777;
-    flex-shrink: 0;
 }
 
 .horizontal-card.selected .card-left,
@@ -625,13 +618,6 @@ body {
     cursor: pointer;
     font-weight: bold;
     font-size: 14px;
-}
-
-.horizontal-card .add-icon {
-    position: static;
-    bottom: auto;
-    right: auto;
-    margin-left: 4px;
 }
 
 .modal-overlay {
