@@ -430,12 +430,11 @@ body {
 }
 
 .barren-card-container {
-    display: flex;
-    flex-wrap: nowrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
     gap: 4px;
     padding: 8px;
     background-color: #ddd;
-    width: max-content;
 }
 
 .horizontal-card {
