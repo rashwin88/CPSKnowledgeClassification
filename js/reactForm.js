@@ -1,6 +1,6 @@
 // React form component for adding staging entries
 (function () {
-    const { useState } = React;
+    const { useState, useEffect } = React;
 
     function FormField({ label, name, value, onChange, type = 'text', readOnly = false, required = false }) {
         return React.createElement('div', { className: 'form-group' }, [
@@ -12,11 +12,13 @@
     }
 
     function CardForm({ classificationNumber, onClose }) {
-        const defaultSubject = window.getClassificationPath
-            ? window.getClassificationPath(classificationNumber)
-            : '';
+        const getSubject = () =>
+            window.getClassificationPath
+                ? window.getClassificationPath(classificationNumber)
+                : classificationNumber;
+
         const [formData, setFormData] = useState({
-            subject: defaultSubject,
+            subject: getSubject(),
             item_number: '',
             title: '',
             subtitle: '',
@@ -42,6 +44,11 @@
             libraries: ''
         });
         const [submitting, setSubmitting] = useState(false);
+
+        // Update subject when the classification changes
+        useEffect(() => {
+            setFormData(prev => ({ ...prev, subject: getSubject() }));
+        }, [classificationNumber]);
 
         const handleChange = (e) => {
             const { name, value } = e.target;
@@ -105,7 +112,7 @@
             React.createElement('div', { className: 'form-fields' }, [
                 FormField({ label: 'Classification Number', name: 'classification_number', value: classificationNumber, onChange: () => {}, readOnly: true }),
                 FormField({ label: 'Item Number', name: 'item_number', value: formData.item_number, onChange: handleChange, required: true }),
-                FormField({ label: 'Subject', name: 'subject', value: formData.subject, onChange: handleChange }),
+                FormField({ label: 'Subject', name: 'subject', value: formData.subject, onChange: () => {}, readOnly: true }),
                 FormField({ label: 'Title', name: 'title', value: formData.title, onChange: handleChange }),
                 FormField({ label: 'Subtitle', name: 'subtitle', value: formData.subtitle, onChange: handleChange }),
                 FormField({ label: 'Title With Author', name: 'title_with_author', value: formData.title_with_author, onChange: handleChange }),

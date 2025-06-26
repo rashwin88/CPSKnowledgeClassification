@@ -661,12 +661,12 @@ body {
     position: relative;
     background: #ffffff;
     padding: 20px 20px 16px 20px;
-    border-radius: 8px;
+    border-radius: 10px;
     width: 600px;
     height: 600px;
     max-width: 90vw;
     max-height: 90vh;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
     font-family: "Literata", Arial, Helvetica, sans-serif;
     display: flex;
     flex-direction: column;
@@ -696,6 +696,8 @@ body {
     max-height: 80vh;
     overflow-y: auto;
     background-color: #fafafa;
+    border-radius: 10px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
 }
 
 .book-details-grid {
