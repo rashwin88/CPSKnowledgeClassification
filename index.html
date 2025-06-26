@@ -120,21 +120,7 @@
     <div id="formModal" class="modal-overlay hidden">
         <div class="modal-content">
             <button type="button" class="modal-close" id="modalClose">&times;</button>
-            <form id="cardForm">
-                <label>
-                    Number:
-                    <input type="text" id="cardNumber" readonly />
-                </label>
-                <label>
-                    Name:
-                    <input type="text" id="dummyName" />
-                </label>
-                <label>
-                    Description:
-                    <textarea id="dummyDesc"></textarea>
-                </label>
-                <button type="submit">Submit</button>
-            </form>
+            <div id="reactFormRoot"></div>
         </div>
     </div>
 
@@ -147,8 +133,11 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.5/dist/umd/supabase.min.js"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
     <script defer src="js/sidebar.js"></script>
     <script defer src="js/data.js"></script>
+    <script defer src="js/reactForm.js"></script>
     <script defer src="js/main.js"></script>
 
 

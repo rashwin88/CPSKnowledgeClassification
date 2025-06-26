@@ -16,12 +16,12 @@ let currentCardId = '';
 let currentTotalBooks = 0;
 
 const formModal = document.getElementById('formModal');
-const cardNumberInput = document.getElementById('cardNumber');
-const cardForm = document.getElementById('cardForm');
 const modalCloseBtn = document.getElementById('modalClose');
 
 function openFormModal(id) {
-    cardNumberInput.value = id;
+    if (window.renderForm) {
+        window.renderForm(id);
+    }
     formModal.classList.remove('hidden');
     requestAnimationFrame(() => {
         formModal.classList.add('active');
@@ -33,11 +33,6 @@ function closeFormModal() {
     setTimeout(() => formModal.classList.add('hidden'), 300);
 }
 
-cardForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    closeFormModal();
-    alert('Dummy form submitted');
-});
 
 modalCloseBtn.addEventListener('click', closeFormModal);
 formModal.addEventListener('click', (e) => {
