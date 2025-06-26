@@ -47,20 +47,39 @@ async function fetchHierarchyEntry(code) {
 window.getClassificationPath = async function (code) {
     if (!code) return '';
 
+    code = code.trim();
     const segments = [];
-    const [topLevel, rest = ''] = code.split('.');
+
+    // Split into numeric part and optional suffix (e.g. "042.5414 PEY")
+    let numericPart = code;
+    let suffix = '';
+    const spaceMatch = code.match(/^(\S+)\s+(.+)/);
+    if (spaceMatch) {
+        numericPart = spaceMatch[1];
+        suffix = spaceMatch[2];
+    }
+
+    const [topLevel, restDigits = ''] = numericPart.split('.');
 
     const topEntry = await fetchHierarchyEntry(topLevel);
     const topLabel = topEntry ? (topEntry.node_label || topEntry.entry_name || '') : '';
     segments.push(`${topLevel}${topLabel ? ' ' + topLabel : ''}`.trim());
 
     let prefix = topLevel;
-    for (let i = 0; i < rest.length; i++) {
-        const digit = rest[i];
+    for (let i = 0; i < restDigits.length; i++) {
+        const digit = restDigits[i];
         prefix = i === 0 ? `${prefix}.${digit}` : `${prefix}${digit}`;
         const entry = await fetchHierarchyEntry(prefix);
         const name = entry ? (entry.node_label || entry.entry_name || '') : '';
         const label = name ? `${prefix} ${name}` : prefix;
+        segments.push(label.trim());
+    }
+
+    if (suffix) {
+        const fullCode = `${numericPart} ${suffix}`;
+        const entry = await fetchHierarchyEntry(fullCode);
+        const name = entry ? (entry.node_label || entry.entry_name || '') : '';
+        const label = name ? `${fullCode}#${name}#` : fullCode;
         segments.push(label.trim());
     }
 
