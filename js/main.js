@@ -15,10 +15,6 @@ let currentPage = 1;
 let currentCardId = '';
 let currentTotalBooks = 0;
 
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 const formModal = document.getElementById('formModal');
 const modalCloseBtn = document.getElementById('modalClose');
 
@@ -269,6 +265,7 @@ function createCard(data, row) {
       <div class="top">${data.id}</div>
       <div class="category" lang="en">${insertSoftHyphens(data.node_label)}</div>
       <div class="count">${bookCount}</div>
+      <div class="add-icon">+</div>
     `;
 
     card.innerHTML = innerHtml;
@@ -388,7 +385,7 @@ function createLeafCard(data, row) {
     card.setAttribute('data-id', data.id);
     const leafType = data.type || data.node_type || '';
     card.setAttribute('data-node-type', leafType);
-    const bookCount = getRandomInt(5, 50);
+    const bookCount = 0;
     card.setAttribute('data-total-books', bookCount);
     card.style.backgroundColor = data.color;
     let innerHtml = '';
@@ -402,10 +399,24 @@ function createLeafCard(data, row) {
     </div>
     <div class="card-right">
       <div class="card-meta">${bookCount}</div>
+      <div class="add-icon">+</div>
     </div>
     `;
 
     card.innerHTML = innerHtml;
+    // Fetch count asynchronously
+    getBookCount(data.id).then(count => {
+        card.setAttribute('data-total-books', count);
+        const countEl = card.querySelector('.card-meta');
+        if (countEl) {
+            countEl.textContent = count;
+        }
+    });
+    const addIcon = card.querySelector('.add-icon');
+    addIcon.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openFormModal(data.id);
+    });
 
     // Add click handler to manage selection
     card.addEventListener('click', async () => {
