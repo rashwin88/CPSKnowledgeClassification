@@ -41,6 +41,11 @@ formModal.addEventListener('click', (e) => {
     }
 });
 
+function isLeafType(type) {
+    if (!type) return false;
+    return /barren|leaf/.test(String(type).toLowerCase());
+}
+
 async function fetchBooks(prefix, page = 1) {
     const from = (page - 1) * booksPerPage;
     const to = from + booksPerPage - 1;
@@ -249,7 +254,8 @@ function createCard(data, row) {
     card.setAttribute('data-node-level', data.node_level);
     card.setAttribute('data-node-label', data.node_label);
     card.setAttribute('data-id', data.id);
-    card.setAttribute('data-node-type', data.type);
+    const nodeType = data.type || data.node_type || '';
+    card.setAttribute('data-node-type', nodeType);
     const bookCount = 0;
     card.setAttribute('data-total-books', bookCount);
     card.style.backgroundColor = data.color;
@@ -289,7 +295,7 @@ function createCard(data, row) {
         // Add 'selected' to this card
         card.classList.add('selected');
 
-        if (card.getAttribute('data-node-type') === 'barren') {
+        if (isLeafType(card.getAttribute('data-node-type'))) {
             if (row == "first-row") {
                 secondRow.innerHTML = '';
                 thirdRow.innerHTML = '';
@@ -377,7 +383,8 @@ function createLeafCard(data, row) {
     card.setAttribute('data-node-level', data.node_level);
     card.setAttribute('data-node-label', data.node_label);
     card.setAttribute('data-id', data.id);
-    card.setAttribute('data-node-type', data.type);
+    const leafType = data.type || data.node_type || '';
+    card.setAttribute('data-node-type', leafType);
     const bookCount = 0;
     card.setAttribute('data-total-books', bookCount);
     card.style.backgroundColor = data.color;
