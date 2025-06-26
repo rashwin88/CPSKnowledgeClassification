@@ -12,8 +12,11 @@
     }
 
     function CardForm({ classificationNumber, onClose }) {
+        const defaultSubject = window.getClassificationPath
+            ? window.getClassificationPath(classificationNumber)
+            : '';
         const [formData, setFormData] = useState({
-            subject: '',
+            subject: defaultSubject,
             item_number: '',
             title: '',
             subtitle: '',
