@@ -11,39 +11,45 @@
         ]);
     }
 
+    const emptyFormState = {
+        subject: '',
+        item_number: '',
+        title: '',
+        subtitle: '',
+        title_with_author: '',
+        title_indian_language: '',
+        subtitle_indian_language: '',
+        main_author: '',
+        second_author: '',
+        third_author: '',
+        statement_of_responsibility: '',
+        edition: '',
+        publisher: '',
+        year_of_publication: '',
+        pages: '',
+        volume: '',
+        language: '',
+        language_note: '',
+        general_note: '',
+        toc: '',
+        accession_number: '',
+        series_note: '',
+        cataloguer: '',
+        libraries: ''
+    };
+
     function CardForm({ classificationNumber, onClose, initialData = null }) {
-        const [formData, setFormData] = useState(() => ({
-            subject: '',
-            item_number: '',
-            title: '',
-            subtitle: '',
-            title_with_author: '',
-            title_indian_language: '',
-            subtitle_indian_language: '',
-            main_author: '',
-            second_author: '',
-            third_author: '',
-            statement_of_responsibility: '',
-            edition: '',
-            publisher: '',
-            year_of_publication: '',
-            pages: '',
-            volume: '',
-            language: '',
-            language_note: '',
-            general_note: '',
-            toc: '',
-            accession_number: '',
-            series_note: '',
-            cataloguer: '',
-            libraries: ''
-        }));
-        // Populate initialData for edit workflow
+        const [formData, setFormData] = useState(() => ({ ...emptyFormState }));
+        // Populate or reset form data when editing/adding records
         useEffect(() => {
             if (initialData) {
-                setFormData(prev => ({ ...prev, ...initialData }));
+                // Editing existing book
+                setFormData({ ...emptyFormState, ...initialData });
+            } else {
+                // Fresh form for new entry
+                setFormData({ ...emptyFormState });
             }
-        }, [initialData]);
+        }, [initialData, classificationNumber]);
         const [submitting, setSubmitting] = useState(false);
 
         // Update subject when the classification changes
@@ -157,6 +163,10 @@
     }
 
     const root = ReactDOM.createRoot(document.getElementById('reactFormRoot'));
+
+    window.unmountForm = function () {
+        root.render(null);
+    };
 
     window.renderForm = function (classificationNumber) {
         root.render(React.createElement(CardForm, {
