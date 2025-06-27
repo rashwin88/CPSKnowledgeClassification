@@ -92,23 +92,12 @@ const bookModalBody = document.getElementById('bookModalBody');
 const bookModalClose = document.getElementById('bookModalClose');
 
 function openBookModal(book) {
-    const formatField = (name) =>
-        name
-            .replace(/_/g, ' ')
-            .replace(/\w\S*/g, (w) => w.charAt(0).toUpperCase() + w.slice(1));
-
-    const html = Object.entries(book)
-        .filter(([, value]) => value !== null && value !== undefined && value !== 'null' && value !== '')
-        .map(
-            ([key, value]) =>
-                `<div class="field-name">${formatField(key)}</div><div class="field-value">${value}</div>`
-        )
-        .join('');
-
-    bookModalBody.innerHTML = `<div class="book-details-grid">${html}</div>`;
-    bookModal.classList.remove('hidden');
+    if (window.renderEditForm) {
+        window.renderEditForm(book);
+    }
+    formModal.classList.remove('hidden');
     requestAnimationFrame(() => {
-        bookModal.classList.add('active');
+        formModal.classList.add('active');
     });
 }
 

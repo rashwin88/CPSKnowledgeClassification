@@ -1,4 +1,4 @@
-// React form component for adding staging entries
+// React form component for adding or editing staging entries
 (function () {
     const { useState, useEffect } = React;
 
@@ -11,8 +11,8 @@
         ]);
     }
 
-    function CardForm({ classificationNumber, onClose }) {
-        const [formData, setFormData] = useState({
+    function CardForm({ classificationNumber, onClose, initialData = null }) {
+        const [formData, setFormData] = useState(() => ({
             subject: '',
             item_number: '',
             title: '',
@@ -37,7 +37,13 @@
             series_note: '',
             cataloguer: '',
             libraries: ''
-        });
+        }));
+        // Populate initialData for edit workflow
+        useEffect(() => {
+            if (initialData) {
+                setFormData(prev => ({ ...prev, ...initialData }));
+            }
+        }, [initialData]);
         const [submitting, setSubmitting] = useState(false);
 
         // Update subject when the classification changes
@@ -69,7 +75,8 @@
                 return;
             }
             setSubmitting(true);
-            const id = (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 15));
+            const id = initialData && initialData.id ? initialData.id :
+                (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 15));
             const payload = {
                 id,
                 classification_number: classificationNumber,
@@ -154,6 +161,14 @@
     window.renderForm = function (classificationNumber) {
         root.render(React.createElement(CardForm, {
             classificationNumber,
+            onClose: window.closeFormModal
+        }));
+    };
+
+    window.renderEditForm = function (bookData) {
+        root.render(React.createElement(CardForm, {
+            classificationNumber: bookData.classification_number,
+            initialData: bookData,
             onClose: window.closeFormModal
         }));
     };
