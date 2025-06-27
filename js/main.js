@@ -33,6 +33,9 @@ function openFormModal(id) {
 
 function closeFormModal() {
     formModal.classList.remove('active');
+    if (window.unmountForm) {
+        window.unmountForm();
+    }
     setTimeout(() => formModal.classList.add('hidden'), 300);
 }
 
