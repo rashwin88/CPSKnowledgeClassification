@@ -185,9 +185,26 @@ function displayBooksForCard(card) {
 
 
 function insertSoftHyphens(text) {
-    // Insert a soft hyphen after every character so that
-    // a hyphen is displayed if the word wraps to the next line.
-    return text.replace(/([^\s])/g, '$1&shy;');
+    const noHyphen = ['studies', 'puranas', 'purana', 'history'];
+    const custom = {
+        'Mahabharata': 'Maha&shy;bha&shy;ra&shy;ta',
+        'Ramayana': 'Ra&shy;ma&shy;ya&shy;na',
+        'Bhagavad': 'Bha&shy;ga&shy;vad',
+        'Gita': 'Gi&shy;ta',
+        'Karnataka': 'Kar&shy;na&shy;ta&shy;ka',
+        'Tamil': 'Ta&shy;mil',
+        'Telangana': 'Te&shy;lan&shy;ga&shy;na',
+        'Andhra': 'An&shy;dhra',
+        'Pradesh': 'Pra&shy;desh'
+    };
+    return text.split(/(\s+)/).map(part => {
+        const word = part.trim();
+        if (!word) return part;
+        const lower = word.toLowerCase();
+        if (noHyphen.includes(lower)) return part;
+        if (custom[word]) return custom[word];
+        return word.replace(/([aeiou])([bcdfghjklmnpqrstvwxyz])/gi, '$1&shy;$2');
+    }).join('');
 }
 
 

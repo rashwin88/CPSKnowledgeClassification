@@ -127,7 +127,8 @@ body {
     font-weight: bold;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    hyphens: auto;
+    /* rely only on manual soft hyphens */
+    hyphens: manual;
 }
 
 .card .count {
@@ -492,7 +493,8 @@ body {
     word-wrap: break-word;
     overflow-wrap: break-word;
     word-break: break-word;
-    hyphens: auto;
+    /* rely only on manual soft hyphens */
+    hyphens: manual;
 }
 
 .card-right {
