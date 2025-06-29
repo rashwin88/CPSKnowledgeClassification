@@ -139,10 +139,11 @@ async function loadAllNodes() {
 }
 
 // Expose loader
+
 window.loadAllNodes = loadAllNodes;
 
 // Cache for parent sequences of each node
-const nodeParentsCache = {};
+// (initialized earlier)
 
 // Cache for book counts by classification prefix
 const bookCountCache = {};
