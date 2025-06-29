@@ -866,3 +866,13 @@ body {
 .suggestion-item:hover {
     background-color: #f0f0f0;
 }
+
+/* Highlighted search term */
+.search-highlight {
+    font-weight: bold;
+    color: green;
+    font-size: 1.1em;
+    padding: 1px 3px;
+    border: 1px solid green;
+    border-radius: 3px;
+}
