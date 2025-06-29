@@ -646,6 +646,13 @@ const suggestionsBox = document.getElementById('search-suggestions');
 let searchResults = [];
 let searchDebounce = null;
 
+function highlightTerm(text, term) {
+    if (!term) return text;
+    const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(escaped, 'ig');
+    return text.replace(regex, (m) => `<span class="search-highlight">${m}</span>`);
+}
+
 function getPrefixesFromCode(code) {
     if (!code) return [];
     code = code.replace(/#.*?#/, '').replace(/-/g, ' ').trim();
@@ -765,12 +772,15 @@ async function searchRecords(term) {
             const subtitle = r.subtitle ? `: ${r.subtitle}` : '';
             const code = formatDisplayId(r.classification_number || '');
             const author = r.main_author || r.author || r.authors || r.primary_author || '';
+            const displayCode = highlightTerm(code, term);
+            const displayHeader = highlightTerm(`${title}${subtitle}`, term);
+            const displayAuthor = author ? highlightTerm(`Main author: ${author}`, term) : '';
             return `
                 <div class="suggestion-item book-card" data-idx="${i}" data-code="${r.classification_number}">
-                    <div class="book-card-left">${code}</div>
+                    <div class="book-card-left">${displayCode}</div>
                     <div class="book-card-right">
-                        <div class="book-card-header">${title}${subtitle}</div>
-                        ${author ? `<div class="book-author">Main author: ${author}</div>` : ''}
+                        <div class="book-card-header">${displayHeader}</div>
+                        ${displayAuthor ? `<div class="book-author">${displayAuthor}</div>` : ''}
                     </div>
                 </div>`;
         }).join('');
