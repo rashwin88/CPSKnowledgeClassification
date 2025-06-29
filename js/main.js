@@ -618,3 +618,105 @@ getTopLevelNodes().then(topLevelNodes => {
     console.log(topLevelNodes);
     renderFirstRow(topLevelNodes);
 });
+
+// --- Search functionality ---
+const searchInput = document.getElementById('search-input');
+const suggestionsBox = document.getElementById('search-suggestions');
+let searchResults = [];
+let searchDebounce = null;
+
+function getPrefixesFromCode(code) {
+    if (!code) return [];
+    code = code.replace(/#.*?#/, '').replace(/-/g, ' ').trim();
+    const spaceIndex = code.indexOf(' ');
+    if (spaceIndex !== -1) {
+        code = code.slice(0, spaceIndex);
+    }
+    const [top, rest = ''] = code.split('.');
+    const prefixes = [top];
+    let prefix = top;
+    for (let i = 0; i < rest.length; i++) {
+        prefix = i === 0 ? `${prefix}.${rest[i]}` : `${prefix}${rest[i]}`;
+        prefixes.push(prefix);
+    }
+    return prefixes;
+}
+
+async function expandToClassification(code) {
+    const prefixes = getPrefixesFromCode(code);
+    if (!prefixes.length) return;
+    const rows = ['first-row', 'second-row', 'third-row', 'fourth-row', 'fifth-row', 'sixth-row', 'seventh-row'];
+    const renderFns = [null, renderSecondRow, renderThirdRow, renderFourthRow, renderFifthRow, renderSixthRow, renderSeventhRow];
+    let parent = null;
+    for (let i = 0; i < prefixes.length && i < rows.length; i++) {
+        const row = rows[i];
+        let card = document.querySelector(`#${row} .card[data-id='${prefixes[i]}']`);
+        if (!card && parent) {
+            const children = await getAllChildren(parent);
+            if (renderFns[i]) renderFns[i](children || []);
+            card = document.querySelector(`#${row} .card[data-id='${prefixes[i]}']`);
+        }
+        if (card) {
+            card.click();
+            parent = prefixes[i];
+        } else {
+            break;
+        }
+    }
+}
+
+function displaySingleBook(book) {
+    currentBooks = [book];
+    currentTotalBooks = 1;
+    currentPage = 1;
+    currentDisplayId = formatDisplayId(book.classification_number || '');
+    renderBooks();
+}
+
+async function searchRecords(term) {
+    if (!term) {
+        suggestionsBox.classList.add('hidden');
+        suggestionsBox.innerHTML = '';
+        return;
+    }
+    try {
+        const { data, error } = await supabase
+            .from('committed_records')
+            .select('*')
+            .or(`title.ilike.%${term}%,book_title.ilike.%${term}%,name.ilike.%${term}%,classification_number.ilike.%${term}%,main_author.ilike.%${term}%,author.ilike.%${term}%,primary_author.ilike.%${term}%`)
+            .limit(10);
+        if (error) {
+            console.error('Search error:', error);
+            return;
+        }
+        searchResults = data || [];
+        suggestionsBox.innerHTML = searchResults.map((r, i) => {
+            const title = r.title || r.book_title || r.name || 'Untitled';
+            const code = formatDisplayId(r.classification_number || '');
+            return `<div class="suggestion-item" data-idx="${i}" data-code="${r.classification_number}">${title} - ${code}</div>`;
+        }).join('');
+        suggestionsBox.classList.remove('hidden');
+    } catch (err) {
+        console.error('Search failed:', err);
+    }
+}
+
+searchInput.addEventListener('input', () => {
+    const term = searchInput.value.trim();
+    clearTimeout(searchDebounce);
+    searchDebounce = setTimeout(() => searchRecords(term), 300);
+});
+
+suggestionsBox.addEventListener('click', async (e) => {
+    const item = e.target.closest('.suggestion-item');
+    if (!item) return;
+    const idx = parseInt(item.getAttribute('data-idx'), 10);
+    const record = searchResults[idx];
+    suggestionsBox.classList.add('hidden');
+    suggestionsBox.innerHTML = '';
+    searchInput.value = '';
+    if (record) {
+        await expandToClassification(record.classification_number);
+        displaySingleBook(record);
+    }
+});

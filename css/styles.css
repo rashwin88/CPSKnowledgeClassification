@@ -818,3 +818,51 @@ body {
     flex-direction: column;
     min-height: 0;
 }
+
+/* Search styles */
+#search-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 16px auto;
+    display: flex;
+    flex-direction: column;
+    font-size: 18px;
+}
+
+#search-container label {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+#search-input {
+    padding: 10px;
+    font-size: 18px;
+    border: 1px solid #333;
+    border-radius: 4px;
+}
+
+#search-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+#search-suggestions.hidden {
+    display: none;
+}
+
+.suggestion-item {
+    padding: 6px 10px;
+    cursor: pointer;
+}
+
+.suggestion-item:hover {
+    background-color: #f0f0f0;
+}
