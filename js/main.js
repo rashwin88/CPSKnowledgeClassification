@@ -614,6 +614,24 @@ function renderLeafRow(childData) {
         leafRow.appendChild(card);
     });
 }
+
+function selectCard(card, row) {
+    document.querySelectorAll(`#${row} .card.selected`).forEach(el => {
+        el.classList.remove('selected');
+    });
+    if (card) {
+        card.classList.add('selected');
+    }
+}
+
+function selectHorizontalCard(card, row) {
+    document.querySelectorAll(`#${row} .horizontal-card.selected`).forEach(el => {
+        el.classList.remove('selected');
+    });
+    if (card) {
+        card.classList.add('selected');
+    }
+}
 if (window.loadAllNodes) {
     window.loadAllNodes();
 }
@@ -698,10 +716,21 @@ async function expandToClassification(code) {
         const row = rows[i];
         const card = document.querySelector(`#${row} .card[data-id='${prefixes[i]}']`);
         if (card) {
-            card.click();
+            selectCard(card, row);
             parent = prefixes[i];
         } else {
             break;
+        }
+    }
+
+    const finalId = code.replace(/#.*?#/, '');
+    const leaf = document.querySelector(`#leaf-row .horizontal-card[data-id='${finalId}']`);
+    if (leaf) {
+        selectHorizontalCard(leaf, 'leaf-row');
+    } else {
+        const barren = document.querySelector(`#barren-row .card[data-id='${finalId}']`);
+        if (barren) {
+            selectCard(barren, 'barren-row');
         }
     }
 }
@@ -732,10 +761,18 @@ async function searchRecords(term) {
         }
         searchResults = data || [];
         suggestionsBox.innerHTML = searchResults.map((r, i) => {
-            const title = r.title || 'Untitled';
+            const title = r.title || r.book_title || r.name || 'Untitled';
             const subtitle = r.subtitle ? `: ${r.subtitle}` : '';
             const code = formatDisplayId(r.classification_number || '');
-            return `<div class="suggestion-item" data-idx="${i}" data-code="${r.classification_number}">${title}${subtitle} - ${code}</div>`;
+            const author = r.main_author || r.author || r.authors || r.primary_author || '';
+            return `
+                <div class="suggestion-item book-card" data-idx="${i}" data-code="${r.classification_number}">
+                    <div class="book-card-left">${code}</div>
+                    <div class="book-card-right">
+                        <div class="book-card-header">${title}${subtitle}</div>
+                        ${author ? `<div class="book-author">Main author: ${author}</div>` : ''}
+                    </div>
+                </div>`;
         }).join('');
         suggestionsBox.classList.remove('hidden');
         // Preload parent paths for faster expansion
