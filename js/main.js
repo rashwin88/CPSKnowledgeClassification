@@ -184,6 +184,26 @@ function displayBooksForCard(card) {
 }
 
 
+function hyphenateDevanagari(word) {
+    const vowels = /[\u0904-\u0914\u0960-\u0961\u0972-\u0977]/;
+    const matras = /[\u093E-\u094C\u0962-\u0963]/;
+    const consonants = /[\u0915-\u0939\u0958-\u095F\u0978-\u097F]/;
+    const virama = '\u094D';
+    let result = '';
+    for (let i = 0; i < word.length; i++) {
+        const ch = word[i];
+        result += ch;
+        if (i < word.length - 1) {
+            const next = word[i + 1];
+            if (ch === virama) continue;
+            if (matras.test(ch) || vowels.test(ch) || (consonants.test(ch) && next !== virama)) {
+                result += '&shy;';
+            }
+        }
+    }
+    return result;
+}
+
 function insertSoftHyphens(text) {
     const noHyphen = ['studies', 'puranas', 'purana', 'history'];
     const custom = {
@@ -203,7 +223,10 @@ function insertSoftHyphens(text) {
         const lower = word.toLowerCase();
         if (noHyphen.includes(lower)) return part;
         if (custom[word]) return custom[word];
-        return word.replace(/([aeiou])([bcdfghjklmnpqrstvwxyz])/gi, '$1&shy;$2');
+        if (/[^\u0000-\u007f]/.test(word) && /[\u0900-\u097F]/.test(word)) {
+            return hyphenateDevanagari(word);
+        }
+        return word.replace(/([aeiouāīūṛṝḷḹeou])([bcdfghjklmnpqrstvwxyz])/gi, '$1&shy;$2');
     }).join('');
 }
 

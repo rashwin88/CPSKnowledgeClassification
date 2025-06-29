@@ -43,7 +43,7 @@ body {
 
 .card {
     flex: 0 0 auto;
-    width: clamp(80px, 7.5vw, 95px);
+    width: clamp(80px, 7.5vw, 114px);
     /* fluid width with limits */
     /* height: 130px; */
     border-radius: 4px;
@@ -182,6 +182,12 @@ body {
     width: 100%;
     overflow-x: auto;
     /* This is the scrollable layer */
+}
+
+.down-arrow {
+    text-align: center;
+    font-size: 18px;
+    margin: 4px 0;
 }
 
 .scroll-column {
@@ -425,14 +431,14 @@ body {
 
 .horizontal-card-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(216px, 1fr));
     gap: 12px;
     align-items: stretch;
 }
 
 .barren-card-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(114px, 1fr));
     gap: 4px;
     padding: 8px;
     background-color: #ddd;
