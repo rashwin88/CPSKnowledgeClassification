@@ -99,6 +99,9 @@ const hierarchyCache = {
     levels: {}
 };
 
+// Cache for parent sequences of each node
+const nodeParentsCache = {};
+
 // Cache for book counts by classification prefix
 const bookCountCache = {};
 
@@ -130,6 +133,35 @@ async function getBookCount(prefix) {
 
 // expose helper for other scripts
 window.getBookCount = getBookCount;
+
+// Fetch parent sequence for a classification number
+async function getNodeParents(code) {
+    if (!code) return null;
+    code = code.replace(/#.*?#/, '').replace(/-/g, ' ').trim();
+    if (nodeParentsCache[code]) {
+        return nodeParentsCache[code];
+    }
+    try {
+        const { data, error } = await supabase
+            .from('nodes')
+            .select('parents')
+            .eq('id', code)
+            .maybeSingle();
+        if (error) {
+            console.error('Error fetching node parents:', error);
+            return null;
+        }
+        const parents = data ? data.parents : null;
+        nodeParentsCache[code] = parents;
+        return parents;
+    } catch (err) {
+        console.error('Unexpected error fetching node parents:', err);
+        return null;
+    }
+}
+
+// Expose helper
+window.getNodeParents = getNodeParents;
 
 
 async function getTopLevelNodes() {
