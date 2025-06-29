@@ -18,6 +18,10 @@ let currentQueryId = '';
 let currentDisplayId = '';
 let currentTotalBooks = 0;
 
+// Cache objects to avoid repeat Supabase requests
+const searchCache = {};
+let booksCache = {};
+
 const formModal = document.getElementById('formModal');
 const modalCloseBtn = document.getElementById('modalClose');
 
@@ -67,6 +71,10 @@ async function fetchBooks(prefix, page = 1) {
     const to = from + booksPerPage - 1;
     // Classification numbers store spaces as '-' so normalise before querying
     const sanitizedPrefix = prefix.replace(/\s+/g, '-');
+    const cacheKey = `${sanitizedPrefix}:${page}`;
+    if (booksCache[cacheKey]) {
+        return booksCache[cacheKey];
+    }
     try {
         const { data, error } = await supabase
             .from('committed_records')
@@ -75,13 +83,15 @@ async function fetchBooks(prefix, page = 1) {
             .range(from, to);
         if (error) {
             console.error('Error fetching books:', error);
-            return [];
+            booksCache[cacheKey] = [];
+        } else {
+            booksCache[cacheKey] = data || [];
         }
-        return data || [];
     } catch (err) {
         console.error('Unexpected error fetching books:', err);
-        return [];
+        booksCache[cacheKey] = [];
     }
+    return booksCache[cacheKey];
 }
 
 async function loadBooks(page = 1) {
@@ -177,6 +187,7 @@ function displayBooksForCard(card) {
     currentCardId = card.getAttribute('data-id');
     currentDisplayId = formatDisplayId(currentCardId);
     currentQueryId = currentCardId.replace(/#.*?#/, '');
+    booksCache = {}; // reset cache when changing selection
     const count = parseInt(card.getAttribute('data-total-books'), 10);
     currentTotalBooks = isNaN(count) ? 0 : count;
     currentPage = 1;
@@ -757,16 +768,21 @@ async function searchRecords(term) {
         return;
     }
     try {
-        const { data, error } = await supabase
-            .from('committed_records')
-            .select('*')
-            .or(`title.ilike.%${term}%,subtitle.ilike.%${term}%,main_author.ilike.%${term}%,second_author.ilike.%${term}%,third_author.ilike.%${term}%`)
-            .limit(10);
-        if (error) {
-            console.error('Search error:', error);
-            return;
+        if (searchCache[term]) {
+            searchResults = searchCache[term];
+        } else {
+            const { data, error } = await supabase
+                .from('committed_records')
+                .select('*')
+                .or(`title.ilike.%${term}%,subtitle.ilike.%${term}%,main_author.ilike.%${term}%,second_author.ilike.%${term}%,third_author.ilike.%${term}%`)
+                .limit(10);
+            if (error) {
+                console.error('Search error:', error);
+                return;
+            }
+            searchResults = data || [];
+            searchCache[term] = searchResults;
         }
-        searchResults = data || [];
         suggestionsBox.innerHTML = searchResults.map((r, i) => {
             const title = r.title || r.book_title || r.name || 'Untitled';
             const subtitle = r.subtitle ? `: ${r.subtitle}` : '';
