@@ -676,14 +676,27 @@ async function expandToClassification(code) {
     const rows = ['first-row', 'second-row', 'third-row', 'fourth-row', 'fifth-row', 'sixth-row', 'seventh-row'];
     const renderFns = [null, renderSecondRow, renderThirdRow, renderFourthRow, renderFifthRow, renderSixthRow, renderSeventhRow];
     let parent = null;
+
+    // Preload all missing levels concurrently
+    const fetchPromises = prefixes.map((p, i) => {
+        const row = rows[i];
+        const card = document.querySelector(`#${row} .card[data-id='${p}']`);
+        if (!card && i > 0) {
+            return getAllChildren(prefixes[i - 1]).then(children => ({ idx: i, children }));
+        }
+        return Promise.resolve(null);
+    });
+
+    const results = await Promise.all(fetchPromises);
+    results.forEach(res => {
+        if (res && renderFns[res.idx]) {
+            renderFns[res.idx](res.children || []);
+        }
+    });
+
     for (let i = 0; i < prefixes.length && i < rows.length; i++) {
         const row = rows[i];
-        let card = document.querySelector(`#${row} .card[data-id='${prefixes[i]}']`);
-        if (!card && parent) {
-            const children = await getAllChildren(parent);
-            if (renderFns[i]) renderFns[i](children || []);
-            card = document.querySelector(`#${row} .card[data-id='${prefixes[i]}']`);
-        }
+        const card = document.querySelector(`#${row} .card[data-id='${prefixes[i]}']`);
         if (card) {
             card.click();
             parent = prefixes[i];
