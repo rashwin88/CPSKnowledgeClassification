@@ -223,10 +223,11 @@ function insertSoftHyphens(text) {
         const lower = word.toLowerCase();
         if (noHyphen.includes(lower)) return part;
         if (custom[word]) return custom[word];
-        if (/[^\u0000-\u007f]/.test(word) && /[\u0900-\u097F]/.test(word)) {
-            return hyphenateDevanagari(word);
+        // Only hyphenate Latin words
+        if (/^[A-Za-z]+$/.test(word)) {
+            return word.replace(/([aeiouāīūṛṝḷḹeou])([bcdfghjklmnpqrstvwxyz])/gi, '$1&shy;$2');
         }
-        return word.replace(/([aeiouāīūṛṝḷḹeou])([bcdfghjklmnpqrstvwxyz])/gi, '$1&shy;$2');
+        return part;
     }).join('');
 }
 
