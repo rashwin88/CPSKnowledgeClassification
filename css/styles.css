@@ -43,7 +43,7 @@ body {
 
 .card {
     flex: 0 0 auto;
-    width: clamp(80px, 7.5vw, 114px);
+    width: clamp(60px, 6vw, 100px);
     /* fluid width with limits */
     /* height: 130px; */
     border-radius: 4px;
@@ -185,9 +185,7 @@ body {
 }
 
 .down-arrow {
-    text-align: center;
-    font-size: 18px;
-    margin: 4px 0;
+    display: none;
 }
 
 .scroll-column {
@@ -254,7 +252,7 @@ body {
     flex-grow: 1;
     overflow-x: auto;
     padding: 20px;
-    max-width: calc(100vw - 260px);
+    max-width: calc(100vw - 312px);
     /* subtract sidebar width + padding */
 
 }
@@ -431,7 +429,7 @@ body {
 
 .horizontal-card-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(216px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 12px;
     align-items: stretch;
 }
