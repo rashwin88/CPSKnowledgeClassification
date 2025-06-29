@@ -124,7 +124,7 @@ body {
 }
 
 .card .category {
-    padding: 4px;
+    padding: 4px 2px;
     font-weight: bold;
     overflow-wrap: anywhere;
     word-break: break-word;
