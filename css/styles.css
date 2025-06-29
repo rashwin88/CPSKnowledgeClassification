@@ -43,9 +43,9 @@ body {
 }
 
 .card {
-    flex: 0 0 auto;
-    width: clamp(80px, 10vw, 140px);
-    /* fluid width with limits */
+    flex: 0 0 calc(10% - 6px);
+    width: clamp(80px, calc(10% - 6px), 140px);
+    /* default width fits 10 cards per row */
     /* height: 130px; */
     border-radius: 4px;
     border: 1px solid #333;
@@ -126,10 +126,9 @@ body {
 .card .category {
     padding: 4px;
     font-weight: bold;
-    overflow-wrap: normal;
-    word-break: normal;
-    /* rely only on manual soft hyphens */
-    hyphens: manual;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    hyphens: auto;
 }
 
 .card .count {
@@ -497,10 +496,9 @@ body {
 .card-subtitle {
     font-size: 14px;
     color: #555;
-    overflow-wrap: normal;
-    word-break: normal;
-    /* rely only on manual soft hyphens */
-    hyphens: manual;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    hyphens: auto;
 }
 
 .card-right {
