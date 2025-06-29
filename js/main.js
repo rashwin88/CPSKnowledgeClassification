@@ -614,6 +614,9 @@ function renderLeafRow(childData) {
         leafRow.appendChild(card);
     });
 }
+if (window.loadAllNodes) {
+    window.loadAllNodes();
+}
 getTopLevelNodes().then(topLevelNodes => {
     console.log(topLevelNodes);
     renderFirstRow(topLevelNodes);
