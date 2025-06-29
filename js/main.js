@@ -683,7 +683,7 @@ async function searchRecords(term) {
         const { data, error } = await supabase
             .from('committed_records')
             .select('*')
-            .or(`title.ilike.%${term}%,book_title.ilike.%${term}%,name.ilike.%${term}%,classification_number.ilike.%${term}%,main_author.ilike.%${term}%,author.ilike.%${term}%,primary_author.ilike.%${term}%`)
+            .or(`title.ilike.%${term}%,subtitle.ilike.%${term}%,main_author.ilike.%${term}%,second_author.ilike.%${term}%,third_author.ilike.%${term}%`)
             .limit(10);
         if (error) {
             console.error('Search error:', error);
@@ -691,9 +691,10 @@ async function searchRecords(term) {
         }
         searchResults = data || [];
         suggestionsBox.innerHTML = searchResults.map((r, i) => {
-            const title = r.title || r.book_title || r.name || 'Untitled';
+            const title = r.title || 'Untitled';
+            const subtitle = r.subtitle ? `: ${r.subtitle}` : '';
             const code = formatDisplayId(r.classification_number || '');
-            return `<div class="suggestion-item" data-idx="${i}" data-code="${r.classification_number}">${title} - ${code}</div>`;
+            return `<div class="suggestion-item" data-idx="${i}" data-code="${r.classification_number}">${title}${subtitle} - ${code}</div>`;
         }).join('');
         suggestionsBox.classList.remove('hidden');
     } catch (err) {
