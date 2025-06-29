@@ -135,23 +135,24 @@ async function getBookCount(prefix) {
 window.getBookCount = getBookCount;
 
 // Fetch parent sequence for a classification number
+// Results are cached in nodeParentsCache
 async function getNodeParents(code) {
     if (!code) return null;
-    code = code.replace(/#.*?#/, '').replace(/-/g, ' ').trim();
+    code = code.replace(/#.*?#/, '').trim();
     if (nodeParentsCache[code]) {
         return nodeParentsCache[code];
     }
     try {
         const { data, error } = await supabase
             .from('nodes')
-            .select('parents')
+            .select('node_parent_list')
             .eq('id', code)
             .maybeSingle();
         if (error) {
             console.error('Error fetching node parents:', error);
             return null;
         }
-        const parents = data ? data.parents : null;
+        const parents = data ? data.node_parent_list : null;
         nodeParentsCache[code] = parents;
         return parents;
     } catch (err) {
