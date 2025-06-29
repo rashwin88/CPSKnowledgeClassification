@@ -642,8 +642,33 @@ function getPrefixesFromCode(code) {
     return prefixes;
 }
 
+function buildPrefixesFromParents(parents, code) {
+    if (!Array.isArray(parents) || parents.length === 0) {
+        return getPrefixesFromCode(code);
+    }
+    const base = parents[0];
+    const prefixes = [base];
+    let prefix = base;
+    for (let i = 1; i < parents.length; i++) {
+        const digit = parents[i];
+        prefix = i === 1 ? `${prefix}.${digit}` : `${prefix}${digit}`;
+        prefixes.push(prefix);
+    }
+    const cleaned = code.replace(/#.*?#/, '').replace(/-/g, ' ').trim();
+    if (!prefixes.includes(cleaned)) {
+        prefixes.push(cleaned);
+    }
+    return prefixes;
+}
+
 async function expandToClassification(code) {
-    const prefixes = getPrefixesFromCode(code);
+    let prefixes = [];
+    const parents = await (window.getNodeParents ? window.getNodeParents(code) : null);
+    if (parents) {
+        prefixes = buildPrefixesFromParents(parents, code);
+    } else {
+        prefixes = getPrefixesFromCode(code);
+    }
     if (!prefixes.length) return;
     const rows = ['first-row', 'second-row', 'third-row', 'fourth-row', 'fifth-row', 'sixth-row', 'seventh-row'];
     const renderFns = [null, renderSecondRow, renderThirdRow, renderFourthRow, renderFifthRow, renderSixthRow, renderSeventhRow];
@@ -697,6 +722,12 @@ async function searchRecords(term) {
             return `<div class="suggestion-item" data-idx="${i}" data-code="${r.classification_number}">${title}${subtitle} - ${code}</div>`;
         }).join('');
         suggestionsBox.classList.remove('hidden');
+        // Preload parent paths for faster expansion
+        searchResults.forEach(r => {
+            if (window.getNodeParents) {
+                window.getNodeParents(r.classification_number);
+            }
+        });
     } catch (err) {
         console.error('Search failed:', err);
     }
