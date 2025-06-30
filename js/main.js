@@ -700,6 +700,15 @@ function buildPrefixesFromParents(parents, code) {
     return prefixes;
 }
 
+function clearLowerRows(startIndex) {
+    const rowEls = [firstRow, secondRow, thirdRow, fourthRow, fifthRow, sixthRow, seventhRow];
+    for (let i = startIndex + 1; i < rowEls.length; i++) {
+        rowEls[i].innerHTML = '';
+    }
+    leafRow.innerHTML = '';
+    barrenRow.innerHTML = '';
+}
+
 async function expandToClassification(code) {
     let prefixes = [];
     const parents = await (window.getNodeParents ? window.getNodeParents(code) : null);
@@ -740,6 +749,8 @@ async function expandToClassification(code) {
             break;
         }
     }
+
+    clearLowerRows(prefixes.length - 1);
 
     const finalId = code.replace(/#.*?#/, '');
     const leaf = document.querySelector(`#leaf-row .horizontal-card[data-id='${finalId}']`);
