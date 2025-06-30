@@ -244,21 +244,6 @@ function insertSoftHyphens(text) {
     }).join('');
 }
 
-function adjustCardWidth(card) {
-    const labelEl = card.querySelector('.category') || card.querySelector('.card-subtitle');
-    if (!labelEl) return;
-    const temp = document.createElement('span');
-    temp.style.visibility = 'hidden';
-    temp.style.whiteSpace = 'nowrap';
-    temp.style.fontSize = window.getComputedStyle(labelEl).fontSize;
-    temp.style.fontFamily = window.getComputedStyle(labelEl).fontFamily;
-    temp.textContent = labelEl.textContent;
-    document.body.appendChild(temp);
-    const width = temp.getBoundingClientRect().width + 20;
-    document.body.removeChild(temp);
-    card.style.flex = '0 0 auto';
-    card.style.width = width + 'px';
-}
 
 function updateCardHyphenation(card) {
     const labelEl = card.querySelector('.category') || card.querySelector('.card-subtitle');
@@ -266,11 +251,8 @@ function updateCardHyphenation(card) {
     if (!labelEl || !original) return;
     if (hyphenationEnabled) {
         labelEl.innerHTML = insertSoftHyphens(original);
-        card.style.flex = '';
-        card.style.width = '';
     } else {
         labelEl.textContent = original;
-        adjustCardWidth(card);
     }
 }
 
@@ -369,7 +351,6 @@ function createCard(data, row) {
     `;
 
     card.innerHTML = innerHtml;
-    if (!hyphenationEnabled) adjustCardWidth(card);
     // Fetch actual count asynchronously and update when received
     getBookCount(data.id).then(count => {
         card.setAttribute('data-total-books', count);
@@ -559,7 +540,6 @@ function createLeafCard(data, row) {
     `;
 
     card.innerHTML = innerHtml;
-    if (!hyphenationEnabled) adjustCardWidth(card);
     // Fetch count asynchronously
     getBookCount(data.id).then(count => {
         card.setAttribute('data-total-books', count);
@@ -890,6 +870,7 @@ suggestionsBox.addEventListener('click', async (e) => {
 const settingsIcon = document.getElementById('settings-icon');
 const settingsModal = document.getElementById('settings-modal');
 const hyphenToggle = document.getElementById('hyphenation-toggle');
+const darkToggle = document.getElementById('dark-mode-toggle');
 
 settingsIcon.addEventListener('click', () => {
     settingsModal.classList.toggle('hidden');
@@ -900,4 +881,13 @@ hyphenToggle.addEventListener('change', () => {
     updateHyphenation();
 });
 
-document.addEventListener('DOMContentLoaded', updateHyphenation);
+darkToggle.addEventListener('change', () => {
+    document.body.classList.toggle('dark-mode', darkToggle.checked);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateHyphenation();
+    if (darkToggle.checked) {
+        document.body.classList.add('dark-mode');
+    }
+});

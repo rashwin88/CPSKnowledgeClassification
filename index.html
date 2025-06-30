@@ -124,10 +124,20 @@
 
     <div id="settings-icon">⚙️</div>
     <div id="settings-modal" class="hidden">
-        <label>
-            Hyphenation
-            <input type="checkbox" id="hyphenation-toggle" checked>
-        </label>
+        <div class="setting-item">
+            <span>Hyphenation</span>
+            <label class="switch">
+                <input type="checkbox" id="hyphenation-toggle" checked>
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="setting-item">
+            <span>Dark Mode</span>
+            <label class="switch">
+                <input type="checkbox" id="dark-mode-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
     </div>
 
     <div id="formModal" class="modal-overlay hidden">
