@@ -810,11 +810,7 @@ async function searchRecords(term) {
                 .from('committed_records')
                 .select('*')
                 .or(
-                    `title.ilike.%${term}%,subtitle.ilike.%${term}%,book_title.ilike.%${term}%,name.ilike.%${term}%,` +
-                    `main_author.ilike.%${term}%,author.ilike.%${term}%,authors.ilike.%${term}%,primary_author.ilike.%${term}%,` +
-                    `first_author.ilike.%${term}%,second_author.ilike.%${term}%,third_author.ilike.%${term}%,` +
-                    `language.ilike.%${term}%,language_note.ilike.%${term}%,pages.ilike.%${term}%,page_count.ilike.%${term}%,` +
-                    `year.ilike.%${term}%,publication_year.ilike.%${term}%,classification_number.ilike.%${term}%`
+                    `title.ilike.%${term}%,subtitle.ilike.%${term}%,main_author.ilike.%${term}%,second_author.ilike.%${term}%,third_author.ilike.%${term}%`
                 )
                 .limit(10);
             if (error) {
