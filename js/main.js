@@ -887,6 +887,15 @@ suggestionsBox.addEventListener('click', async (e) => {
         const bookSection = document.getElementById('books-display');
         if (bookSection) {
             bookSection.scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => {
+                const card = bookSection.querySelector('.book-card');
+                if (card) {
+                    card.classList.add('pop-animate');
+                    card.addEventListener('animationend', () => {
+                        card.classList.remove('pop-animate');
+                    }, { once: true });
+                }
+            }, 600);
         }
     }
 });
