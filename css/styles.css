@@ -878,3 +878,45 @@ body {
     border: 1px solid green;
     border-radius: 3px;
 }
+
+/* Settings floating button and modal */
+#settings-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background-color: #565555;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+#settings-modal {
+    position: fixed;
+    bottom: 70px;
+    right: 20px;
+    background-color: #fff;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+#settings-modal.hidden {
+    display: none;
+}
+
+body.no-hyphenation .card .category,
+body.no-hyphenation .card-subtitle {
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+    white-space: nowrap;
+}
+
