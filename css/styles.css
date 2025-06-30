@@ -230,16 +230,19 @@ body {
     flex-shrink: 0;
     background-color: #f8d7da;
     border-radius: 0;
-    margin: 60px 0 0;
     padding: 16px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     color: black;
     transition: width 0.3s ease;
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
     font-size: 14px;
-    min-height: calc(100vh - 60px);
+    z-index: 900;
+    overflow-y: auto;
 }
 
 
@@ -284,11 +287,17 @@ body {
     overflow-x: auto;
     padding: 20px;
     margin-top: 60px;
+    margin-left: 182px;
     max-width: calc(100vw - 182px);
     /* subtract sidebar width + padding */
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.sidebar.collapsed + .main-content {
+    margin-left: 60px;
+    max-width: calc(100vw - 60px);
 }
 
 #first-row .card .top {
