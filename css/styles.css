@@ -577,6 +577,19 @@ body {
     }
 }
 
+@keyframes popHighlight {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
 .book-list {
     margin-top: 10px;
     padding: 0;
@@ -598,6 +611,7 @@ body {
     flex-direction: row;
     min-height: 80px;
     cursor: pointer;
+    transition: transform 0.3s ease;
 }
 
 .book-card-left {
@@ -628,6 +642,10 @@ body {
 .book-card:hover {
     background-color: #f0f0f0;
     padding-left: 0;
+}
+
+.book-card.pop-animate {
+    animation: popHighlight 0.6s ease-in-out;
 }
 
 .book-title {
