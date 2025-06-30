@@ -884,6 +884,10 @@ suggestionsBox.addEventListener('click', async (e) => {
     if (record) {
         await expandToClassification(record.classification_number);
         displaySingleBook(record);
+        const bookSection = document.getElementById('books-display');
+        if (bookSection) {
+            bookSection.scrollIntoView({ behavior: 'smooth' });
+        }
     }
 });
 
