@@ -193,7 +193,7 @@ body {
     min-height: 100vh;
     padding: 0;
     box-sizing: border-box;
-    margin-top: 60px;
+    margin-top: 0;
 }
 
 
@@ -228,14 +228,14 @@ body {
 .sidebar {
     width: 170px;
     flex-shrink: 0;
-    background-color: #565555;
+    background-color: #f8d7da;
     border-radius: 0;
     margin: 0;
     padding: 16px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    color: white;
+    color: black;
     transition: width 0.3s ease;
     position: relative;
     font-size: 14px;
@@ -272,7 +272,7 @@ body {
 
 .toggle-btn {
     background: none;
-    color: white;
+    color: black;
     border: none;
     cursor: pointer;
     font-size: 18px;
@@ -283,6 +283,7 @@ body {
     flex-grow: 1;
     overflow-x: auto;
     padding: 20px;
+    margin-top: 60px;
     max-width: calc(100vw - 170px);
     /* subtract sidebar width + padding */
     display: flex;
@@ -345,13 +346,13 @@ body {
     display: flex;
     align-items: center;
     gap: 6px;
-    color: #ccc;
+    color: #000;
     text-decoration: none;
     font-size: 14px;
 }
 
 .github-link:hover {
-    color: white;
+    color: #333;
 }
 
 .github-icon {
@@ -366,7 +367,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 6px;
-    color: #ccc;
+    color: #000;
     text-decoration: none;
     font-size: 14px;
     margin-top: 10px;
