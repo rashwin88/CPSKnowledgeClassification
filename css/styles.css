@@ -197,7 +197,7 @@ body {
 
 
 .sidebar {
-    width: 200px;
+    width: 170px;
     flex-shrink: 0;
     background-color: #565555;
     border-radius: 20px 0 0 20px;
@@ -253,7 +253,7 @@ body {
     flex-grow: 1;
     overflow-x: auto;
     padding: 20px;
-    max-width: calc(100vw - 312px);
+    max-width: calc(100vw - 282px);
     /* subtract sidebar width + padding */
     display: flex;
     flex-direction: column;
@@ -852,7 +852,7 @@ body {
     right: 0;
     background: #fff;
     border: 1px solid #ccc;
-    max-height: 200px;
+    max-height: 400px;
     overflow-y: auto;
     z-index: 1000;
 }

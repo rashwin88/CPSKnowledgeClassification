@@ -809,7 +809,13 @@ async function searchRecords(term) {
             const { data, error } = await supabase
                 .from('committed_records')
                 .select('*')
-                .or(`title.ilike.%${term}%,subtitle.ilike.%${term}%,main_author.ilike.%${term}%,second_author.ilike.%${term}%,third_author.ilike.%${term}%`)
+                .or(
+                    `title.ilike.%${term}%,subtitle.ilike.%${term}%,book_title.ilike.%${term}%,name.ilike.%${term}%,` +
+                    `main_author.ilike.%${term}%,author.ilike.%${term}%,authors.ilike.%${term}%,primary_author.ilike.%${term}%,` +
+                    `first_author.ilike.%${term}%,second_author.ilike.%${term}%,third_author.ilike.%${term}%,` +
+                    `language.ilike.%${term}%,language_note.ilike.%${term}%,pages.ilike.%${term}%,page_count.ilike.%${term}%,` +
+                    `year.ilike.%${term}%,publication_year.ilike.%${term}%,classification_number.ilike.%${term}%`
+                )
                 .limit(10);
             if (error) {
                 console.error('Search error:', error);
@@ -826,12 +832,30 @@ async function searchRecords(term) {
             const displayCode = highlightTerm(code, term);
             const displayHeader = highlightTerm(`${title}${subtitle}`, term);
             const displayAuthor = author ? highlightTerm(`Main author: ${author}`, term) : '';
+            const displayFirst = r.first_author && r.first_author !== 'null'
+                ? highlightTerm(`First author: ${r.first_author}`, term) : '';
+            const displaySecond = r.second_author && r.second_author !== 'null'
+                ? highlightTerm(`Second author: ${r.second_author}`, term) : '';
+            const displayLang = r.language && r.language !== 'null'
+                ? highlightTerm(`Language: ${r.language}`, term) : '';
+            const displayLangNote = r.language_note && r.language_note !== 'null'
+                ? highlightTerm(`Language note: ${r.language_note}`, term) : '';
+            const displayPages = (r.pages || r.page_count)
+                ? highlightTerm(`Pages: ${r.pages || r.page_count}`, term) : '';
+            const displayYear = (r.year || r.publication_year)
+                ? highlightTerm(`Year: ${r.year || r.publication_year}`, term) : '';
             return `
                 <div class="suggestion-item book-card" data-idx="${i}" data-code="${r.classification_number}">
                     <div class="book-card-left">${displayCode}</div>
                     <div class="book-card-right">
                         <div class="book-card-header">${displayHeader}</div>
                         ${displayAuthor ? `<div class="book-author">${displayAuthor}</div>` : ''}
+                        ${displayFirst ? `<div class="book-author">${displayFirst}</div>` : ''}
+                        ${displaySecond ? `<div class="book-author">${displaySecond}</div>` : ''}
+                        ${displayLang ? `<div class="book-language">${displayLang}</div>` : ''}
+                        ${displayLangNote ? `<div class="book-language-note">${displayLangNote}</div>` : ''}
+                        ${displayPages ? `<div class="book-pages">${displayPages}</div>` : ''}
+                        ${displayYear ? `<div class="book-year">${displayYear}</div>` : ''}
                     </div>
                 </div>`;
         }).join('');
