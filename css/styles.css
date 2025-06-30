@@ -27,8 +27,8 @@ body {
     justify-content: flex-start;
     scroll-behavior: smooth;
     width: 100%;
-    max-width: 900px;
-    min-width: 600px;
+    max-width: 1200px;
+    min-width: 800px;
     align-items: stretch;
     margin: 0 auto;
 }
@@ -43,8 +43,8 @@ body {
 }
 
 .card {
-    flex: 0 0 calc(10% - 6px);
-    width: clamp(80px, calc(10% - 6px), 140px);
+    flex: 0 0 calc(12% - 6px);
+    width: clamp(120px, calc(12% - 6px), 200px);
     /* default width fits 10 cards per row */
     /* height: 130px; */
     border-radius: 4px;
