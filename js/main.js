@@ -22,6 +22,8 @@ let currentTotalBooks = 0;
 const searchCache = {};
 let booksCache = {};
 
+let hyphenationEnabled = true;
+
 const formModal = document.getElementById('formModal');
 const modalCloseBtn = document.getElementById('modalClose');
 
@@ -242,6 +244,42 @@ function insertSoftHyphens(text) {
     }).join('');
 }
 
+function adjustCardWidth(card) {
+    const labelEl = card.querySelector('.category') || card.querySelector('.card-subtitle');
+    if (!labelEl) return;
+    const temp = document.createElement('span');
+    temp.style.visibility = 'hidden';
+    temp.style.whiteSpace = 'nowrap';
+    temp.style.fontSize = window.getComputedStyle(labelEl).fontSize;
+    temp.style.fontFamily = window.getComputedStyle(labelEl).fontFamily;
+    temp.textContent = labelEl.textContent;
+    document.body.appendChild(temp);
+    const width = temp.getBoundingClientRect().width + 20;
+    document.body.removeChild(temp);
+    card.style.flex = '0 0 auto';
+    card.style.width = width + 'px';
+}
+
+function updateCardHyphenation(card) {
+    const labelEl = card.querySelector('.category') || card.querySelector('.card-subtitle');
+    const original = card.getAttribute('data-label-original');
+    if (!labelEl || !original) return;
+    if (hyphenationEnabled) {
+        labelEl.innerHTML = insertSoftHyphens(original);
+        card.style.flex = '';
+        card.style.width = '';
+    } else {
+        labelEl.textContent = original;
+        adjustCardWidth(card);
+    }
+}
+
+function updateHyphenation() {
+    document.body.classList.toggle('no-hyphenation', !hyphenationEnabled);
+    document.querySelectorAll('.card').forEach(updateCardHyphenation);
+    document.querySelectorAll('.horizontal-card').forEach(updateCardHyphenation);
+}
+
 
 async function renderHierarchy(entry) {
     const container = document.getElementById('hierarchy-display');
@@ -316,19 +354,22 @@ function createCard(data, row) {
     card.setAttribute('data-id', data.id);
     const nodeType = data.type || data.node_type || '';
     card.setAttribute('data-node-type', nodeType);
+    card.setAttribute('data-label-original', data.node_label);
     const bookCount = 0;
     card.setAttribute('data-total-books', bookCount);
     card.style.backgroundColor = data.color;
     let innerHtml = '';
     // Update inner html for each card to show the category code, category name, and total books
+    const label = hyphenationEnabled ? insertSoftHyphens(data.node_label) : data.node_label;
     innerHtml = `
       <div class="top">${formatDisplayId(data.id)}</div>
-      <div class="category" lang="en">${insertSoftHyphens(data.node_label)}</div>
+      <div class="category" lang="en">${label}</div>
       <div class="count">${bookCount}</div>
       <div class="add-icon">+</div>
     `;
 
     card.innerHTML = innerHtml;
+    if (!hyphenationEnabled) adjustCardWidth(card);
     // Fetch actual count asynchronously and update when received
     getBookCount(data.id).then(count => {
         card.setAttribute('data-total-books', count);
@@ -497,17 +538,19 @@ function createLeafCard(data, row) {
     card.setAttribute('data-id', data.id);
     const leafType = data.type || data.node_type || '';
     card.setAttribute('data-node-type', leafType);
+    card.setAttribute('data-label-original', data.node_label);
     const bookCount = 0;
     card.setAttribute('data-total-books', bookCount);
     card.style.backgroundColor = data.color;
     let innerHtml = '';
     // Update inner html for each card to show the category code, category name, and total books
+    const label = hyphenationEnabled ? insertSoftHyphens(data.node_label) : data.node_label;
     innerHtml = `
     <div class="card-left">
       <div class="card-title">${formatDisplayId(data.id)}</div>
     </div>
     <div class="card-center">
-      <div class="card-subtitle" lang="en">${insertSoftHyphens(data.node_label)}</div>
+      <div class="card-subtitle" lang="en">${label}</div>
     </div>
     <div class="card-right">
       <div class="card-meta">${bookCount}</div>
@@ -516,6 +559,7 @@ function createLeafCard(data, row) {
     `;
 
     card.innerHTML = innerHtml;
+    if (!hyphenationEnabled) adjustCardWidth(card);
     // Fetch count asynchronously
     getBookCount(data.id).then(count => {
         card.setAttribute('data-total-books', count);
@@ -842,3 +886,18 @@ suggestionsBox.addEventListener('click', async (e) => {
         displaySingleBook(record);
     }
 });
+
+const settingsIcon = document.getElementById('settings-icon');
+const settingsModal = document.getElementById('settings-modal');
+const hyphenToggle = document.getElementById('hyphenation-toggle');
+
+settingsIcon.addEventListener('click', () => {
+    settingsModal.classList.toggle('hidden');
+});
+
+hyphenToggle.addEventListener('change', () => {
+    hyphenationEnabled = hyphenToggle.checked;
+    updateHyphenation();
+});
+
+document.addEventListener('DOMContentLoaded', updateHyphenation);
