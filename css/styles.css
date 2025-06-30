@@ -226,7 +226,7 @@ body {
 
 
 .sidebar {
-    width: 170px;
+    width: 182px;
     flex-shrink: 0;
     background-color: #f8d7da;
     border-radius: 0;
@@ -284,7 +284,7 @@ body {
     overflow-x: auto;
     padding: 20px;
     margin-top: 60px;
-    max-width: calc(100vw - 170px);
+    max-width: calc(100vw - 182px);
     /* subtract sidebar width + padding */
     display: flex;
     flex-direction: column;
