@@ -8,17 +8,17 @@ body {
 }
 
 .topbar {
-    width: 100%;
+    width: calc(100% - 182px);
     background-color: #f8d7da;
     color: #000000;
     padding: 8px 16px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     box-sizing: border-box;
     position: fixed;
     top: 0;
-    left: 0;
+    left: 182px;
     z-index: 1000;
 }
 
@@ -288,16 +288,16 @@ body {
     padding: 20px;
     margin-top: 60px;
     margin-left: 182px;
-    max-width: calc(100vw - 182px);
-    /* subtract sidebar width + padding */
+    width: calc(100vw - 182px);
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-sizing: border-box;
 }
 
 .sidebar.collapsed + .main-content {
     margin-left: 60px;
-    max-width: calc(100vw - 60px);
+    width: calc(100vw - 60px);
 }
 
 #first-row .card .top {
@@ -790,8 +790,11 @@ body {
 
 .book-details-grid .field-value {
     text-align: left;
-    word-break: normal;
-    overflow-wrap: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+    max-height: 4.5em;
+    overflow-y: auto;
 }
 
 #bookModalClose {
@@ -852,6 +855,7 @@ body {
 
 .react-form textarea {
     resize: vertical;
+    min-height: 4.5em;
 }
 
 .react-form .form-actions {
