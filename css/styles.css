@@ -280,12 +280,17 @@ body {
 
 .sidebar.collapsed {
     width: 60px;
+    padding: 16px 8px;
 }
 
 .sidebar-top {
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.sidebar.collapsed .sidebar-top {
+    gap: 4px;
 }
 
 .sidebar.collapsed .title,
@@ -311,6 +316,12 @@ body {
     border: none;
     cursor: pointer;
     font-size: 18px;
+    padding: 2px 4px;
+}
+
+.sidebar.collapsed .toggle-btn {
+    background-color: #555;
+    border-radius: 4px;
 }
 
 
