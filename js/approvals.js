@@ -1,9 +1,16 @@
-const statusFilter = document.getElementById('status-filter');
+const filterButton = document.getElementById('filter-button');
+const filterMenu = document.getElementById('status-options');
+const statusChecks = document.querySelectorAll('#status-options input[type="checkbox"]');
 const listEl = document.getElementById('submission-list');
 const formContainer = document.getElementById('record-form');
 
 let stagingRecords = [];
 let selectedId = null;
+
+function toTitleCase(str) {
+    return str.replace(/_/g, ' ').replace(/\w\S*/g, (txt) =>
+        txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+}
 
 async function loadRecords() {
     try {
@@ -22,7 +29,9 @@ async function loadRecords() {
 }
 
 function applyFilter() {
-    const statuses = Array.from(statusFilter.selectedOptions).map(o => o.value);
+    const statuses = Array.from(statusChecks)
+        .filter(cb => cb.checked)
+        .map(cb => cb.value);
     const filtered = stagingRecords.filter(r => statuses.includes(r.status));
     renderList(filtered);
 }
@@ -79,7 +88,7 @@ function renderDetail(record, existing) {
     fields.forEach(f => {
         const group = document.createElement('div');
         const label = document.createElement('label');
-        label.textContent = f.replace(/_/g,' ');
+        label.textContent = toTitleCase(f);
         group.appendChild(label);
         if (existing) {
             const curr = document.createElement('div');
@@ -98,21 +107,23 @@ function renderDetail(record, existing) {
         }
         form.appendChild(group);
     });
-    const actions = document.createElement('div');
-    actions.className = 'action-buttons';
-    const approveBtn = document.createElement('button');
-    approveBtn.type = 'button';
-    approveBtn.textContent = 'Approve';
-    approveBtn.className = 'approve-btn';
-    approveBtn.addEventListener('click', () => approveRecord(record));
-    const rejectBtn = document.createElement('button');
-    rejectBtn.type = 'button';
-    rejectBtn.textContent = 'Reject';
-    rejectBtn.className = 'reject-btn';
-    rejectBtn.addEventListener('click', () => rejectRecord(record));
-    actions.appendChild(approveBtn);
-    actions.appendChild(rejectBtn);
-    form.appendChild(actions);
+    if (record.status === 'pending') {
+        const actions = document.createElement('div');
+        actions.className = 'action-buttons';
+        const approveBtn = document.createElement('button');
+        approveBtn.type = 'button';
+        approveBtn.textContent = 'Approve';
+        approveBtn.className = 'approve-btn';
+        approveBtn.addEventListener('click', () => approveRecord(record));
+        const rejectBtn = document.createElement('button');
+        rejectBtn.type = 'button';
+        rejectBtn.textContent = 'Reject';
+        rejectBtn.className = 'reject-btn';
+        rejectBtn.addEventListener('click', () => rejectRecord(record));
+        actions.appendChild(approveBtn);
+        actions.appendChild(rejectBtn);
+        form.appendChild(actions);
+    }
     formContainer.appendChild(form);
 }
 
@@ -151,5 +162,13 @@ async function rejectRecord(record) {
     }
 }
 
-statusFilter.addEventListener('change', applyFilter);
+statusChecks.forEach(cb => cb.addEventListener('change', applyFilter));
+filterButton.addEventListener('click', () => {
+    filterMenu.classList.toggle('hidden');
+});
+document.addEventListener('click', (e) => {
+    if (!filterMenu.contains(e.target) && e.target !== filterButton) {
+        filterMenu.classList.add('hidden');
+    }
+});
 window.addEventListener('DOMContentLoaded', loadRecords);
