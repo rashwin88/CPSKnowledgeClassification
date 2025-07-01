@@ -842,6 +842,14 @@ body {
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
 }
 
+/* Simple message modal */
+#messageModal .modal-content {
+    width: 300px;
+    max-width: 80vw;
+    height: auto;
+    text-align: center;
+}
+
 .book-details-grid {
     display: grid;
     grid-template-columns: 1fr 2fr;
