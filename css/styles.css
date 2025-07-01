@@ -227,6 +227,21 @@ body {
     width: calc(100vw - 60px);
 }
 
+/* Approvals page specific container */
+.approvals-container {
+    margin-top: 60px;
+    margin-left: 182px;
+    width: calc(100vw - 182px);
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.sidebar.collapsed + .approvals-container {
+    margin-left: 60px;
+    width: calc(100vw - 60px);
+}
+
 
 .wrapper {
     display: flex;
