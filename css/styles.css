@@ -9,12 +9,13 @@ body {
 
 .topbar {
     width: calc(100% - 182px);
-    background-color: #f8d7da;
-    color: #000000;
+    background-color: #333;
+    color: #ffffff;
     padding: 8px 16px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    gap: 16px;
     box-sizing: border-box;
     position: fixed;
     top: 0;
@@ -27,10 +28,26 @@ body {
     font-weight: bold;
 }
 
+.menu-link {
+    color: #ffffff;
+    text-decoration: none;
+    margin-right: 8px;
+}
+
+.menu-link:hover {
+    text-decoration: underline;
+}
+
+.username {
+    color: #ffffff;
+    font-weight: bold;
+}
+
 .user-icon {
     width: 24px;
     height: 24px;
     border-radius: 50%;
+    filter: invert(1);
 }
 
 .logo {
@@ -50,7 +67,7 @@ body {
     gap: 4px;
     padding: 0px;
     scrollbar-width: thin;
-    justify-content: flex-start;
+    justify-content: center;
     scroll-behavior: smooth;
     width: 100%;
     max-width: 1200px;
@@ -242,13 +259,14 @@ body {
 .sidebar {
     width: 182px;
     flex-shrink: 0;
-    background-color: #f8d7da;
+    background-color: #333;
     border-radius: 0;
     padding: 16px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    color: black;
+    color: #ffffff;
+    text-align: justify;
     transition: width 0.3s ease;
     position: fixed;
     top: 0;
@@ -289,7 +307,7 @@ body {
 
 .toggle-btn {
     background: none;
-    color: black;
+    color: #ffffff;
     border: none;
     cursor: pointer;
     font-size: 18px;
@@ -362,13 +380,13 @@ body {
     display: flex;
     align-items: center;
     gap: 6px;
-    color: #000;
+    color: #ffffff;
     text-decoration: none;
     font-size: 14px;
 }
 
 .github-link:hover {
-    color: #333;
+    color: #cccccc;
 }
 
 .github-icon {
@@ -383,7 +401,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 6px;
-    color: #000;
+    color: #ffffff;
     text-decoration: none;
     font-size: 14px;
     margin-top: 10px;
@@ -391,6 +409,15 @@ body {
 
 .whatsapp-link:hover {
     color: #25D366;
+}
+
+.catalogue-link {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.catalogue-link:hover {
+    text-decoration: underline;
 }
 
 .whatsapp-icon {

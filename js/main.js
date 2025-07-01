@@ -22,7 +22,7 @@ let currentTotalBooks = 0;
 const searchCache = {};
 let booksCache = {};
 
-let hyphenationEnabled = true;
+let hyphenationEnabled = false;
 
 const formModal = document.getElementById('formModal');
 const modalCloseBtn = document.getElementById('modalClose');
