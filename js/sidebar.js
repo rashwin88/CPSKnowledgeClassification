@@ -1,3 +1,21 @@
+function updateLayout() {
+    const sidebar = document.getElementById('sidebar');
+    const collapsed = sidebar.classList.contains('collapsed');
+    const left = collapsed ? '60px' : '182px';
+
+    const topbar = document.querySelector('.topbar');
+    if (topbar) {
+        topbar.style.left = left;
+        topbar.style.width = `calc(100% - ${left})`;
+    }
+
+    document.querySelectorAll('.content-container, .approvals-container')
+        .forEach(el => {
+            el.style.marginLeft = left;
+            el.style.width = `calc(100vw - ${left})`;
+        });
+}
+
 function toggleSidebar() {
     const sidebar = document.getElementById("sidebar");
     sidebar.classList.toggle("collapsed");
@@ -5,14 +23,7 @@ function toggleSidebar() {
     const toggleBtn = sidebar.querySelector(".toggle-btn");
     toggleBtn.textContent = sidebar.classList.contains("collapsed") ? "»" : "«";
 
-    const topbar = document.querySelector('.topbar');
-    if (topbar) {
-        if (sidebar.classList.contains('collapsed')) {
-            topbar.style.left = '60px';
-            topbar.style.width = 'calc(100% - 60px)';
-        } else {
-            topbar.style.left = '182px';
-            topbar.style.width = 'calc(100% - 182px)';
-        }
-    }
+    updateLayout();
 }
+
+document.addEventListener('DOMContentLoaded', updateLayout);
