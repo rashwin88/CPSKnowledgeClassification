@@ -216,7 +216,7 @@ body {
 .content-container {
     margin-top: 60px;
     margin-left: 182px;
-    width: calc(100vw - 182px);
+    width: calc(100% - 182px);
     display: flex;
     justify-content: center;
     box-sizing: border-box;
@@ -224,14 +224,14 @@ body {
 
 .sidebar.collapsed + .content-container {
     margin-left: 60px;
-    width: calc(100vw - 60px);
+    width: calc(100% - 60px);
 }
 
 /* Approvals page specific container */
 .approvals-container {
     margin-top: 60px;
     margin-left: 182px;
-    width: calc(100vw - 182px);
+    width: calc(100% - 182px);
     display: flex;
     justify-content: center;
     box-sizing: border-box;
@@ -239,7 +239,7 @@ body {
 
 .sidebar.collapsed + .approvals-container {
     margin-left: 60px;
-    width: calc(100vw - 60px);
+    width: calc(100% - 60px);
 }
 
 

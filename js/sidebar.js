@@ -12,7 +12,7 @@ function updateLayout() {
     document.querySelectorAll('.content-container, .approvals-container')
         .forEach(el => {
             el.style.marginLeft = left;
-            el.style.width = `calc(100vw - ${left})`;
+            el.style.width = `calc(100% - ${left})`;
         });
 }
 
