@@ -3,6 +3,25 @@ const filterMenu = document.getElementById('status-options');
 const statusChecks = document.querySelectorAll('#status-options input[type="checkbox"]');
 const listEl = document.getElementById('submission-list');
 const formContainer = document.getElementById('record-form');
+const messageModal = document.getElementById('messageModal');
+const messageText = document.getElementById('messageText');
+const messageClose = document.getElementById('messageClose');
+
+function showMessage(text) {
+    messageText.textContent = text;
+    messageModal.classList.remove('hidden');
+    requestAnimationFrame(() => messageModal.classList.add('active'));
+}
+
+function hideMessage() {
+    messageModal.classList.remove('active');
+    setTimeout(() => messageModal.classList.add('hidden'), 300);
+}
+
+messageClose.addEventListener('click', hideMessage);
+messageModal.addEventListener('click', (e) => {
+    if (e.target === messageModal) hideMessage();
+});
 
 let stagingRecords = [];
 let selectedId = null;
@@ -145,9 +164,10 @@ async function approveRecord(record) {
         await supabase.from('committed_records').upsert(upsertData);
         record.status = 'approved';
         applyFilter();
+        showMessage('Record approved successfully');
     } catch (err) {
         console.error('Error approving record', err);
-        alert('Error approving record');
+        showMessage('Error approving record');
     }
 }
 
@@ -156,9 +176,10 @@ async function rejectRecord(record) {
         await supabase.from('staging_entries').update({ status: 'rejected' }).eq('id', record.id);
         record.status = 'rejected';
         applyFilter();
+        showMessage('Record rejected successfully');
     } catch (err) {
         console.error('Error rejecting record', err);
-        alert('Error rejecting record');
+        showMessage('Error rejecting record');
     }
 }
 
