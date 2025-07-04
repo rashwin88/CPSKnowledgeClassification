@@ -1144,7 +1144,7 @@ body.dark-mode #settings-icon {
     flex-direction: row;
     gap: 16px;
     width: 100%;
-    padding: 80px 16px 16px 16px;
+    padding: 16px;
     box-sizing: border-box;
     min-height: 100vh;
 }
