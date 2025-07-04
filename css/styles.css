@@ -9,8 +9,8 @@ body {
 
 .topbar {
     width: calc(100% - 182px);
-    background-color: #333;
-    color: #ffffff;
+    background-color: #D3D3D3;
+    color: #000000;
     padding: 8px 16px;
     display: flex;
     align-items: center;
@@ -29,7 +29,7 @@ body {
 }
 
 .menu-link {
-    color: #ffffff;
+    color: #000000;
     text-decoration: none;
     margin-right: 8px;
 }
@@ -39,7 +39,7 @@ body {
 }
 
 .username {
-    color: #ffffff;
+    color: #000000;
     font-weight: bold;
 }
 
@@ -47,7 +47,7 @@ body {
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    filter: invert(1);
+    filter: none;
 }
 
 .logo {
@@ -220,6 +220,8 @@ body {
     display: flex;
     justify-content: center;
     box-sizing: border-box;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
 }
 
 .sidebar.collapsed + .content-container {
@@ -235,6 +237,8 @@ body {
     display: flex;
     justify-content: center;
     box-sizing: border-box;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
 }
 
 .sidebar.collapsed + .approvals-container {
@@ -274,22 +278,23 @@ body {
 .sidebar {
     width: 182px;
     flex-shrink: 0;
-    background-color: #333;
+    background-color: #D3D3D3;
     border-radius: 0;
     padding: 16px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    color: #ffffff;
+    color: #000000;
     text-align: left;
     transition: width 0.3s ease;
     position: fixed;
-    top: 0;
+    top: 60px;
     left: 0;
     bottom: 0;
     font-size: 14px;
     z-index: 900;
     overflow-y: auto;
+    height: calc(100vh - 60px);
 }
 
 
@@ -327,7 +332,7 @@ body {
 
 .toggle-btn {
     background: none;
-    color: #ffffff;
+    color: #000000;
     border: none;
     cursor: pointer;
     font-size: 18px;
@@ -337,6 +342,7 @@ body {
 .sidebar.collapsed .toggle-btn {
     background-color: #555;
     border-radius: 4px;
+    color: #000000;
 }
 
 
@@ -406,7 +412,7 @@ body {
     display: flex;
     align-items: center;
     gap: 6px;
-    color: #ffffff;
+    color: #000000;
     text-decoration: none;
     font-size: 14px;
 }
@@ -418,8 +424,8 @@ body {
 .github-icon {
     width: 18px;
     height: 18px;
-    filter: invert(1);
-    /* makes the SVG white */
+    filter: none;
+    /* makes the SVG black */
 }
 
 .whatsapp-link {
@@ -427,7 +433,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 6px;
-    color: #ffffff;
+    color: #000000;
     text-decoration: none;
     font-size: 14px;
     margin-top: 10px;
@@ -438,7 +444,7 @@ body {
 }
 
 .catalogue-link {
-    color: #ffffff;
+    color: #000000;
     text-decoration: none;
 }
 
@@ -449,8 +455,8 @@ body {
 .whatsapp-icon {
     width: 18px;
     height: 18px;
-    filter: invert(1);
-    /* makes the icon white for dark sidebars */
+    filter: none;
+    /* icon remains dark */
 }
 
 .logo-container {
