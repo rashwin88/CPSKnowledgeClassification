@@ -26,3 +26,5 @@ function toggleSidebar() {
 }
 
 document.addEventListener('DOMContentLoaded', updateLayout);
+window.addEventListener('load', updateLayout);
+window.addEventListener('resize', updateLayout);
