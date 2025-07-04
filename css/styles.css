@@ -215,8 +215,8 @@ body {
 
 .content-container {
     margin-top: 60px;
-    margin-left: 182px;
-    width: calc(100% - 182px);
+    margin-left: 200px;
+    width: calc(100% - 200px);
     display: flex;
     justify-content: center;
     box-sizing: border-box;
@@ -225,15 +225,15 @@ body {
 }
 
 .sidebar.collapsed + .content-container {
-    margin-left: 60px;
-    width: calc(100% - 60px);
+    margin-left: 66px;
+    width: calc(100% - 66px);
 }
 
 /* Approvals page specific container */
 .approvals-container {
     margin-top: 60px;
-    margin-left: 182px;
-    width: calc(100% - 182px);
+    margin-left: 200px;
+    width: calc(100% - 200px);
     display: flex;
     justify-content: center;
     box-sizing: border-box;
@@ -242,8 +242,8 @@ body {
 }
 
 .sidebar.collapsed + .approvals-container {
-    margin-left: 60px;
-    width: calc(100% - 60px);
+    margin-left: 66px;
+    width: calc(100% - 66px);
 }
 
 
@@ -276,7 +276,7 @@ body {
 
 
 .sidebar {
-    width: 182px;
+    width: 200px;
     flex-shrink: 0;
     background-color: #D3D3D3;
     border-radius: 0;
@@ -299,7 +299,7 @@ body {
 
 
 .sidebar.collapsed {
-    width: 60px;
+    width: 66px;
     padding: 16px 8px;
 }
 
