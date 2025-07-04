@@ -1,7 +1,7 @@
 function updateLayout() {
     const sidebar = document.getElementById('sidebar');
     const collapsed = sidebar.classList.contains('collapsed');
-    const left = collapsed ? '60px' : '182px';
+    const left = collapsed ? '66px' : '200px';
 
     const topbar = document.querySelector('.topbar');
     const topHeight = topbar ? `${topbar.offsetHeight}px` : '0px';
