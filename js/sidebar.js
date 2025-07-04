@@ -3,11 +3,6 @@ function updateLayout() {
     const collapsed = sidebar.classList.contains('collapsed');
     const left = collapsed ? '60px' : '182px';
 
-    const topbar = document.querySelector('.topbar');
-    if (topbar) {
-        topbar.style.left = left;
-        topbar.style.width = `calc(100% - ${left})`;
-    }
 
     document.querySelectorAll('.content-container, .approvals-container')
         .forEach(el => {
