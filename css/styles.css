@@ -173,6 +173,7 @@ body {
     overflow-wrap: anywhere;
     word-break: break-word;
     hyphens: auto;
+    white-space: pre-line;
 }
 
 .card .count {
@@ -612,6 +613,7 @@ body {
     overflow-wrap: anywhere;
     word-break: break-word;
     hyphens: auto;
+    white-space: pre-line;
 }
 
 .card-right {
@@ -1066,7 +1068,7 @@ body.no-hyphenation .card-subtitle {
     overflow-wrap: normal;
     word-break: normal;
     hyphens: none;
-    white-space: normal;
+    white-space: pre-line;
 }
 
 .setting-item {

@@ -338,7 +338,7 @@ function createCard(data, row) {
     card.setAttribute('data-node-type', nodeType);
     let labelText = data.node_label || '';
     if (Array.isArray(data.node_tags) && data.node_tags.length > 0) {
-        labelText = `${labelText} ${data.node_tags[0]}`.trim();
+        labelText = `${labelText}\n${data.node_tags[0]}`.trim();
     }
     card.setAttribute('data-label-original', labelText);
     const bookCount = 0;
@@ -525,7 +525,7 @@ function createLeafCard(data, row) {
     card.setAttribute('data-node-type', leafType);
     let labelText = data.node_label || '';
     if (Array.isArray(data.node_tags) && data.node_tags.length > 0) {
-        labelText = `${labelText} ${data.node_tags[0]}`.trim();
+        labelText = `${labelText}\n${data.node_tags[0]}`.trim();
     }
     card.setAttribute('data-label-original', labelText);
     const bookCount = 0;
