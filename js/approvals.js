@@ -6,6 +6,7 @@ const formContainer = document.getElementById('record-form');
 const messageModal = document.getElementById('messageModal');
 const messageText = document.getElementById('messageText');
 const messageClose = document.getElementById('messageClose');
+const sortSelect = document.getElementById('sort-select');
 
 function showMessage(text) {
     messageText.textContent = text;
@@ -26,12 +27,21 @@ messageModal.addEventListener('click', (e) => {
 let stagingRecords = [];
 let selectedId = null;
 
+function sortRecords() {
+    const val = sortSelect.value;
+    stagingRecords.sort((a, b) => {
+        const da = new Date(a.created_at);
+        const db = new Date(b.created_at);
+        return val === 'created_asc' ? da - db : db - da;
+    });
+}
+
 function toTitleCase(str) {
     return str.replace(/_/g, ' ').replace(/\w\S*/g, (txt) =>
         txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 }
 
-async function loadRecords() {
+async function loadRecords(selectFirst = false) {
     try {
         const { data, error } = await supabase
             .from('staging_entries')
@@ -41,18 +51,27 @@ async function loadRecords() {
             return;
         }
         stagingRecords = data || [];
-        applyFilter();
+        sortRecords();
+        applyFilter(selectFirst);
     } catch (err) {
         console.error('Unexpected error loading records', err);
     }
 }
 
-function applyFilter() {
+function applyFilter(selectFirst = false) {
     const statuses = Array.from(statusChecks)
         .filter(cb => cb.checked)
         .map(cb => cb.value);
     const filtered = stagingRecords.filter(r => statuses.includes(r.status));
     renderList(filtered);
+    if (selectFirst) {
+        if (filtered.length) {
+            selectRecord(filtered[0].id);
+        } else {
+            selectedId = null;
+            formContainer.innerHTML = '';
+        }
+    }
 }
 
 function renderList(records) {
@@ -163,7 +182,7 @@ async function approveRecord(record) {
         delete upsertData.created_at;
         await supabase.from('committed_records').upsert(upsertData);
         record.status = 'approved';
-        applyFilter();
+        await loadRecords(true);
         showMessage('Record approved successfully');
     } catch (err) {
         console.error('Error approving record', err);
@@ -175,7 +194,7 @@ async function rejectRecord(record) {
     try {
         await supabase.from('staging_entries').update({ status: 'rejected' }).eq('id', record.id);
         record.status = 'rejected';
-        applyFilter();
+        await loadRecords(true);
         showMessage('Record rejected successfully');
     } catch (err) {
         console.error('Error rejecting record', err);
@@ -184,6 +203,7 @@ async function rejectRecord(record) {
 }
 
 statusChecks.forEach(cb => cb.addEventListener('change', applyFilter));
+sortSelect.addEventListener('change', () => { sortRecords(); applyFilter(); });
 filterButton.addEventListener('click', () => {
     filterMenu.classList.toggle('hidden');
 });
@@ -192,4 +212,4 @@ document.addEventListener('click', (e) => {
         filterMenu.classList.add('hidden');
     }
 });
-window.addEventListener('DOMContentLoaded', loadRecords);
+window.addEventListener('DOMContentLoaded', () => loadRecords(true));

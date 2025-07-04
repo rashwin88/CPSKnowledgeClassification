@@ -42,14 +42,6 @@
 
                 <hr class="sidebar-divider">
 
-                <div class="sidebar-middle">
-                    <a href="https://bookish-archive-nexus.lovable.app/search" class="catalogue-link">Search The
-                        Catalogue</a>
-                </div>
-
-                <div class="sidebar-middle">
-                    <a href="https://bookish-archive-nexus.lovable.app" class="catalogue-link">Cataloguing Tool</a>
-                </div>
             </div>
 
             <div class="sidebar-footer">
@@ -85,10 +77,15 @@
                         <button type="button" id="filter-button" class="dropdown-button">Status ▼</button>
                         <div id="status-options" class="options hidden">
                             <label><input type="checkbox" value="pending" checked> Pending</label>
-                            <label><input type="checkbox" value="approved" checked> Approved</label>
-                            <label><input type="checkbox" value="rejected" checked> Rejected</label>
+                            <label><input type="checkbox" value="approved"> Approved</label>
+                            <label><input type="checkbox" value="rejected"> Rejected</label>
                         </div>
                     </div>
+                    <label class="sort-label" for="sort-select">Sort by</label>
+                    <select id="sort-select" class="sort-select">
+                        <option value="created_desc" selected>Newest first</option>
+                        <option value="created_asc">Oldest first</option>
+                    </select>
                     <ul id="submission-list" role="listbox" class="submission-list"></ul>
                 </div>
                 <div class="approvals-detail-pane">
