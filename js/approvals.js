@@ -7,6 +7,11 @@ const messageModal = document.getElementById('messageModal');
 const messageText = document.getElementById('messageText');
 const messageClose = document.getElementById('messageClose');
 const sortSelect = document.getElementById('sort-select');
+const searchInput = document.getElementById('search-input');
+const suggestionsBox = document.getElementById('search-suggestions');
+
+let searchResults = [];
+let searchDebounce = null;
 
 function showMessage(text) {
     messageText.textContent = text;
@@ -26,6 +31,7 @@ messageModal.addEventListener('click', (e) => {
 
 let stagingRecords = [];
 let selectedId = null;
+let filteredRecords = [];
 
 function sortRecords() {
     const val = sortSelect.value;
@@ -39,6 +45,13 @@ function sortRecords() {
 function toTitleCase(str) {
     return str.replace(/_/g, ' ').replace(/\w\S*/g, (txt) =>
         txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+}
+
+function highlightTerm(text, term) {
+    if (!term) return text;
+    const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(escaped, 'ig');
+    return text.replace(regex, (m) => `<span class="search-highlight">${m}</span>`);
 }
 
 async function loadRecords(selectFirst = false) {
@@ -62,11 +75,11 @@ function applyFilter(selectFirst = false) {
     const statuses = Array.from(statusChecks)
         .filter(cb => cb.checked)
         .map(cb => cb.value);
-    const filtered = stagingRecords.filter(r => statuses.includes(r.status));
-    renderList(filtered);
+    filteredRecords = stagingRecords.filter(r => statuses.includes(r.status));
+    renderList(filteredRecords);
     if (selectFirst) {
-        if (filtered.length) {
-            selectRecord(filtered[0].id);
+        if (filteredRecords.length) {
+            selectRecord(filteredRecords[0].id);
         } else {
             selectedId = null;
             formContainer.innerHTML = '';
@@ -174,6 +187,31 @@ function updateDiff(textarea, current) {
     }
 }
 
+function searchRecords(term) {
+    if (!term) {
+        suggestionsBox.innerHTML = '';
+        suggestionsBox.classList.add('hidden');
+        searchResults = [];
+        return;
+    }
+    term = term.toLowerCase();
+    searchResults = filteredRecords.filter(r => {
+        const title = r.title || '';
+        const code = r.classification_number || '';
+        const author = r.main_author || '';
+        return title.toLowerCase().includes(term) ||
+            code.toLowerCase().includes(term) ||
+            author.toLowerCase().includes(term);
+    }).slice(0, 10);
+    suggestionsBox.innerHTML = searchResults.map((r, i) => {
+        const title = r.title || '';
+        const code = r.classification_number || '';
+        const display = highlightTerm(`${code} ${title}`, term);
+        return `<div class="suggestion-item" data-idx="${i}">${display}</div>`;
+    }).join('');
+    suggestionsBox.classList.toggle('hidden', searchResults.length === 0);
+}
+
 async function approveRecord(record) {
     try {
         await supabase.from('staging_entries').update({ status: 'approved' }).eq('id', record.id);
@@ -210,6 +248,25 @@ filterButton.addEventListener('click', () => {
 document.addEventListener('click', (e) => {
     if (!filterMenu.contains(e.target) && e.target !== filterButton) {
         filterMenu.classList.add('hidden');
+    }
+});
+
+searchInput.addEventListener('input', () => {
+    const term = searchInput.value.trim();
+    clearTimeout(searchDebounce);
+    searchDebounce = setTimeout(() => searchRecords(term), 200);
+});
+
+suggestionsBox.addEventListener('click', (e) => {
+    const item = e.target.closest('.suggestion-item');
+    if (!item) return;
+    const idx = parseInt(item.getAttribute('data-idx'), 10);
+    const record = searchResults[idx];
+    suggestionsBox.classList.add('hidden');
+    suggestionsBox.innerHTML = '';
+    searchInput.value = '';
+    if (record) {
+        selectRecord(record.id);
     }
 });
 window.addEventListener('DOMContentLoaded', () => loadRecords(true));
