@@ -8,7 +8,7 @@ body {
 }
 
 .topbar {
-    width: calc(100% - 182px);
+    width: 100%;
     background-color: #D3D3D3;
     color: #000000;
     padding: 8px 16px;
@@ -19,7 +19,7 @@ body {
     box-sizing: border-box;
     position: fixed;
     top: 0;
-    left: 182px;
+    left: 0;
     z-index: 1000;
 }
 
@@ -288,13 +288,13 @@ body {
     text-align: left;
     transition: width 0.3s ease;
     position: fixed;
-    top: 60px;
+    top: 0;
     left: 0;
     bottom: 0;
     font-size: 14px;
-    z-index: 900;
+    z-index: 1100;
     overflow-y: auto;
-    height: calc(100vh - 60px);
+    height: 100vh;
 }
 
 
