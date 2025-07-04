@@ -281,7 +281,7 @@ body {
     flex-direction: column;
     justify-content: flex-start;
     color: #ffffff;
-    text-align: justify;
+    text-align: left;
     transition: width 0.3s ease;
     position: fixed;
     top: 0;
@@ -1155,6 +1155,17 @@ body.dark-mode #settings-icon {
 .filter-label {
     font-size: 0.85em;
     margin-bottom: 4px;
+}
+
+.sort-label {
+    font-size: 0.85em;
+    margin-bottom: 4px;
+}
+
+.sort-select {
+    width: 100%;
+    padding: 4px 8px;
+    margin-bottom: 8px;
 }
 
 #status-filter {
