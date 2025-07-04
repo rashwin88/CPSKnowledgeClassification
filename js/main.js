@@ -336,13 +336,17 @@ function createCard(data, row) {
     card.setAttribute('data-id', data.id);
     const nodeType = data.type || data.node_type || '';
     card.setAttribute('data-node-type', nodeType);
-    card.setAttribute('data-label-original', data.node_label);
+    let labelText = data.node_label || '';
+    if (Array.isArray(data.node_tags) && data.node_tags.length > 0) {
+        labelText = `${labelText} ${data.node_tags[0]}`.trim();
+    }
+    card.setAttribute('data-label-original', labelText);
     const bookCount = 0;
     card.setAttribute('data-total-books', bookCount);
     card.style.backgroundColor = data.color;
     let innerHtml = '';
     // Update inner html for each card to show the category code, category name, and total books
-    const label = hyphenationEnabled ? insertSoftHyphens(data.node_label) : data.node_label;
+    const label = hyphenationEnabled ? insertSoftHyphens(labelText) : labelText;
     innerHtml = `
       <div class="top">${formatDisplayId(data.id)}</div>
       <div class="category" lang="en">${label}</div>
@@ -519,13 +523,17 @@ function createLeafCard(data, row) {
     card.setAttribute('data-id', data.id);
     const leafType = data.type || data.node_type || '';
     card.setAttribute('data-node-type', leafType);
-    card.setAttribute('data-label-original', data.node_label);
+    let labelText = data.node_label || '';
+    if (Array.isArray(data.node_tags) && data.node_tags.length > 0) {
+        labelText = `${labelText} ${data.node_tags[0]}`.trim();
+    }
+    card.setAttribute('data-label-original', labelText);
     const bookCount = 0;
     card.setAttribute('data-total-books', bookCount);
     card.style.backgroundColor = data.color;
     let innerHtml = '';
     // Update inner html for each card to show the category code, category name, and total books
-    const label = hyphenationEnabled ? insertSoftHyphens(data.node_label) : data.node_label;
+    const label = hyphenationEnabled ? insertSoftHyphens(labelText) : labelText;
     innerHtml = `
     <div class="card-left">
       <div class="card-title">${formatDisplayId(data.id)}</div>
