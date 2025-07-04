@@ -238,7 +238,7 @@ body {
     justify-content: center;
     box-sizing: border-box;
     height: calc(100vh - 60px);
-    overflow-y: auto;
+    overflow-y: hidden;
 }
 
 .sidebar.collapsed + .approvals-container {
@@ -1156,6 +1156,7 @@ body.dark-mode #settings-icon {
     border-right: 1px solid #ccc;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
 }
 
 .filter-label {
