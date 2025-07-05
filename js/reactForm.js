@@ -132,7 +132,7 @@
             setSubmitting(false);
         };
 
-        return React.createElement('form', { className: 'react-form', onSubmit: handleSubmit }, [
+        return React.createElement('form', { className: 'react-form approval-form', onSubmit: handleSubmit }, [
             React.createElement('div', { className: 'form-fields' }, [
                 FormField({ label: 'Classification Number', name: 'classification_number', value: classificationNumber, onChange: () => {}, readOnly: true }),
                 FormField({ label: 'Item Number', name: 'item_number', value: formData.item_number, onChange: handleChange, required: true }),
