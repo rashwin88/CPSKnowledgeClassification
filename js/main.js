@@ -587,15 +587,20 @@ function renderFirstRow(dataList) {
     });
 }
 
+function filterLabelled(nodes) {
+    return (nodes || []).filter(n => n && n.node_label && String(n.node_label).trim() !== '');
+}
+
 function renderSecondRow(childData) {
     // Clear previous
     secondRow.innerHTML = '';
-    if (!childData || childData.length === 0) {
+    const labelled = filterLabelled(childData);
+    if (labelled.length === 0) {
         secondRow.style.display = 'none';
         return;
     }
     secondRow.style.display = 'flex';
-    childData.forEach(data => {
+    labelled.forEach(data => {
         const card = createCard(data, 'second-row');
         secondRow.appendChild(card);
     });
@@ -604,12 +609,13 @@ function renderSecondRow(childData) {
 function renderThirdRow(childData) {
     // Clear previous
     thirdRow.innerHTML = '';
-    if (!childData || childData.length === 0) {
+    const labelled = filterLabelled(childData);
+    if (labelled.length === 0) {
         thirdRow.style.display = 'none';
         return;
     }
     thirdRow.style.display = 'flex';
-    childData.forEach(data => {
+    labelled.forEach(data => {
         const card = createCard(data, 'third-row');
         thirdRow.appendChild(card);
     });
@@ -618,12 +624,13 @@ function renderThirdRow(childData) {
 function renderFourthRow(childData) {
     // Clear previous
     fourthRow.innerHTML = '';
-    if (!childData || childData.length === 0) {
+    const labelled = filterLabelled(childData);
+    if (labelled.length === 0) {
         fourthRow.style.display = 'none';
         return;
     }
     fourthRow.style.display = 'flex';
-    childData.forEach(data => {
+    labelled.forEach(data => {
         const card = createCard(data, 'fourth-row');
         fourthRow.appendChild(card);
     });
@@ -632,12 +639,13 @@ function renderFourthRow(childData) {
 function renderFifthRow(childData) {
     // Clear previous
     fifthRow.innerHTML = '';
-    if (!childData || childData.length === 0) {
+    const labelled = filterLabelled(childData);
+    if (labelled.length === 0) {
         fifthRow.style.display = 'none';
         return;
     }
     fifthRow.style.display = 'flex';
-    childData.forEach(data => {
+    labelled.forEach(data => {
         const card = createCard(data, 'fifth-row');
         fifthRow.appendChild(card);
     });
@@ -646,12 +654,13 @@ function renderFifthRow(childData) {
 function renderSixthRow(childData) {
     // Clear previous
     sixthRow.innerHTML = '';
-    if (!childData || childData.length === 0) {
+    const labelled = filterLabelled(childData);
+    if (labelled.length === 0) {
         sixthRow.style.display = 'none';
         return;
     }
     sixthRow.style.display = 'flex';
-    childData.forEach(data => {
+    labelled.forEach(data => {
         const card = createCard(data, 'sixth-row');
         sixthRow.appendChild(card);
     });
@@ -660,12 +669,13 @@ function renderSixthRow(childData) {
 function renderSeventhRow(childData) {
     // Clear previous
     seventhRow.innerHTML = '';
-    if (!childData || childData.length === 0) {
+    const labelled = filterLabelled(childData);
+    if (labelled.length === 0) {
         seventhRow.style.display = 'none';
         return;
     }
     seventhRow.style.display = 'flex';
-    childData.forEach(data => {
+    labelled.forEach(data => {
         const card = createCard(data, 'seventh-row');
         seventhRow.appendChild(card);
     });
@@ -673,12 +683,13 @@ function renderSeventhRow(childData) {
 
 function renderBarrenRow(childData) {
     barrenRow.innerHTML = '';
-    if (!childData || childData.length === 0) {
+    const labelled = filterLabelled(childData);
+    if (labelled.length === 0) {
         barrenRow.style.display = 'none';
         return;
     }
     barrenRow.style.display = 'grid';
-    childData.forEach(data => {
+    labelled.forEach(data => {
         const card = createCard(data, 'barren-row');
         barrenRow.appendChild(card);
     });
@@ -687,12 +698,13 @@ function renderBarrenRow(childData) {
 
 function renderLeafRow(childData) {
     leafRow.innerHTML = '';
-    if (!childData || childData.length === 0) {
+    const labelled = filterLabelled(childData);
+    if (labelled.length === 0) {
         leafRow.style.display = 'none';
         return;
     }
     leafRow.style.display = 'grid';
-    childData.forEach(data => {
+    labelled.forEach(data => {
         const card = createLeafCard(data, 'leaf-row');
         leafRow.appendChild(card);
     });
