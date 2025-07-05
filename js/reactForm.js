@@ -44,7 +44,11 @@
         useEffect(() => {
             if (initialData) {
                 // Editing existing book
-                setFormData({ ...emptyFormState, ...initialData });
+                const data = { ...emptyFormState, ...initialData };
+                if (data.pages !== undefined && data.pages !== null) {
+                    data.pages = String(data.pages);
+                }
+                setFormData(data);
             } else {
                 // Fresh form for new entry
                 setFormData({ ...emptyFormState });
@@ -100,7 +104,7 @@
                 edition: formData.edition || null,
                 publisher: formData.publisher || null,
                 year_of_publication: formData.year_of_publication ? parseInt(formData.year_of_publication, 10) : null,
-                pages: formData.pages || null,
+                pages: formData.pages ? String(formData.pages) : null,
                 volume: formData.volume || null,
                 language: formData.language || null,
                 language_note: formData.language_note || null,
