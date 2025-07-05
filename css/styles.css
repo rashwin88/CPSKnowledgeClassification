@@ -552,10 +552,25 @@ body {
     grid-template-columns: repeat(auto-fill, minmax(114px, 1fr));
     gap: 4px;
     padding: 8px;
-    background-color: #ddd;
-    max-width: 1200px;
-    min-width: 800px;
+    background-color: transparent;
+    max-width: 1080px;
+    min-width: 720px;
+    width: 90%;
     margin: 0 auto;
+}
+
+#barren-row,
+#leaf-row {
+    display: none;
+}
+
+#second-row,
+#third-row,
+#fourth-row,
+#fifth-row,
+#sixth-row,
+#seventh-row {
+    display: none;
 }
 
 .horizontal-card {
