@@ -310,6 +310,10 @@ body {
     gap: 10px;
 }
 
+.sidebar .title {
+    font-weight: bold;
+}
+
 .sidebar.collapsed .sidebar-top {
     gap: 4px;
 }
