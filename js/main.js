@@ -26,6 +26,40 @@ let hyphenationEnabled = false;
 
 const formModal = document.getElementById('formModal');
 const modalCloseBtn = document.getElementById('modalClose');
+const editModal = document.getElementById('editModal');
+const editModalClose = document.getElementById('editModalClose');
+const editForm = document.getElementById('editForm');
+const editLabelInput = document.getElementById('editLabel');
+const editTagsInput = document.getElementById('editTags');
+let currentEditId = null;
+
+function openEditModal(id) {
+    currentEditId = id;
+    editModal.setAttribute('data-id', id);
+    editModal.classList.remove('hidden');
+    supabase.from('nodes')
+        .select('node_tags')
+        .eq('id', id)
+        .maybeSingle()
+        .then(({ data, error }) => {
+            if (error) {
+                console.error('Error fetching node', error);
+                editLabelInput.value = '';
+                editTagsInput.value = '[]';
+            } else {
+                const tags = data && data.node_tags ? data.node_tags : [];
+                editLabelInput.value = tags[0] || '';
+                editTagsInput.value = JSON.stringify(tags, null, 2);
+            }
+            requestAnimationFrame(() => editModal.classList.add('active'));
+        });
+}
+
+function closeEditModal() {
+    editModal.classList.remove('active');
+    setTimeout(() => editModal.classList.add('hidden'), 300);
+    currentEditId = null;
+}
 
 function openFormModal(id) {
     if (window.renderForm) {
@@ -51,6 +85,46 @@ formModal.addEventListener('click', (e) => {
     if (e.target === formModal) {
         closeFormModal();
     }
+});
+
+editModalClose.addEventListener('click', closeEditModal);
+editModal.addEventListener('click', (e) => {
+    if (e.target === editModal) {
+        closeEditModal();
+    }
+});
+
+editForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!currentEditId) return;
+    let tags;
+    try {
+        tags = JSON.parse(editTagsInput.value || '[]');
+        if (!Array.isArray(tags)) tags = [];
+    } catch (err) {
+        alert('Invalid JSON for node tags');
+        return;
+    }
+    const label = editLabelInput.value || '';
+    const { error } = await supabase
+        .from('nodes')
+        .update({ node_tags: tags, node_metadata: [label] })
+        .eq('id', currentEditId);
+    if (error) {
+        console.error('Error updating node', error);
+        alert('Error updating node');
+        return;
+    }
+    document.querySelectorAll(`.card[data-id='${currentEditId}'], .horizontal-card[data-id='${currentEditId}']`).forEach(card => {
+        const base = card.getAttribute('data-node-label') || '';
+        const text = `${base}\n${label}`.trim();
+        card.setAttribute('data-label-original', text);
+        const el = card.querySelector('.category') || card.querySelector('.card-subtitle');
+        if (el) {
+            el.textContent = hyphenationEnabled ? insertSoftHyphens(text) : text;
+        }
+    });
+    closeEditModal();
 });
 
 function isLeafType(type) {
@@ -352,6 +426,7 @@ function createCard(data, row) {
       <div class="category" lang="en">${label}</div>
       <div class="count">${bookCount}</div>
       <div class="add-icon">+</div>
+      <div class="edit-icon">&#9998;</div>
     `;
 
     card.innerHTML = innerHtml;
@@ -367,6 +442,11 @@ function createCard(data, row) {
     addIcon.addEventListener('click', (e) => {
         e.stopPropagation();
         openFormModal(data.id);
+    });
+    const editIcon = card.querySelector('.edit-icon');
+    editIcon.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openEditModal(data.id);
     });
 
     // Add click handler to manage selection
@@ -544,6 +624,7 @@ function createLeafCard(data, row) {
     <div class="card-right">
       <div class="card-meta">${bookCount}</div>
       <div class="add-icon">+</div>
+      <div class="edit-icon">&#9998;</div>
     </div>
     `;
 
@@ -560,6 +641,11 @@ function createLeafCard(data, row) {
     addIcon.addEventListener('click', (e) => {
         e.stopPropagation();
         openFormModal(data.id);
+    });
+    const editIcon = card.querySelector('.edit-icon');
+    editIcon.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openEditModal(data.id);
     });
 
     // Add click handler to manage selection

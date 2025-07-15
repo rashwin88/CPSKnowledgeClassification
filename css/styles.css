@@ -796,11 +796,36 @@ body {
     font-size: 14px;
 }
 
+.edit-icon {
+    position: absolute;
+    bottom: 4px;
+    left: 4px;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #333;
+    border-radius: 50%;
+    background: #fff;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+
 .horizontal-card .add-icon {
     position: static;
     bottom: auto;
     right: auto;
     margin-left: 4px;
+}
+
+.horizontal-card .edit-icon {
+    position: static;
+    bottom: auto;
+    left: auto;
+    margin-right: 4px;
 }
 
 .modal-overlay {
@@ -978,6 +1003,31 @@ body {
 
 .react-form button:disabled {
     background-color: #777;
+}
+
+.edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.edit-form .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-form input,
+.edit-form textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9em;
+    box-sizing: border-box;
+}
+
+.edit-form .form-actions {
+    text-align: right;
 }
 
 #reactFormRoot {
