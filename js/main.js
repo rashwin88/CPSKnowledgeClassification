@@ -38,18 +38,18 @@ function openEditModal(id) {
     editModal.setAttribute('data-id', id);
     editModal.classList.remove('hidden');
     supabase.from('nodes')
-        .select('node_tags')
+        .select('node_label,node_tags')
         .eq('id', id)
         .maybeSingle()
         .then(({ data, error }) => {
             if (error) {
                 console.error('Error fetching node', error);
                 editLabelInput.value = '';
-                editTagsInput.value = '[]';
+                editTagsInput.value = '';
             } else {
-                const tags = data && data.node_tags ? data.node_tags : [];
-                editLabelInput.value = tags[0] || '';
-                editTagsInput.value = JSON.stringify(tags, null, 2);
+                const tags = Array.isArray(data?.node_tags) ? data.node_tags : [];
+                editLabelInput.value = data?.node_label || '';
+                editTagsInput.value = tags[0] || '';
             }
             requestAnimationFrame(() => editModal.classList.add('active'));
         });
@@ -97,18 +97,12 @@ editModal.addEventListener('click', (e) => {
 editForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!currentEditId) return;
-    let tags;
-    try {
-        tags = JSON.parse(editTagsInput.value || '[]');
-        if (!Array.isArray(tags)) tags = [];
-    } catch (err) {
-        alert('Invalid JSON for node tags');
-        return;
-    }
     const label = editLabelInput.value || '';
+    const meta = editTagsInput.value || '';
+    const tags = meta ? [meta] : [];
     const { error } = await supabase
         .from('nodes')
-        .update({ node_tags: tags, node_metadata: [label] })
+        .update({ node_label: label, node_tags: tags })
         .eq('id', currentEditId);
     if (error) {
         console.error('Error updating node', error);
@@ -116,8 +110,8 @@ editForm.addEventListener('submit', async (e) => {
         return;
     }
     document.querySelectorAll(`.card[data-id='${currentEditId}'], .horizontal-card[data-id='${currentEditId}']`).forEach(card => {
-        const base = card.getAttribute('data-node-label') || '';
-        const text = `${base}\n${label}`.trim();
+        const text = meta ? `${label}\n${meta}`.trim() : label;
+        card.setAttribute('data-node-label', label);
         card.setAttribute('data-label-original', text);
         const el = card.querySelector('.category') || card.querySelector('.card-subtitle');
         if (el) {
