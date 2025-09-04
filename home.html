@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Knowledge Classification Scheme</title>
+    <link href="https://fonts.googleapis.com/css2?family=Literata&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css" />
+
+</head>
+
+<body>
+    <nav class="topbar">
+        <a href="home.html" class="menu-link">Home</a>
+        <a href="approvals.html" class="menu-link">Approvals</a>
+        <a href="dashboard.html" class="menu-link">Dashboard</a>
+        <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/icons/person-circle.svg" class="user-icon" alt="User" />
+        <span class="username">Admin-CPS</span>
+    </nav>
+    <div class="page-layout">
+        <div id="sidebar" class="sidebar expanded">
+            <div class="sidebar-top">
+                <img src="assets/logo.png" alt="Center for Policy Logo" class="logo" />
+                <span class="title">CPS Classification of Indian Knowledge</span>
+                <button class="toggle-btn" onclick="toggleSidebar()">«</button>
+            </div>
+
+            <br />
+            <br />
+
+            <div class="sidebar-middle">
+                <div>
+                    <p>
+                        This interactive visualizer allows you to explore the hierarchical classification of Indian
+                        Knowledge Systems. Each colored card represents a category, subcategory, or specific entry in
+                        the classification scheme.
+                    </p>
+                    <p>
+                        Click on a card to expand it and reveal more specific layers of knowledge. The deeper you go,
+                        the more granular the classification becomes — from broad areas like Vedas or Itihāsa, down to
+                        specific texts or concepts.
+                    </p>
+                </div>
+
+                <hr class="sidebar-divider">
+
+            </div>
+
+            <div class="sidebar-footer">
+                <a href="https://github.com/rashwin88/CPSKnowledgeClassification" target="_blank" class="github-link">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/github.svg" alt="GitHub"
+                        class="github-icon" />
+                    <span class="github-text">GitHub</span>
+                </a>
+
+
+                <a href="https://wa.me/?text=Explore%20this%20Classification%20of%20Indian%20Knowledge%20Systems:%20https%3A%2F%2Fcpsindia.org%2Fknowledge-classification"
+                    target="_blank" class="whatsapp-link">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/whatsapp.svg" alt="WhatsApp"
+                        class="whatsapp-icon" />
+                    <span class="whatsapp-text">Share</span>
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Explore%20this%20Classification%20of%20Indian%20Knowledge%20Systems%20by%20Centre%20for%20Policy%20Studies%3A%20https%3A%2F%2Fcpsindia.org%2Fknowledge-classification"
+                    target="_blank" class="whatsapp-link">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/x.svg" alt="X"
+                        class="whatsapp-icon" />
+                    <span class="x-text">Share</span>
+                </a>
+            </div>
+        </div>
+
+
+        <div class="content-container">
+            <div class="main-content">
+            <div class="logo-container">
+                <img src="assets/logo1.png" alt="Centered Image" />
+            </div>
+            <div id="search-container" class="search-box">
+                <label for="search-input">Search</label>
+                <input type="text" id="search-input" placeholder="Type to search" />
+                <div id="search-suggestions" class="suggestions hidden"></div>
+            </div>
+            <div class="wrapper">
+                <div id="loader" class="loader hidden"></div>
+                <div class="scroll-row">
+                    <div class="card-container" id="first-row"></div>
+                </div>
+                <div class="scroll-row">
+                    <div class="card-container" id="second-row"></div>
+                </div>
+                <div class="scroll-row">
+                    <div class="card-container" id="third-row"></div>
+                </div>
+                <div class="scroll-row">
+                    <div class="card-container" id="fourth-row"></div>
+                </div>
+                <div class="scroll-row">
+                    <div class="card-container" id="fifth-row"></div>
+                </div>
+                <div class="scroll-row">
+                    <div class="card-container" id="sixth-row"></div>
+                </div>
+                <div class="scroll-row">
+                    <div class="card-container" id="seventh-row"></div>
+                </div>
+                <div class="scroll-row">
+                    <div class="barren-card-container" id="barren-row"></div>
+                </div>
+                <div class="scroll-column">
+                    <div class="horizontal-card-container" id="leaf-row"></div>
+                </div>
+
+                <!-- <div id="hierarchy-display" class="hierarchy-tree"></div> -->
+                <div id="books-display" class="books-display">
+                    <span class="placeholder-text">📚 Books in selected category</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div id="settings-icon">⚙️</div>
+    <div id="settings-modal" class="hidden">
+        <div class="setting-item">
+            <span>Hyphenation</span>
+            <label class="switch">
+                <input type="checkbox" id="hyphenation-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="setting-item">
+            <span>Dark Mode</span>
+            <label class="switch">
+                <input type="checkbox" id="dark-mode-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+
+    <div id="formModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button type="button" class="modal-close" id="modalClose">&times;</button>
+            <div id="reactFormRoot"></div>
+        </div>
+    </div>
+
+    <div id="bookModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button type="button" class="modal-close" id="bookModalClose">&times;</button>
+            <div id="bookModalBody"></div>
+        </div>
+    </div>
+
+    <div id="editModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button type="button" class="modal-close" id="editModalClose">&times;</button>
+            <form id="editForm" class="edit-form">
+                <div class="form-group">
+                    <label for="editLabel">Label</label>
+                    <input type="text" id="editLabel" />
+                </div>
+                <div class="form-group">
+                    <label for="editTags">Metadata</label>
+                    <textarea id="editTags" rows="4"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" id="editSave">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.5/dist/umd/supabase.min.js"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script defer src="js/sidebar.js"></script>
+    <script defer src="js/data.js"></script>
+    <script defer src="js/reactForm.js"></script>
+    <script defer src="js/main.js"></script>
+
+
+</body>
+
+</html>
