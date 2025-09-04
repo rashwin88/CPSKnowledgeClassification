@@ -866,7 +866,9 @@ body {
     font-family: "Inter", "Literata", Arial, Helvetica, sans-serif;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* Elevated close button already present as .modal-close */
@@ -1579,6 +1581,26 @@ body {
     font-weight: 600;
 }
 
+.help-btn {
+    background: var(--muted-surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.help-btn:hover {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+}
+
 .sidebar {
     background-color: var(--surface);
     color: var(--text);
@@ -1770,4 +1792,95 @@ body {
     to {
         transform: translateY(0) scale(1);
     }
+}
+
+/* Guided tour styles */
+.tour-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2600;
+    display: grid;
+    place-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .2s ease, visibility .2s ease;
+}
+
+.tour-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.tour-overlay .tour-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, .55);
+}
+
+.tour-tooltip {
+    position: absolute;
+    max-width: 320px;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 12px 14px;
+    transform: translateY(-8px);
+}
+
+.tour-tooltip h3 {
+    margin: 4px 0 6px 0;
+    font-size: 16px;
+}
+
+.tour-tooltip p {
+    margin: 0 0 10px 0;
+    color: var(--muted-text);
+    font-size: 14px;
+}
+
+.tour-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.tour-dots {
+    display: flex;
+    gap: 6px;
+}
+
+.tour-dots .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--border);
+}
+
+.tour-dots .dot.active {
+    background: var(--primary);
+}
+
+.tour-actions .tour-prev,
+.tour-actions .tour-next {
+    border: none;
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.tour-actions .tour-prev {
+    background: var(--muted-surface);
+    color: var(--text);
+}
+
+.tour-actions .tour-next {
+    background: var(--primary);
+    color: #fff;
+}
+
+.tour-actions .tour-next:hover {
+    background: var(--primary-hover);
 }
