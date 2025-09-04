@@ -853,20 +853,153 @@ body {
     pointer-events: auto;
 }
 
+/* Modal container */
 .modal-content {
     position: relative;
-    background: #ffffff;
-    padding: 20px 20px 16px 20px;
-    border-radius: 10px;
-    width: 720px;
-    height: 600px;
-    max-width: 90vw;
+    background: var(--surface, #ffffff);
+    padding: 24px 24px 16px 24px;
+    border-radius: 16px;
+    width: min(900px, 92vw);
+    max-width: 900px;
     max-height: 90vh;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
-    font-family: "Literata", Arial, Helvetica, sans-serif;
+    box-shadow: var(--shadow, 0 6px 24px rgba(0, 0, 0, 0.2));
+    font-family: "Inter", "Literata", Arial, Helvetica, sans-serif;
     display: flex;
     flex-direction: column;
     overflow: hidden;
+}
+
+/* Elevated close button already present as .modal-close */
+
+/* Polished, card-like forms inside modals */
+.react-form .form-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 16px;
+}
+
+@media (max-width: 720px) {
+    .react-form .form-fields {
+        grid-template-columns: 1fr;
+    }
+}
+
+.react-form .form-group label {
+    font-size: 12px;
+    color: var(--muted-text, #6b7280);
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.react-form .form-group input,
+.react-form .form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border, #cbd5e1);
+    border-radius: 10px;
+    font-size: 14px;
+    background: var(--surface, #ffffff);
+    outline: none;
+    transition: border-color .15s ease, box-shadow .15s ease;
+    box-sizing: border-box;
+}
+
+.react-form .form-group input:focus,
+.react-form .form-group textarea:focus {
+    border-color: var(--primary, #0b66ff);
+    box-shadow: 0 0 0 3px rgba(11, 102, 255, 0.15);
+}
+
+.react-form .form-group textarea {
+    min-height: 96px;
+    resize: vertical;
+}
+
+/* Make longer fields span two columns (using :has for modern browsers) */
+.react-form .form-group:has([name="classification_number"]),
+.react-form .form-group:has([name="subject"]),
+.react-form .form-group:has([name="title"]),
+.react-form .form-group:has([name="subtitle"]),
+.react-form .form-group:has([name="title_with_author"]),
+.react-form .form-group:has([name="title_indian_language"]),
+.react-form .form-group:has([name="subtitle_indian_language"]),
+.react-form .form-group:has([name="general_note"]),
+.react-form .form-group:has([name="toc"]),
+.react-form .form-group:has([name="series_note"]),
+.react-form .form-group:has([name="libraries"]) {
+    grid-column: 1 / -1;
+}
+
+.react-form .form-actions {
+    margin-top: 4px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border, #e5e7eb);
+    display: flex;
+    justify-content: flex-end;
+}
+
+.react-form button {
+    padding: 10px 16px;
+    background-color: var(--primary, #0b66ff);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+/* Edit modal form tweaks */
+.edit-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 16px;
+}
+
+.edit-form .form-group label {
+    font-size: 12px;
+    color: var(--muted-text, #6b7280);
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.edit-form input,
+.edit-form textarea {
+    padding: 12px 14px;
+    border: 1px solid var(--border, #cbd5e1);
+    border-radius: 10px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color .15s ease, box-shadow .15s ease;
+    box-sizing: border-box;
+}
+
+.edit-form input:focus,
+.edit-form textarea:focus {
+    border-color: var(--primary, #0b66ff);
+    box-shadow: 0 0 0 3px rgba(11, 102, 255, .15);
+}
+
+.edit-form .form-group:nth-child(2) {
+    grid-column: 2;
+}
+
+.edit-form .form-group:nth-child(1),
+.edit-form .form-group:nth-child(2) {
+    align-self: start;
+}
+
+.edit-form .form-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.edit-form .form-actions button {
+    background: var(--primary, #0b66ff);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-weight: 600;
 }
 
 .modal-close {
@@ -947,16 +1080,6 @@ body {
     font-family: "Literata", Arial, Helvetica, sans-serif;
     height: 100%;
     min-height: 0;
-}
-
-.react-form .form-fields {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    overflow-y: auto;
-    min-height: 0;
-    padding-right: 4px;
 }
 
 .react-form .form-group {
@@ -1530,4 +1653,121 @@ body {
 
 .approvals-list-item.selected {
     background-color: var(--muted-surface);
+}
+
+/* Onboarding modal */
+.onboard-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2500;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .25s ease, visibility .25s ease;
+}
+
+.onboard-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.onboard-card {
+    position: relative;
+    width: min(720px, 92vw);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transform: translateY(12px) scale(.98);
+    animation: onboardIn .4s ease forwards;
+}
+
+.onboard-close {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    border: none;
+    background: transparent;
+    color: var(--muted-text);
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.onboard-body {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 16px;
+    padding: 20px;
+}
+
+.onboard-illustration {
+    min-height: 180px;
+    background: radial-gradient(120px 80px at 30% 30%, #e0e7ff, transparent),
+        radial-gradient(140px 100px at 80% 60%, #fee2e2, transparent),
+        linear-gradient(135deg, #f8fafc, #eef2ff);
+    border-radius: 12px;
+}
+
+.onboard-content h2 {
+    margin: 6px 0 8px 0;
+}
+
+.onboard-content p {
+    margin: 0;
+    color: var(--muted-text);
+}
+
+.onboard-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+}
+
+.onboard-skip {
+    background: transparent;
+    border: none;
+    color: var(--muted-text);
+    cursor: pointer;
+}
+
+.onboard-next {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.onboard-next:hover {
+    background: var(--primary-hover);
+}
+
+.onboard-steps {
+    display: flex;
+    gap: 6px;
+}
+
+.onboard-steps .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+}
+
+.onboard-steps .dot.active {
+    background: var(--primary);
+}
+
+@keyframes onboardIn {
+    to {
+        transform: translateY(0) scale(1);
+    }
 }
