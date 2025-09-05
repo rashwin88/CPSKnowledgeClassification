@@ -1007,6 +1007,12 @@ searchInput.addEventListener('input', () => {
     const term = searchInput.value.trim();
     clearTimeout(searchDebounce);
     searchDebounce = setTimeout(() => searchRecords(term), 300);
+    const hasTerm = term.length > 0;
+    if (hasTerm) {
+        searchInput.setAttribute('aria-expanded', 'true');
+    } else {
+        searchInput.setAttribute('aria-expanded', 'false');
+    }
 });
 
 suggestionsBox.addEventListener('click', async (e) => {
@@ -1017,6 +1023,7 @@ suggestionsBox.addEventListener('click', async (e) => {
     suggestionsBox.classList.add('hidden');
     suggestionsBox.innerHTML = '';
     searchInput.value = '';
+    searchInput.setAttribute('aria-expanded', 'false');
     if (record) {
         await expandToClassification(record.classification_number);
         displaySingleBook(record);

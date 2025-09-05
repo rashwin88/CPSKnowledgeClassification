@@ -81,9 +81,10 @@
                     <img src="assets/logo1.png" alt="Centered Image" />
                 </div>
                 <div id="search-container" class="search-box md-field floating">
-                    <input class="md-input" type="text" id="search-input" placeholder=" " />
+                    <input class="md-input" type="text" id="search-input" placeholder=" "
+                        aria-controls="search-suggestions" aria-expanded="false" aria-autocomplete="list" />
                     <label for="search-input">Search</label>
-                    <div id="search-suggestions" class="suggestions hidden"></div>
+                    <div id="search-suggestions" class="suggestions hidden" role="listbox"></div>
                 </div>
                 <div class="wrapper">
                     <div id="loader" class="loader hidden"></div>

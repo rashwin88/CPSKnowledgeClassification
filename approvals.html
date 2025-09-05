@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Approvals</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Literata&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Literata&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css" />
 </head>
+
 <body>
     <nav class="topbar">
         <a href="home.html" class="menu-link">Home</a>
         <a href="approvals.html" class="menu-link">Approvals</a>
         <a href="dashboard.html" class="menu-link">Dashboard</a>
-        <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/icons/person-circle.svg" class="user-icon" alt="User" />
+        <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/icons/person-circle.svg" class="user-icon"
+            alt="User" />
         <span class="username">Admin-CPS</span>
     </nav>
     <div class="page-layout">
@@ -70,35 +74,36 @@
 
         <div class="content-container approvals-container">
             <div class="main-content">
-            <div class="approvals-wrapper">
-                <div class="approvals-list-pane">
-                    <label class="filter-label">Filter</label>
-                    <div class="multi-select">
-                        <button type="button" id="filter-button" class="dropdown-button">Status ▼</button>
-                        <div id="status-options" class="options hidden">
-                            <label><input type="checkbox" value="pending" checked> Pending</label>
-                            <label><input type="checkbox" value="approved"> Approved</label>
-                            <label><input type="checkbox" value="rejected"> Rejected</label>
+                <div class="approvals-wrapper">
+                    <div class="approvals-list-pane">
+                        <label class="filter-label">Filter</label>
+                        <div class="multi-select">
+                            <button type="button" id="filter-button" class="dropdown-button">Status ▼</button>
+                            <div id="status-options" class="options hidden">
+                                <label><input type="checkbox" value="pending" checked> Pending</label>
+                                <label><input type="checkbox" value="approved"> Approved</label>
+                                <label><input type="checkbox" value="rejected"> Rejected</label>
+                            </div>
                         </div>
+                        <div class="md-field">
+                            <label class="sort-label" for="sort-select">Sort by</label>
+                            <select id="sort-select" class="sort-select">
+                                <option value="created_desc" selected>Newest first</option>
+                                <option value="created_asc">Oldest first</option>
+                            </select>
+                        </div>
+                        <div id="search-container" class="search-box md-field floating">
+                            <input class="md-input" type="text" id="search-input" placeholder=" "
+                                aria-controls="search-suggestions" aria-expanded="false" aria-autocomplete="list" />
+                            <label for="search-input">Search</label>
+                            <div id="search-suggestions" class="suggestions hidden" role="listbox"></div>
+                        </div>
+                        <ul id="submission-list" role="listbox" class="submission-list"></ul>
                     </div>
-                    <div class="md-field">
-                        <label class="sort-label" for="sort-select">Sort by</label>
-                        <select id="sort-select" class="sort-select">
-                            <option value="created_desc" selected>Newest first</option>
-                            <option value="created_asc">Oldest first</option>
-                        </select>
+                    <div class="approvals-detail-pane">
+                        <div id="record-form" class="record-form"></div>
                     </div>
-                    <div id="search-container" class="search-box md-field floating">
-                        <input class="md-input" type="text" id="search-input" placeholder=" " />
-                        <label for="search-input">Search</label>
-                        <div id="search-suggestions" class="suggestions hidden"></div>
-                    </div>
-                    <ul id="submission-list" role="listbox" class="submission-list"></ul>
                 </div>
-                <div class="approvals-detail-pane">
-                    <div id="record-form" class="record-form"></div>
-                </div>
-            </div>
             </div>
         </div>
     </div>
@@ -115,4 +120,5 @@
     <script src="js/data.js"></script>
     <script src="js/approvals.js"></script>
 </body>
+
 </html>

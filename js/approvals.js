@@ -135,7 +135,7 @@ function renderDetail(record, existing) {
     formContainer.innerHTML = '';
     const form = document.createElement('form');
     form.className = 'approval-form';
-    const fields = Object.keys(record).filter(k => !['id','status','created_at'].includes(k));
+    const fields = Object.keys(record).filter(k => !['id', 'status', 'created_at'].includes(k));
     fields.forEach(f => {
         const group = document.createElement('div');
         group.className = 'md-field';
@@ -153,7 +153,7 @@ function renderDetail(record, existing) {
         area.name = f;
         area.value = record[f] || '';
         area.rows = 2;
-        area.addEventListener('input', (e)=>{ record[f] = e.target.value; updateDiff(area, existing ? existing[f] : null); });
+        area.addEventListener('input', (e) => { record[f] = e.target.value; updateDiff(area, existing ? existing[f] : null); });
         group.appendChild(area);
         if (existing && (existing[f] || '') !== (record[f] || '')) {
             group.classList.add('changed');
@@ -257,6 +257,7 @@ searchInput.addEventListener('input', () => {
     const term = searchInput.value.trim();
     clearTimeout(searchDebounce);
     searchDebounce = setTimeout(() => searchRecords(term), 200);
+    searchInput.setAttribute('aria-expanded', term ? 'true' : 'false');
 });
 
 suggestionsBox.addEventListener('click', (e) => {
@@ -267,6 +268,7 @@ suggestionsBox.addEventListener('click', (e) => {
     suggestionsBox.classList.add('hidden');
     suggestionsBox.innerHTML = '';
     searchInput.value = '';
+    searchInput.setAttribute('aria-expanded', 'false');
     if (record) {
         selectRecord(record.id);
     }
