@@ -1884,3 +1884,215 @@ body {
 .tour-actions .tour-next:hover {
     background: var(--primary-hover);
 }
+
+/* ---- Material tokens and form system (appended) ---- */
+:root {
+    --bg: #f6f8fc;
+    --surface: #ffffff;
+    --muted-surface: #f2f6ff;
+    --text: #0f172a;
+    --muted-text: #475569;
+    --primary: #0b66ff;
+    --primary-hover: #0956d6;
+    --accent: #7c3aed;
+    --error: #d93025;
+    --success: #16a34a;
+    --border: #e6e8f0;
+    --border-strong: #cbd5e1;
+    --shadow: 0 10px 24px rgba(2, 6, 23, 0.08);
+    --radius-field: 12px;
+}
+
+/* Field group */
+.md-field {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.md-field>label {
+    font-size: 12px;
+    color: var(--muted-text);
+    font-weight: 600;
+}
+
+/* Inputs */
+.md-input,
+.md-textarea,
+.sort-select,
+.multi-select .dropdown-button {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-field);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 14px;
+    outline: none;
+    transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+}
+
+.md-textarea {
+    min-height: 96px;
+    resize: vertical;
+}
+
+.md-input:focus,
+.md-textarea:focus,
+.sort-select:focus,
+.multi-select .dropdown-button:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(11, 102, 255, 0.16);
+}
+
+/* Floating label variant */
+.md-field.floating {
+    position: relative;
+}
+
+.md-field.floating>label {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    padding: 0 4px;
+    color: var(--muted-text);
+    pointer-events: none;
+    transition: all .15s ease;
+}
+
+.md-field.floating>.md-input {
+    padding-top: 20px;
+    padding-bottom: 8px;
+}
+
+.md-field.floating>.md-input:focus+label,
+.md-field.floating>.md-input:not(:placeholder-shown)+label {
+    top: 6px;
+    transform: none;
+    font-size: 11px;
+    background: var(--surface);
+}
+
+/* Buttons */
+.md-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color .15s ease, box-shadow .15s ease;
+}
+
+.md-btn:hover {
+    background: var(--primary-hover);
+}
+
+.md-btn:disabled {
+    opacity: .65;
+    cursor: not-allowed;
+}
+
+.md-btn.outline {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--border-strong);
+}
+
+.md-btn.outline:hover {
+    border-color: var(--border);
+    background: var(--muted-surface);
+}
+
+/* Checkbox */
+.md-checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text);
+}
+
+.md-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    appearance: none;
+    display: grid;
+    place-items: center;
+    background: #fff;
+    transition: border-color .15s ease, background-color .15s ease, box-shadow .15s ease;
+}
+
+.md-checkbox input[type="checkbox"]:focus {
+    box-shadow: 0 0 0 3px rgba(11, 102, 255, 0.16);
+    border-color: var(--primary);
+}
+
+.md-checkbox input[type="checkbox"]:checked {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.md-checkbox input[type="checkbox"]:checked::after {
+    content: "";
+    width: 10px;
+    height: 10px;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="white" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>') center / contain no-repeat;
+    background: #fff;
+}
+
+/* Approvals & modal forms alignment */
+.approval-form textarea {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-field);
+    padding: 12px 14px;
+    font-size: 14px;
+    background: var(--surface);
+}
+
+.approval-form .action-buttons button {
+    border-radius: 10px;
+    padding: 10px 16px;
+}
+
+.approval-form .approve-btn {
+    background: var(--success);
+}
+
+.approval-form .reject-btn {
+    background: var(--error);
+}
+
+/* Selects & dropdowns */
+.sort-select {
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, #64748b 50%), linear-gradient(135deg, #64748b 50%, transparent 50%);
+    background-position: calc(100% - 16px) 50%, calc(100% - 12px) 50%;
+    background-size: 6px 6px, 6px 6px;
+    background-repeat: no-repeat;
+    padding-right: 28px;
+}
+
+.multi-select .dropdown-button {
+    border-radius: var(--radius-field);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .md-btn,
+    .md-input,
+    .md-textarea {
+        transition: none;
+    }
+}

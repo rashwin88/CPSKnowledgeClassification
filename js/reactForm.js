@@ -3,11 +3,11 @@
     const { useState, useEffect } = React;
 
     function FormField({ label, name, value, onChange, type = 'text', readOnly = false, required = false }) {
-        return React.createElement('div', { className: 'form-group' }, [
-            React.createElement('label', { key: 'label' }, label + (required ? ' *' : '')),
+        return React.createElement('div', { className: 'form-group md-field' }, [
+            React.createElement('label', { key: 'label', htmlFor: name }, label + (required ? ' *' : '')),
             type === 'textarea'
-                ? React.createElement('textarea', { key: 'input', name, value, onChange, readOnly, required })
-                : React.createElement('input', { key: 'input', type, name, value, onChange, readOnly, required })
+                ? React.createElement('textarea', { key: 'input', name, id: name, className: 'md-textarea', value, onChange, readOnly, required })
+                : React.createElement('input', { key: 'input', type, name, id: name, className: 'md-input', value, onChange, readOnly, required })
         ]);
     }
 
@@ -134,9 +134,9 @@
 
         return React.createElement('form', { className: 'react-form approval-form', onSubmit: handleSubmit }, [
             React.createElement('div', { className: 'form-fields' }, [
-                FormField({ label: 'Classification Number', name: 'classification_number', value: classificationNumber, onChange: () => {}, readOnly: true }),
+                FormField({ label: 'Classification Number', name: 'classification_number', value: classificationNumber, onChange: () => { }, readOnly: true }),
                 FormField({ label: 'Item Number', name: 'item_number', value: formData.item_number, onChange: handleChange, required: true }),
-                FormField({ label: 'Subject', name: 'subject', value: formData.subject, onChange: () => {}, readOnly: true }),
+                FormField({ label: 'Subject', name: 'subject', value: formData.subject, onChange: () => { }, readOnly: true }),
                 FormField({ label: 'Title', name: 'title', value: formData.title, onChange: handleChange }),
                 FormField({ label: 'Subtitle', name: 'subtitle', value: formData.subtitle, onChange: handleChange }),
                 FormField({ label: 'Title With Author', name: 'title_with_author', value: formData.title_with_author, onChange: handleChange }),

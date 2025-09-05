@@ -18,24 +18,25 @@
             </div>
 
             <form id="signin-form" novalidate>
-                <div class="input-group">
-                    <input type="email" id="email" name="email" placeholder="Email" autocomplete="username" required />
+                <div class="md-field floating">
+                    <input class="md-input" type="email" id="email" name="email" placeholder=" " autocomplete="username" required />
+                    <label for="email">Email</label>
                 </div>
-                <div class="input-group">
-                    <input type="password" id="password" name="password" placeholder="Password"
-                        autocomplete="current-password" required />
+                <div class="md-field floating">
+                    <input class="md-input" type="password" id="password" name="password" placeholder=" " autocomplete="current-password" required />
+                    <label for="password">Password</label>
                 </div>
 
-                <label class="checkbox">
+                <label class="md-checkbox">
                     <input type="checkbox" id="remember" checked />
                     <span>Remember me</span>
                 </label>
 
-                <button type="submit" class="btn primary">Sign in</button>
+                <button type="submit" class="md-btn">Sign in</button>
 
                 <div class="divider"><span>or</span></div>
 
-                <button type="button" id="google-btn" class="btn outline google">
+                <button type="button" id="google-btn" class="md-btn outline">
                     <span class="g-logo" aria-hidden="true">G</span>
                     <span>Sign in with Google</span>
                 </button>

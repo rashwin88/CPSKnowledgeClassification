@@ -138,6 +138,7 @@ function renderDetail(record, existing) {
     const fields = Object.keys(record).filter(k => !['id','status','created_at'].includes(k));
     fields.forEach(f => {
         const group = document.createElement('div');
+        group.className = 'md-field';
         const label = document.createElement('label');
         label.textContent = toTitleCase(f);
         group.appendChild(label);
@@ -148,6 +149,7 @@ function renderDetail(record, existing) {
             group.appendChild(curr);
         }
         const area = document.createElement('textarea');
+        area.className = 'md-textarea';
         area.name = f;
         area.value = record[f] || '';
         area.rows = 2;
