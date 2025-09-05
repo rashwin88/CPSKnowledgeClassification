@@ -2096,3 +2096,24 @@ body {
         transition: none;
     }
 }
+
+/* ---- Specificity boost so md- styles win in existing forms ---- */
+.react-form .form-group .md-input,
+.react-form .form-group .md-textarea {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-field);
+    padding: 12px 14px;
+    font-size: 14px;
+    background: var(--surface);
+}
+
+.react-form .form-group .md-input:focus,
+.react-form .form-group .md-textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(11, 102, 255, .16);
+}
+
+.approval-form .md-textarea {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-field);
+}
