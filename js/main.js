@@ -199,24 +199,39 @@ bookModal.addEventListener('click', (e) => {
 function renderBooks() {
     const displayBox = document.getElementById('books-display');
     const totalPages = Math.max(1, Math.ceil(currentTotalBooks / booksPerPage));
-    const listHtml = currentBooks.map((b, i) => `
+    const listHtml = currentBooks.map((b, i) => {
+        const code = formatDisplayId(b.classification_number || '');
+        const title = b.title || b.book_title || b.name || 'Untitled';
+        const subtitle = b.subtitle && b.subtitle !== 'null' ? b.subtitle : '';
+        const mainAuthor = b.main_author || b.author || b.authors || b.primary_author || '';
+        const firstAuthor = b.first_author && b.first_author !== 'null' ? b.first_author : '';
+        const secondAuthor = b.second_author && b.second_author !== 'null' ? b.second_author : '';
+        const language = b.language && b.language !== 'null' ? b.language : '';
+        const langNote = b.language_note && b.language_note !== 'null' ? b.language_note : '';
+        const pages = b.pages || b.page_count || '';
+        const year = b.year || b.publication_year || '';
+        const chips = [
+            mainAuthor ? `<span class="chip">Author: ${mainAuthor}</span>` : '',
+            firstAuthor ? `<span class="chip muted">First: ${firstAuthor}</span>` : '',
+            secondAuthor ? `<span class="chip muted">Second: ${secondAuthor}</span>` : '',
+            language ? `<span class="chip">${language}</span>` : '',
+            year ? `<span class="chip muted">Year: ${year}</span>` : '',
+            pages ? `<span class="chip muted">Pages: ${pages}</span>` : ''
+        ].filter(Boolean).join('');
+        const note = langNote ? `<div class="book-note">${langNote}</div>` : '';
+        return `
         <li class="book-card" data-index="${i}">
-            <div class="book-card-left">${formatDisplayId(b.classification_number || '')}</div>
+            <div class="book-card-left"><span class="book-code">${code}</span></div>
             <div class="book-card-right">
-                <div class="book-card-header">${b.title || b.book_title || b.name || 'Untitled'}</div>
-                ${b.main_author && b.main_author !== 'null'
-                    ? `<div class="book-author">Main author: ${b.main_author}</div>`
-                    : (b.author || b.authors || b.primary_author
-                        ? `<div class="book-author">Main author: ${b.author || b.authors || b.primary_author}</div>`
-                        : '')}
-                ${b.first_author && b.first_author !== 'null' ? `<div class="book-author">First author: ${b.first_author}</div>` : ''}
-                ${b.second_author && b.second_author !== 'null' ? `<div class="book-author">Second author: ${b.second_author}</div>` : ''}
-                ${b.language && b.language !== 'null' ? `<div class="book-language">Language: ${b.language}</div>` : ''}
-                ${b.language_note && b.language_note !== 'null' ? `<div class="book-language-note">Language note: ${b.language_note}</div>` : ''}
-                ${b.pages || b.page_count ? `<div class="book-pages">Pages: ${b.pages || b.page_count}</div>` : ''}
-                ${b.year || b.publication_year ? `<div class="book-year">Year: ${b.year || b.publication_year}</div>` : ''}
+                <div class="book-header">
+                    <div class="book-card-header">${title}</div>
+                    ${subtitle ? `<div class="book-subtitle">${subtitle}</div>` : ''}
+                </div>
+                <div class="book-meta">${chips}</div>
+                ${note}
             </div>
-        </li>`).join('');
+        </li>`;
+    }).join('');
 
     displayBox.innerHTML = `📚 Books in selected category (<strong>${currentDisplayId}</strong>) : <span class="book-count">${currentTotalBooks}</span>` +
         `<ul class="book-list">${listHtml}</ul>` +
