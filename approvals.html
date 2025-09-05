@@ -81,14 +81,16 @@
                             <label><input type="checkbox" value="rejected"> Rejected</label>
                         </div>
                     </div>
-                    <label class="sort-label" for="sort-select">Sort by</label>
-                    <select id="sort-select" class="sort-select">
-                        <option value="created_desc" selected>Newest first</option>
-                        <option value="created_asc">Oldest first</option>
-                    </select>
-                    <div id="search-container" class="search-box">
+                    <div class="md-field">
+                        <label class="sort-label" for="sort-select">Sort by</label>
+                        <select id="sort-select" class="sort-select">
+                            <option value="created_desc" selected>Newest first</option>
+                            <option value="created_asc">Oldest first</option>
+                        </select>
+                    </div>
+                    <div id="search-container" class="search-box md-field floating">
+                        <input class="md-input" type="text" id="search-input" placeholder=" " />
                         <label for="search-input">Search</label>
-                        <input type="text" id="search-input" placeholder="Type to search" />
                         <div id="search-suggestions" class="suggestions hidden"></div>
                     </div>
                     <ul id="submission-list" role="listbox" class="submission-list"></ul>
