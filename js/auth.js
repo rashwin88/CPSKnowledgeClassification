@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Admin backdoor
-        if (email === 'cpsadmin' && password === 'cpsadmin2025@') {
+        if (email === 'cpsadmin@cpsindia.org' && password === 'cpsadmin2025@') {
             if (rememberEl.checked) {
                 localStorage.setItem('cpsik_email', email);
             } else {

@@ -1,3 +1,8 @@
+const role = sessionStorage.getItem('cpsik_role') || 'reader';
+if (role !== 'admin') {
+    window.location.replace('home.html');
+}
+
 const filterButton = document.getElementById('filter-button');
 const filterMenu = document.getElementById('status-options');
 const statusChecks = document.querySelectorAll('#status-options input[type="checkbox"]');

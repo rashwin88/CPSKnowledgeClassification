@@ -1,7 +1,11 @@
 // Simple role utilities and UI gating
 (function () {
     function getRole() {
-        return sessionStorage.getItem('cpsik_role') || 'reader';
+        const role = sessionStorage.getItem('cpsik_role') || 'reader';
+        if (!sessionStorage.getItem('cpsik_role')) {
+            sessionStorage.setItem('cpsik_role', 'reader');
+        }
+        return role;
     }
 
     function setBodyRoleClass(role) {
@@ -18,18 +22,12 @@
     }
 
     function hideLinks(role) {
-        const approvalsLink = document.querySelector('a.menu-link[href="approvals.html"]');
-        const dashboardLink = document.querySelector('a.menu-link[href="dashboard.html"]');
-        if (role === 'reader') {
-            if (approvalsLink) approvalsLink.style.display = 'none';
-            if (dashboardLink) dashboardLink.style.display = 'none';
-        } else if (role === 'editor') {
-            if (approvalsLink) approvalsLink.style.display = 'none';
-            if (dashboardLink) dashboardLink.style.display = '';
-        } else {
-            if (approvalsLink) approvalsLink.style.display = '';
-            if (dashboardLink) dashboardLink.style.display = '';
-        }
+        document.querySelectorAll('a.menu-link').forEach(link => {
+            const req = (link.getAttribute('data-role') || '').trim();
+            if (!req) return; // visible to all by default
+            const reqRoles = req.split(/\s+/);
+            link.style.display = reqRoles.includes(role) ? '' : 'none';
+        });
     }
 
     function guardPages(role) {

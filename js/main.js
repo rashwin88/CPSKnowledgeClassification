@@ -489,15 +489,21 @@ function createCard(data, row) {
         }
     });
     const addIcon = card.querySelector('.add-icon');
-    addIcon.addEventListener('click', (e) => {
-        e.stopPropagation();
-        openFormModal(data.id);
-    });
     const editIcon = card.querySelector('.edit-icon');
-    editIcon.addEventListener('click', (e) => {
-        e.stopPropagation();
-        openEditModal(data.id);
-    });
+    const role = sessionStorage.getItem('cpsik_role') || 'reader';
+    if (role === 'reader') {
+        addIcon.style.display = 'none';
+        editIcon.style.display = 'none';
+    } else {
+        addIcon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openFormModal(data.id);
+        });
+        editIcon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openEditModal(data.id);
+        });
+    }
 
     // Add click handler to manage selection
     card.addEventListener('click', async () => {
@@ -688,15 +694,21 @@ function createLeafCard(data, row) {
         }
     });
     const addIcon = card.querySelector('.add-icon');
-    addIcon.addEventListener('click', (e) => {
-        e.stopPropagation();
-        openFormModal(data.id);
-    });
     const editIcon = card.querySelector('.edit-icon');
-    editIcon.addEventListener('click', (e) => {
-        e.stopPropagation();
-        openEditModal(data.id);
-    });
+    const role = sessionStorage.getItem('cpsik_role') || 'reader';
+    if (role === 'reader') {
+        addIcon.style.display = 'none';
+        editIcon.style.display = 'none';
+    } else {
+        addIcon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openFormModal(data.id);
+        });
+        editIcon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openEditModal(data.id);
+        });
+    }
 
     // Add click handler to manage selection
     card.addEventListener('click', async () => {
