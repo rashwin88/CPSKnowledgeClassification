@@ -138,25 +138,8 @@
             return `https://cpscikpdffiles.s3.amazonaws.com/${encodeURIComponent(uuid)}.pdf`;
         };
 
-        const [tocAvailable, setTocAvailable] = useState(false);
-        const [tocUrl, setTocUrl] = useState(null);
-
-        useEffect(() => {
-            let cancelled = false;
-            async function checkToc() {
-                const url = buildTocUrl(initialData);
-                setTocUrl(url);
-                if (!url) { setTocAvailable(false); return; }
-                try {
-                    const res = await fetch(url, { method: 'HEAD' });
-                    if (!cancelled) setTocAvailable(res.ok && ((res.headers.get('content-type') || '').toLowerCase().includes('pdf')));
-                } catch (e) {
-                    if (!cancelled) setTocAvailable(false);
-                }
-            }
-            checkToc();
-            return () => { cancelled = true; };
-        }, [initialData, classificationNumber]);
+        const tocUrl = buildTocUrl(initialData);
+        const tocAvailable = !!tocUrl;
 
         const onShowToc = () => {
             if (!tocAvailable || !tocUrl) return;
