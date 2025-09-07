@@ -205,47 +205,14 @@ async function checkPdfExists(url) {
     }
 }
 
-async function openBookModal(book) {
-    const code = formatDisplayId(book.classification_number || '');
-    const title = book.title || book.book_title || book.name || 'Untitled';
-    const subtitle = book.subtitle && book.subtitle !== 'null' ? book.subtitle : '';
-    const mainAuthor = book.main_author || book.author || book.authors || book.primary_author || '';
-    const year = book.year || book.publication_year || '';
-    const pages = book.pages || book.page_count || '';
-
-    const tocUrl = buildTocUrl(book);
-    let tocAvailable = false;
-    if (tocUrl) {
-        tocAvailable = await checkPdfExists(tocUrl);
+function openBookModal(book) {
+    if (window.renderEditForm) {
+        window.renderEditForm(book);
     }
-
-    bookModalBody.innerHTML = `
-        <div class="book-details-grid">
-            <div class="field-name">Code</div><div class="field-value">${code}</div>
-            <div class="field-name">Title</div><div class="field-value">${title}</div>
-            ${subtitle ? `<div class="field-name">Subtitle</div><div class="field-value">${subtitle}</div>` : ''}
-            ${mainAuthor ? `<div class="field-name">Author</div><div class="field-value">${mainAuthor}</div>` : ''}
-            ${year ? `<div class="field-name">Year</div><div class="field-value">${year}</div>` : ''}
-            ${pages ? `<div class="field-name">Pages</div><div class="field-value">${pages}</div>` : ''}
-        </div>
-        <div style="margin-top:12px; display:flex; align-items:center; gap:8px;">
-            <strong>Table of Contents</strong>
-            <button id="showTocBtn" class="md-btn" ${tocAvailable ? '' : 'disabled'}>Show TOC</button>
-        </div>
-    `;
-
-    const showBtn = document.getElementById('showTocBtn');
-    if (showBtn) {
-        showBtn.addEventListener('click', () => {
-            if (!tocAvailable || !tocUrl) return;
-            tocIframe.src = tocUrl;
-            tocModal.classList.remove('hidden');
-            requestAnimationFrame(() => tocModal.classList.add('active'));
-        });
-    }
-
-    bookModal.classList.remove('hidden');
-    requestAnimationFrame(() => bookModal.classList.add('active'));
+    formModal.classList.remove('hidden');
+    requestAnimationFrame(() => {
+        formModal.classList.add('active');
+    });
 }
 
 function closeBookModal() {
@@ -261,6 +228,14 @@ bookModal.addEventListener('click', (e) => {
 });
 if (tocModalClose) tocModalClose.addEventListener('click', closeTocModal);
 if (tocModal) tocModal.addEventListener('click', (e) => { if (e.target === tocModal) closeTocModal(); });
+
+// Expose helper to open TOC modal from other modules (e.g., React form)
+window.openTocWithUrl = function (url) {
+    if (!url) return;
+    tocIframe.src = url;
+    tocModal.classList.remove('hidden');
+    requestAnimationFrame(() => tocModal.classList.add('active'));
+};
 
 function renderBooks() {
     const displayBox = document.getElementById('books-display');

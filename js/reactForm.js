@@ -132,6 +132,37 @@
             setSubmitting(false);
         };
 
+        const buildTocUrl = (book) => {
+            const uuid = (book && (book.id || book.uuid)) || (classificationNumber ? classificationNumber.replace(/#.*?#/, '') : '');
+            if (!uuid) return null;
+            return `https://cpscikpdffiles.s3.amazonaws.com/${encodeURIComponent(uuid)}.pdf`;
+        };
+
+        const [tocAvailable, setTocAvailable] = useState(false);
+        const [tocUrl, setTocUrl] = useState(null);
+
+        useEffect(() => {
+            let cancelled = false;
+            async function checkToc() {
+                const url = buildTocUrl(initialData);
+                setTocUrl(url);
+                if (!url) { setTocAvailable(false); return; }
+                try {
+                    const res = await fetch(url, { method: 'HEAD' });
+                    if (!cancelled) setTocAvailable(res.ok && ((res.headers.get('content-type') || '').toLowerCase().includes('pdf')));
+                } catch (e) {
+                    if (!cancelled) setTocAvailable(false);
+                }
+            }
+            checkToc();
+            return () => { cancelled = true; };
+        }, [initialData, classificationNumber]);
+
+        const onShowToc = () => {
+            if (!tocAvailable || !tocUrl) return;
+            if (window.openTocWithUrl) window.openTocWithUrl(tocUrl);
+        };
+
         return React.createElement('form', { className: 'react-form approval-form', onSubmit: handleSubmit }, [
             React.createElement('div', { className: 'form-fields' }, [
                 FormField({ label: 'Classification Number', name: 'classification_number', value: classificationNumber, onChange: () => { }, readOnly: true }),
@@ -161,6 +192,7 @@
                 FormField({ label: 'Libraries', name: 'libraries', value: formData.libraries, onChange: handleChange })
             ]),
             React.createElement('div', { className: 'form-actions' }, [
+                React.createElement('button', { type: 'button', disabled: !tocAvailable, onClick: onShowToc, className: 'md-btn outline' }, 'Show TOC'),
                 React.createElement('button', { type: 'submit', disabled: submitting }, submitting ? 'Submitting...' : 'Submit')
             ])
         ]);
