@@ -173,15 +173,79 @@ async function loadBooks(page = 1) {
 const bookModal = document.getElementById('bookModal');
 const bookModalBody = document.getElementById('bookModalBody');
 const bookModalClose = document.getElementById('bookModalClose');
+const tocModal = document.getElementById('tocModal');
+const tocModalClose = document.getElementById('tocModalClose');
+const tocIframe = document.getElementById('tocIframe');
 
-function openBookModal(book) {
-    if (window.renderEditForm) {
-        window.renderEditForm(book);
+function closeTocModal() {
+    tocModal.classList.remove('active');
+    setTimeout(() => tocModal.classList.add('hidden'), 300);
+    if (tocIframe) tocIframe.src = '';
+}
+
+function getBookUuid(book) {
+    // Prefer explicit id/uuid fields if present; fall back to classification_number without decorations
+    return book.id || book.uuid || (book.classification_number ? String(book.classification_number).replace(/#.*?#/, '') : '');
+}
+
+function buildTocUrl(book) {
+    const uuid = getBookUuid(book);
+    if (!uuid) return null;
+    // Replace with your S3/public CDN endpoint that serves the files. Example assumes public bucket via website/CF.
+    // Source key convention: s3://cpscikpdffiles/<uuid>.pdf
+    return `https://cpscikpdffiles.s3.amazonaws.com/${encodeURIComponent(uuid)}.pdf`;
+}
+
+async function checkPdfExists(url) {
+    try {
+        const res = await fetch(url, { method: 'HEAD' });
+        return res.ok && (res.headers.get('content-type') || '').toLowerCase().includes('pdf');
+    } catch (e) {
+        return false;
     }
-    formModal.classList.remove('hidden');
-    requestAnimationFrame(() => {
-        formModal.classList.add('active');
-    });
+}
+
+async function openBookModal(book) {
+    const code = formatDisplayId(book.classification_number || '');
+    const title = book.title || book.book_title || book.name || 'Untitled';
+    const subtitle = book.subtitle && book.subtitle !== 'null' ? book.subtitle : '';
+    const mainAuthor = book.main_author || book.author || book.authors || book.primary_author || '';
+    const year = book.year || book.publication_year || '';
+    const pages = book.pages || book.page_count || '';
+
+    const tocUrl = buildTocUrl(book);
+    let tocAvailable = false;
+    if (tocUrl) {
+        tocAvailable = await checkPdfExists(tocUrl);
+    }
+
+    bookModalBody.innerHTML = `
+        <div class="book-details-grid">
+            <div class="field-name">Code</div><div class="field-value">${code}</div>
+            <div class="field-name">Title</div><div class="field-value">${title}</div>
+            ${subtitle ? `<div class="field-name">Subtitle</div><div class="field-value">${subtitle}</div>` : ''}
+            ${mainAuthor ? `<div class="field-name">Author</div><div class="field-value">${mainAuthor}</div>` : ''}
+            ${year ? `<div class="field-name">Year</div><div class="field-value">${year}</div>` : ''}
+            ${pages ? `<div class="field-name">Pages</div><div class="field-value">${pages}</div>` : ''}
+        </div>
+        <div style="margin-top:12px; display:flex; align-items:center; gap:8px;">
+            <strong>Table of Contents</strong>
+            <button id="showTocBtn" class="md-btn" ${tocAvailable ? '' : 'disabled'}>Show TOC</button>
+        </div>
+    `;
+
+    const showBtn = document.getElementById('showTocBtn');
+    if (showBtn) {
+        showBtn.addEventListener('click', () => {
+            if (!tocAvailable || !tocUrl) return;
+            tocIframe.src = tocUrl;
+            tocModal.classList.remove('hidden');
+            requestAnimationFrame(() => tocModal.classList.add('active'));
+        });
+    }
+
+    bookModal.classList.remove('hidden');
+    requestAnimationFrame(() => bookModal.classList.add('active'));
 }
 
 function closeBookModal() {
@@ -195,6 +259,8 @@ bookModal.addEventListener('click', (e) => {
         closeBookModal();
     }
 });
+if (tocModalClose) tocModalClose.addEventListener('click', closeTocModal);
+if (tocModal) tocModal.addEventListener('click', (e) => { if (e.target === tocModal) closeTocModal(); });
 
 function renderBooks() {
     const displayBox = document.getElementById('books-display');

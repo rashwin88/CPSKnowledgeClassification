@@ -1969,8 +1969,14 @@ body {
     padding-bottom: 8px;
 }
 
+/* Hide placeholder so label pattern works consistently */
+.md-field.floating>.md-input::placeholder {
+    color: transparent;
+}
+
 .md-field.floating>.md-input:focus+label,
-.md-field.floating>.md-input:not(:placeholder-shown)+label {
+.md-field.floating>.md-input:not(:placeholder-shown)+label,
+.md-field.floating.has-value>label {
     top: 6px;
     transform: none;
     font-size: 11px;
@@ -2237,7 +2243,8 @@ a:hover {
     background: var(--surface);
     box-shadow: var(--shadow);
     border-radius: 12px;
-    overflow: hidden;
+    max-height: 400px;
+    overflow-y: auto;
 }
 
 .suggestion-item {
