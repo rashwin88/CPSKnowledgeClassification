@@ -2426,3 +2426,55 @@ a:hover {
     font-size: 13px;
     color: var(--muted-text);
 }
+
+/* User meta in topbar */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.user-meta {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.role-badge {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted-text);
+}
+
+.role-badge.admin {
+    color: #065f46;
+}
+
+.role-badge.editor {
+    color: #1e40af;
+}
+
+.role-badge.reader {
+    color: #9a3412;
+}
+
+/* Signout button */
+.signout-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px;
+    cursor: pointer;
+    color: var(--muted-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.signout-btn:hover {
+    background: var(--error, #d93025);
+    color: #fff;
+    border-color: var(--error, #d93025);
+}
