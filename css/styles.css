@@ -1216,10 +1216,19 @@ body {
 #search-container.md-field.floating>label {
     text-align: left;
     align-self: auto;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#search-container.md-field.floating>.md-input:focus+label,
+#search-container.md-field.floating>.md-input:not(:placeholder-shown)+label {
+    top: 6px;
+    transform: none;
+    font-size: 11px;
 }
 
 #search-input {
-    padding: 10px;
+    padding: 20px 10px 8px;
     font-size: 18px;
     border: 1px solid #333;
     border-radius: 4px;
