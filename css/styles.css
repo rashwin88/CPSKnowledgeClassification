@@ -23,6 +23,35 @@ body {
     z-index: 1000;
 }
 
+/* Role ribbon below topbar */
+.role-ribbon {
+    width: 100%;
+    box-sizing: border-box;
+    position: fixed;
+    top: 48px;
+    left: 0;
+    z-index: 1000;
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+}
+
+.role-ribbon.admin {
+    background: #ecfdf5;
+    color: #065f46;
+}
+
+.role-ribbon.editor {
+    background: #eff6ff;
+    color: #1e40af;
+}
+
+.role-ribbon.reader {
+    background: #fff7ed;
+    color: #9a3412;
+}
+
 .topbar-title {
     font-size: 18px;
     font-weight: bold;

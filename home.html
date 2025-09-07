@@ -21,6 +21,7 @@
             alt="User" />
         <span class="username">Admin-CPS</span>
     </nav>
+    <div id="role-ribbon" class="role-ribbon reader">Access: Reader</div>
     <div class="page-layout">
         <div id="sidebar" class="sidebar expanded">
             <div class="sidebar-top">
@@ -185,7 +186,8 @@
         <div class="modal-content" style="width: min(960px, 95vw); max-height: 90vh;">
             <button type="button" class="modal-close" id="tocModalClose">&times;</button>
             <div style="height: 80vh; max-height: 80vh;">
-                <iframe id="tocIframe" title="Table of Contents" style="width:100%; height:100%; border:0;" loading="lazy"></iframe>
+                <iframe id="tocIframe" title="Table of Contents" style="width:100%; height:100%; border:0;"
+                    loading="lazy"></iframe>
             </div>
         </div>
     </div>
@@ -214,6 +216,7 @@
     <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
     <script defer src="js/sidebar.js"></script>
+    <script defer src="js/roles.js"></script>
     <script defer src="js/data.js"></script>
     <script defer src="js/reactForm.js"></script>
     <script defer src="js/main.js"></script>

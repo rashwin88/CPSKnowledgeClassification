@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const passwordEl = document.getElementById('password');
     const rememberEl = document.getElementById('remember');
     const googleBtn = document.getElementById('google-btn');
+    const continueReader = document.getElementById('continue-reader');
 
     // Restore remembered email
     const savedEmail = localStorage.getItem('cpsik_email');
@@ -41,21 +42,44 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // This is a static site demo: treat any credentials as valid
+        // Admin backdoor
+        if (email === 'cpsadmin' && password === 'cpsadmin2025@') {
+            if (rememberEl.checked) {
+                localStorage.setItem('cpsik_email', email);
+            } else {
+                localStorage.removeItem('cpsik_email');
+            }
+            sessionStorage.setItem('cpsik_signed_in', 'true');
+            sessionStorage.setItem('cpsik_role', 'admin');
+            window.location.href = 'home.html';
+            return;
+        }
+
+        // Default non-admin login acts as editor for now
         if (rememberEl.checked) {
             localStorage.setItem('cpsik_email', email);
         } else {
             localStorage.removeItem('cpsik_email');
         }
         sessionStorage.setItem('cpsik_signed_in', 'true');
+        sessionStorage.setItem('cpsik_role', 'editor');
         window.location.href = 'home.html';
     });
 
     googleBtn.addEventListener('click', () => {
         // Placeholder for OAuth; for now, just proceed
         sessionStorage.setItem('cpsik_signed_in', 'true');
+        sessionStorage.setItem('cpsik_role', 'editor');
         window.location.href = 'home.html';
     });
+
+    if (continueReader) {
+        continueReader.addEventListener('click', (e) => {
+            // Ensure reader role is set before navigation (link still works)
+            sessionStorage.setItem('cpsik_signed_in', 'true');
+            sessionStorage.setItem('cpsik_role', 'reader');
+        });
+    }
 });
 
 

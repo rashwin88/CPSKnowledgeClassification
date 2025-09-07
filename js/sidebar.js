@@ -4,7 +4,9 @@ function updateLayout() {
     const left = collapsed ? '66px' : '200px';
 
     const topbar = document.querySelector('.topbar');
-    const topHeight = topbar ? `${topbar.offsetHeight}px` : '0px';
+    const ribbon = document.getElementById('role-ribbon');
+    const topHeightPx = (topbar ? topbar.offsetHeight : 0) + (ribbon ? ribbon.offsetHeight : 0);
+    const topHeight = `${topHeightPx}px`;
 
     document.querySelectorAll('.content-container, .approvals-container')
         .forEach(el => {
