@@ -13,12 +13,24 @@
         document.body.classList.add(`role-${role}`);
     }
 
-    function updateRibbon(role) {
-        const ribbon = document.getElementById('role-ribbon');
-        if (!ribbon) return;
-        ribbon.textContent = `Access: ${role.charAt(0).toUpperCase()}${role.slice(1)}`;
-        ribbon.classList.remove('admin', 'editor', 'reader');
-        ribbon.classList.add(role);
+    function updateUserBadge(role) {
+        const usernameSpan = document.querySelector('.username');
+        if (!usernameSpan) return;
+        let meta = usernameSpan.nextElementSibling;
+        if (!meta || !meta.classList || !meta.classList.contains('user-meta')) {
+            meta = document.createElement('div');
+            meta.className = 'user-meta';
+            const badge = document.createElement('span');
+            badge.className = 'role-badge';
+            meta.appendChild(badge);
+            usernameSpan.insertAdjacentElement('afterend', meta);
+        }
+        const badgeEl = meta.querySelector('.role-badge');
+        if (badgeEl) {
+            badgeEl.textContent = `${role}`;
+            badgeEl.classList.remove('admin', 'editor', 'reader');
+            badgeEl.classList.add(role);
+        }
     }
 
     function hideLinks(role) {
@@ -42,7 +54,7 @@
     document.addEventListener('DOMContentLoaded', () => {
         const role = getRole();
         setBodyRoleClass(role);
-        updateRibbon(role);
+        updateUserBadge(role);
         hideLinks(role);
         guardPages(role);
     });

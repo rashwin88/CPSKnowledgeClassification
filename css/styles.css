@@ -1212,6 +1212,12 @@ body {
     align-self: center;
 }
 
+/* Ensure floating label variant inside search container positions correctly */
+#search-container.md-field.floating>label {
+    text-align: left;
+    align-self: auto;
+}
+
 #search-input {
     padding: 10px;
     font-size: 18px;
