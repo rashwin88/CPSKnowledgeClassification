@@ -2435,6 +2435,59 @@ a:hover {
     font-style: italic;
 }
 
+/* Navigation breadcrumb styles */
+.navigation-breadcrumb {
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.breadcrumb-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.breadcrumb-label {
+    font-weight: 600;
+    color: var(--primary);
+    margin-right: 8px;
+    font-size: 14px;
+}
+
+.breadcrumb-item {
+    font-size: 14px;
+    color: var(--text);
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: rgba(11, 102, 255, 0.1);
+    transition: all 0.2s ease;
+}
+
+.breadcrumb-item.current {
+    background: var(--primary);
+    color: white;
+    font-weight: 600;
+}
+
+.breadcrumb-separator {
+    color: var(--muted-text);
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 4px;
+}
+
+.books-header {
+    margin-bottom: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+}
+
 /* User meta in topbar */
 .user-info {
     display: flex;

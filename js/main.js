@@ -237,9 +237,42 @@ window.openTocWithUrl = function (url) {
     requestAnimationFrame(() => tocModal.classList.add('active'));
 };
 
+async function renderNavigationPath() {
+    const breadcrumbEl = document.getElementById('navigation-breadcrumb');
+    if (!breadcrumbEl || !currentCardId) return;
+
+    try {
+        const pathString = await window.getClassificationPath(currentCardId);
+        if (!pathString) {
+            breadcrumbEl.innerHTML = '';
+            return;
+        }
+
+        const segments = pathString.split(' / ');
+        const breadcrumbHtml = segments.map((segment, index) => {
+            const isLast = index === segments.length - 1;
+            const className = isLast ? 'breadcrumb-item current' : 'breadcrumb-item';
+            return `<span class="${className}">${segment}</span>`;
+        }).join('<span class="breadcrumb-separator">›</span>');
+
+        breadcrumbEl.innerHTML = `
+            <div class="breadcrumb-container">
+                <span class="breadcrumb-label">Path:</span>
+                ${breadcrumbHtml}
+            </div>
+        `;
+    } catch (error) {
+        console.error('Error rendering navigation path:', error);
+        breadcrumbEl.innerHTML = '';
+    }
+}
+
 function renderBooks() {
     const displayBox = document.getElementById('books-display');
     const totalPages = Math.max(1, Math.ceil(currentTotalBooks / booksPerPage));
+
+    // Build navigation breadcrumb
+    renderNavigationPath();
     const listHtml = currentBooks.map((b, i) => {
         const code = formatDisplayId(b.classification_number || '');
         const title = b.title || b.book_title || b.name || 'Untitled';
@@ -299,11 +332,15 @@ function renderBooks() {
         </li>`;
     }).join('');
 
-    displayBox.innerHTML = `📚 Books in selected category (<strong>${currentDisplayId}</strong>) : <span class="book-count">${currentTotalBooks}</span>` +
-        `<ul class="book-list">${listHtml}</ul>` +
-        `<div class="pagination"><button id="prev-page" ${currentPage === 1 ? 'disabled' : ''}>Prev</button>` +
-        `<span>${currentPage} / ${totalPages}</span>` +
-        `<button id="next-page" ${currentPage === totalPages ? 'disabled' : ''}>Next</button></div>`;
+    displayBox.innerHTML = `
+        <div id="navigation-breadcrumb" class="navigation-breadcrumb"></div>
+        <div class="books-header">📚 Books in selected category (<strong>${currentDisplayId}</strong>) : <span class="book-count">${currentTotalBooks}</span></div>
+        <ul class="book-list">${listHtml}</ul>
+        <div class="pagination">
+            <button id="prev-page" ${currentPage === 1 ? 'disabled' : ''}>Prev</button>
+            <span>${currentPage} / ${totalPages}</span>
+            <button id="next-page" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>
+        </div>`;
 
     const prevBtn = document.getElementById('prev-page');
     const nextBtn = document.getElementById('next-page');
