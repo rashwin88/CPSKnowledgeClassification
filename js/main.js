@@ -239,12 +239,19 @@ window.openTocWithUrl = function (url) {
 
 async function renderNavigationPath() {
     const breadcrumbEl = document.getElementById('navigation-breadcrumb');
-    if (!breadcrumbEl || !currentCardId) return;
+    if (!breadcrumbEl) {
+        console.log('Breadcrumb element not found');
+        return;
+    }
+    if (!currentCardId) {
+        console.log('No currentCardId:', currentCardId);
+        return;
+    }
 
     try {
         const pathString = await window.getClassificationPath(currentCardId);
         if (!pathString) {
-            breadcrumbEl.innerHTML = '';
+            breadcrumbEl.innerHTML = '<div class="breadcrumb-container"><span class="breadcrumb-label">Path:</span><span class="breadcrumb-item">No path available</span></div>';
             return;
         }
 
@@ -263,7 +270,7 @@ async function renderNavigationPath() {
         `;
     } catch (error) {
         console.error('Error rendering navigation path:', error);
-        breadcrumbEl.innerHTML = '';
+        breadcrumbEl.innerHTML = '<div class="breadcrumb-container"><span class="breadcrumb-label">Path:</span><span class="breadcrumb-item">Error loading path</span></div>';
     }
 }
 
@@ -271,8 +278,6 @@ function renderBooks() {
     const displayBox = document.getElementById('books-display');
     const totalPages = Math.max(1, Math.ceil(currentTotalBooks / booksPerPage));
 
-    // Build navigation breadcrumb
-    renderNavigationPath();
     const listHtml = currentBooks.map((b, i) => {
         const code = formatDisplayId(b.classification_number || '');
         const title = b.title || b.book_title || b.name || 'Untitled';
@@ -369,6 +374,9 @@ function renderBooks() {
             }
         });
     });
+
+    // Build navigation breadcrumb after DOM is updated
+    setTimeout(() => renderNavigationPath(), 0);
 }
 
 function displayBooksForCard(card) {
