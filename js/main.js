@@ -247,19 +247,42 @@ function renderBooks() {
         const mainAuthor = b.main_author || b.author || b.authors || b.primary_author || '';
         const firstAuthor = b.first_author && b.first_author !== 'null' ? b.first_author : '';
         const secondAuthor = b.second_author && b.second_author !== 'null' ? b.second_author : '';
+        const thirdAuthor = b.third_author && b.third_author !== 'null' ? b.third_author : '';
         const language = b.language && b.language !== 'null' ? b.language : '';
         const langNote = b.language_note && b.language_note !== 'null' ? b.language_note : '';
         const pages = b.pages || b.page_count || '';
         const year = b.year || b.publication_year || '';
+        const publisher = b.publisher && b.publisher !== 'null' ? b.publisher : '';
+        const edition = b.edition && b.edition !== 'null' ? b.edition : '';
+        const volume = b.volume && b.volume !== 'null' ? b.volume : '';
+        const itemNumber = b.item_number && b.item_number !== 'null' ? b.item_number : '';
+        const accessionNumber = b.accession_number && b.accession_number !== 'null' ? b.accession_number : '';
+        const cataloguer = b.cataloguer && b.cataloguer !== 'null' ? b.cataloguer : '';
+        const libraries = b.libraries && b.libraries !== 'null' ? b.libraries : '';
+
         const chips = [
             mainAuthor ? `<span class="chip">Author: ${mainAuthor}</span>` : '',
             firstAuthor ? `<span class="chip muted">First: ${firstAuthor}</span>` : '',
             secondAuthor ? `<span class="chip muted">Second: ${secondAuthor}</span>` : '',
+            thirdAuthor ? `<span class="chip muted">Third: ${thirdAuthor}</span>` : '',
+            publisher ? `<span class="chip">Publisher: ${publisher}</span>` : '',
+            edition ? `<span class="chip muted">Ed: ${edition}</span>` : '',
+            volume ? `<span class="chip muted">Vol: ${volume}</span>` : '',
             language ? `<span class="chip">${language}</span>` : '',
             year ? `<span class="chip muted">Year: ${year}</span>` : '',
-            pages ? `<span class="chip muted">Pages: ${pages}</span>` : ''
+            pages ? `<span class="chip muted">Pages: ${pages}</span>` : '',
+            itemNumber ? `<span class="chip muted">Item: ${itemNumber}</span>` : '',
+            accessionNumber ? `<span class="chip muted">Acc: ${accessionNumber}</span>` : '',
+            cataloguer ? `<span class="chip muted">Cat: ${cataloguer}</span>` : '',
+            libraries ? `<span class="chip muted">Lib: ${libraries}</span>` : ''
         ].filter(Boolean).join('');
-        const note = langNote ? `<div class="book-note">${langNote}</div>` : '';
+
+        const additionalNotes = [
+            langNote ? `<div class="book-note"><strong>Language Note:</strong> ${langNote}</div>` : '',
+            b.general_note && b.general_note !== 'null' ? `<div class="book-note"><strong>Note:</strong> ${b.general_note}</div>` : '',
+            b.series_note && b.series_note !== 'null' ? `<div class="book-note"><strong>Series:</strong> ${b.series_note}</div>` : ''
+        ].filter(Boolean).join('');
+
         return `
         <li class="book-card" data-index="${i}">
             <div class="book-card-left"><span class="book-code">${code}</span></div>
@@ -267,9 +290,11 @@ function renderBooks() {
                 <div class="book-header">
                     <div class="book-card-header">${title}</div>
                     ${subtitle ? `<div class="book-subtitle">${subtitle}</div>` : ''}
+                    ${b.title_with_author && b.title_with_author !== 'null' && b.title_with_author !== title ?
+                `<div class="book-subtitle-alt">Alt: ${b.title_with_author}</div>` : ''}
                 </div>
                 <div class="book-meta">${chips}</div>
-                ${note}
+                ${additionalNotes}
             </div>
         </li>`;
     }).join('');

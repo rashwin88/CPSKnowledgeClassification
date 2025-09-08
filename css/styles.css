@@ -2425,6 +2425,14 @@ a:hover {
 .book-note {
     font-size: 13px;
     color: var(--muted-text);
+    margin-top: 4px;
+    line-height: 1.4;
+}
+
+.book-subtitle-alt {
+    font-size: 13px;
+    color: var(--muted-text);
+    font-style: italic;
 }
 
 /* User meta in topbar */
