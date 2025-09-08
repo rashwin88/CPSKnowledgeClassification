@@ -151,12 +151,12 @@
                 }
                 setCheckingToc(true);
                 try {
-                    const response = await fetch(tocUrl, { method: 'HEAD' });
+                    const response = await fetch(tocUrl);
                     if (!cancelled) {
-                        setTocAvailable(response.ok && (response.headers.get('content-type') || '').toLowerCase().includes('pdf'));
+                        setTocAvailable(response.ok);
                     }
                 } catch (error) {
-                    // Handle CORS or network errors - assume file is not available
+                    // If we can't get the object, disable the button
                     if (!cancelled) {
                         setTocAvailable(false);
                     }
