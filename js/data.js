@@ -154,8 +154,17 @@ async function getBookCount(prefix) {
     if (bookCountCache[prefix] !== undefined) {
         return bookCountCache[prefix];
     }
-    // Replace spaces with dashes as classification numbers are stored using '-'
-    const sanitizedPrefix = prefix.replace(/\s+/g, '-');
+
+    // Handle alpha-numeric leaf nodes: transform "042.553 SAT#adfsadf#" to "042.553-SAT"
+    let sanitizedPrefix = prefix;
+    if (prefix.includes('#')) {
+        // Extract the part before the first '#' and replace space with dash
+        sanitizedPrefix = prefix.split('#')[0].replace(/\s+/g, '-');
+    } else {
+        // Regular case: just replace spaces with dashes
+        sanitizedPrefix = prefix.replace(/\s+/g, '-');
+    }
+
     try {
         const { count, error } = await supabase
             .from('committed_records')
